@@ -8,6 +8,7 @@ button { font:inherit; }
 .experience,.exterior,.interior { position:fixed; inset:0; overflow:hidden; }
 .cursor-mark { position:fixed; z-index:25; left:var(--px,-100px); top:var(--py,-100px); width:34px; height:31px; border:2px solid rgb(169 130 53 / 78%); border-radius:48% 57% 45% 53%; pointer-events:none; transform:translate(-50%,-50%) rotate(calc(var(--mx,0) * 18deg)); transition:width .25s ease,height .25s ease,transform .14s linear; mix-blend-mode:multiply; }
 .experience:has(.threshold:hover) .cursor-mark { width:70px; height:66px; }
+.stage-outside .cursor-mark { display:none; }
 .stage-inside .cursor-mark { border-color:rgb(107 47 43 / 64%); }
 .opening-slate { position:fixed; inset:0; z-index:30; display:grid; grid-template-columns:minmax(0,1fr) minmax(250px,.42fr); grid-template-rows:auto 1fr auto; gap:22px 6vw; align-items:end; padding:clamp(28px,5vw,84px); color:var(--plaster); background:var(--graphite); pointer-events:none; animation:slateAway 1.1s 3.65s cubic-bezier(.76,0,.24,1) forwards; }
 .opening-slate span { align-self:start; font-size:.68rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; }
@@ -564,7 +565,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 
 /* A conclusive final state: the assignment is visibly complete. */
 .afterlife-copy { grid-template-columns:1.2fr .8fr; grid-template-rows:auto 1fr auto auto; gap:18px 6vw; align-content:stretch; padding:6vh 6vw 4vh; color:var(--plaster); background:var(--ultramarine); clip-path:inset(0 50%); }
-.afterlife-copy::before { content:""; position:absolute; z-index:-1; inset:0 0 0 52%; opacity:.2; background:url('/images/secession-exterior-v9.png') 68% center/cover no-repeat; filter:grayscale(1) contrast(1.6); mix-blend-mode:screen; }
+.afterlife-copy::before { content:""; position:absolute; z-index:-1; inset:0 0 0 52%; opacity:.2; background:url('/images/secession-exterior-v10.png') 68% center/cover no-repeat; filter:grayscale(1) contrast(1.6); mix-blend-mode:screen; }
 .afterlife-copy::after { right:-5vw; bottom:-12vh; width:58vw; height:62vh; opacity:.11; mix-blend-mode:screen; }
 .completion-stamp { grid-column:1/-1; grid-row:1; justify-self:start; align-self:start!important; padding:8px 10px 6px; color:var(--graphite)!important; background:#e4bd4f; transform:rotate(-1deg); }
 .afterlife-copy h3 { grid-column:1; grid-row:2; align-self:center; max-width:none; color:var(--plaster); font-size:clamp(5rem,10vw,12rem); line-height:.72; }
@@ -683,6 +684,38 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .passage-brief footer { display:grid; gap:12px; margin-top:15px; padding-top:10px; }
   .passage-brief footer > span { font-size:.63rem; }
   .passage-brief footer button { justify-self:start; margin:0; }
+}
+
+/* Exterior display trial: sharper early-20th-century character, contemporary proportions. */
+.exterior h1 { max-width:8.5ch; font-family:"Josefin Sans",sans-serif; font-size:clamp(3.55rem,6.65vw,7.25rem); font-weight:400; line-height:.81; letter-spacing:-.075em; text-transform:none; }
+.exterior h1 em { display:inline; margin:0; padding:0; color:inherit; background:transparent; font-family:inherit; font-style:normal; font-weight:400; letter-spacing:inherit; transform:none; }
+
+/* Editorial opening facts: one quiet axis, no mid-century collage cards. */
+.opening-role { position:relative; display:grid; grid-template-columns:1fr; width:min(27rem,38vw); margin-top:clamp(18px,2.4vh,28px); padding:0; border:0; color:var(--plaster); text-shadow:0 2px 18px rgb(17 13 82 / 32%); }
+.opening-role p { margin:0; }
+.opening-role__edition { grid-column:1 / -1; color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.62rem,.72vw,.76rem); font-weight:700; letter-spacing:.2em; line-height:1; text-transform:uppercase; }
+.opening-role__today { margin-top:7px !important; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.12rem,1.45vw,1.5rem); font-weight:400; line-height:1; letter-spacing:-.035em; }
+.opening-role__names { display:flex; gap:8px; margin-top:11px !important; padding:0; border:0; font-family:"Josefin Sans",sans-serif; font-size:clamp(.55rem,.64vw,.68rem); font-weight:600; letter-spacing:.16em; line-height:1; text-transform:uppercase; }
+.opening-role__names span { display:inline-flex; align-items:center; }
+.opening-role__names span:not(:last-child)::after { content:"/"; margin-left:8px; color:#e4bd4f; }
+.opening-role__task { margin-top:14px !important; max-width:18rem; font-family:"Josefin Sans",sans-serif; font-size:clamp(.9rem,1.05vw,1.1rem); font-weight:400; line-height:1.2; letter-spacing:-.018em; }
+
+/* The door is the button: stronger proximity, plain-language instruction. */
+.threshold { width:154px; height:180px; }
+.threshold__portal { top:36%; width:57px; height:86px; }
+.threshold__label { top:116px; min-width:0; padding:4px 6px 3px; color:var(--plaster); background:transparent; box-shadow:none; font-size:.58rem; font-weight:700; letter-spacing:.22em; text-shadow:0 2px 8px var(--graphite),0 0 12px var(--graphite); }
+.threshold::after { display:none; }
+.door-aura { position:absolute; z-index:4; left:68.5%; top:82%; width:clamp(90px,10vw,180px); aspect-ratio:.72; transform:translate(-50%,-50%) scale(calc(.78 + var(--door-proximity,0) * .42)); border-radius:48%; background:radial-gradient(ellipse,rgb(228 189 79 / 62%) 0,rgb(228 189 79 / 25%) 23%,transparent 68%); filter:blur(calc(13px - var(--door-proximity,0) * 7px)); mix-blend-mode:multiply; opacity:calc(.08 + var(--door-proximity,0) * .72); transition:opacity .18s linear,transform .25s ease,filter .25s ease; pointer-events:none; }
+.exterior:has(.threshold:hover) .door-aura,.exterior:has(.threshold:focus-visible) .door-aura { opacity:.9; transform:translate(-50%,-50%) scale(1.22); filter:blur(5px); }
+
+@media (max-width:760px) {
+  .opening-role { width:min(58vw,360px); padding-top:0; }
+  .opening-role__edition { font-size:.52rem; }
+  .opening-role__today { margin-top:5px !important; font-size:1.08rem; }
+  .opening-role__names { gap:5px; margin-top:7px !important; font-size:.43rem; }
+  .opening-role__names span:not(:last-child)::after { margin-left:5px; }
+  .opening-role__task { margin-top:9px !important; max-width:13rem; font-size:.78rem; }
+  .door-aura { left:70.3%; top:82.8%; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
 @media (hover:none) { .cursor-mark { display:none; } }

@@ -105,6 +105,11 @@ export default function Home() {
     event.currentTarget.style.setProperty('--my', y.toFixed(3));
     event.currentTarget.style.setProperty('--px', `${event.clientX}px`);
     event.currentTarget.style.setProperty('--py', `${event.clientY}px`);
+    const doorX = window.innerWidth * (window.innerWidth <= 760 ? .703 : .685);
+    const doorY = window.innerHeight * (window.innerWidth <= 760 ? .828 : .82);
+    const distance = Math.hypot(event.clientX - doorX, event.clientY - doorY);
+    const proximity = Math.max(0, Math.min(1, 1 - distance / (window.innerWidth * .42)));
+    event.currentTarget.style.setProperty('--door-proximity', proximity.toFixed(3));
   };
 
   return (
@@ -113,7 +118,7 @@ export default function Home() {
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <div className="opening-slate" aria-hidden="true">
         <span>An immersive cultural experience</span>
-        <div className="opening-glimpse"><img src="/images/secession-exterior-v9.png" alt="" /><i /><i /></div>
+        <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
         <b>Before the doors open</b>
         <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
@@ -121,15 +126,21 @@ export default function Home() {
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
-          <img src="/images/secession-exterior-v9.png?v=quiet-pastel" alt="" draggable="false" />
+          <img src="/images/secession-exterior-v10.png?v=full-ultramarine" alt="" draggable="false" />
         </div>
         <div className="dome-glint" aria-hidden="true" />
+        <div className="door-aura" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         <div className="exterior__copy">
           <p className="dateline"><span>Vienna</span><span>15 April</span><strong>1902</strong></p>
           <p className="hook-line">XIV Exhibition / Final check</p>
           <h1>Ah, there<br /><em>you</em> are.</h1>
-          <p className="opening-role"><b>The XIV Exhibition opens today</b><span>Klinger. Klimt. Hoffmann.</span><em>You’re here for the final check.</em></p>
+          <div className="opening-role">
+            <p className="opening-role__edition">The XIV Exhibition</p>
+            <p className="opening-role__today">opens today.</p>
+            <p className="opening-role__names"><span>Klinger</span><span>Klimt</span><span>Hoffmann</span></p>
+            <p className="opening-role__task">You’re here for the final check.</p>
+          </div>
         </div>
         <aside className="experience-mark" aria-label="Experience context">
           <span>Before the doors open</span>
@@ -138,7 +149,7 @@ export default function Home() {
         </aside>
         <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
           <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
-          <span className="threshold__label"><b>Enter</b>Begin final check</span>
+          <span className="threshold__label">Enter</span>
         </button>
       </section>
 
@@ -300,7 +311,7 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
-        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v9.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
+        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v10.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Final preparations complete</span>
           <h3>The doors<br /><em>are open.</em></h3>
