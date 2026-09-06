@@ -113,9 +113,10 @@ export default function Home() {
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <div className="opening-slate" aria-hidden="true">
         <span>An immersive cultural experience</span>
+        <div className="opening-glimpse"><img src="/images/secession-exterior-v8.png" alt="" /><i /><i /></div>
         <b>Before the doors open</b>
-        <p>Step inside the Vienna Secession on the morning of 15 April 1902 — before the XIV Exhibition opens to the public.</p>
-        <div><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
+        <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
+        <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
         <small>Salon Format</small>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
@@ -177,7 +178,7 @@ export default function Home() {
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
           <p className="helper-role">The public arrives later. For now, you’re helping with the final preparations.</p>
-          <button className="interior-reveal" type="button" onClick={() => { soundCue('room'); setInteriorRevealed(true); }}>Enter the room <i>→</i></button>
+          <button className="interior-reveal" type="button" onClick={() => { soundCue('room'); setInteriorRevealed(true); }}>Look around the room <i>→</i></button>
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>Your final check</b><span>Choose where to begin. Each area reveals a different decision behind opening day.</span></p>
