@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Stage = 'outside' | 'threshold' | 'inside';
-type Focus = null | 'letter' | 'rooms' | 'frieze';
+type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'doors' | 'epilogue';
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('outside');
@@ -12,6 +12,7 @@ export default function Home() {
   const [roomEntering, setRoomEntering] = useState(false);
   const [interiorRevealed, setInteriorRevealed] = useState(false);
   const [modelRevealed, setModelRevealed] = useState(false);
+  const [doorsOpen, setDoorsOpen] = useState(false);
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
 
@@ -24,6 +25,16 @@ export default function Home() {
     }, 1250);
   };
 
+  const openDoors = () => {
+    if (doorsOpen) return;
+    setDoorsOpen(true);
+    window.setTimeout(() => setFocus('epilogue'), 1700);
+  };
+
+  const replay = () => {
+    window.location.reload();
+  };
+
   const moveScene = (event: React.PointerEvent<HTMLElement>) => {
     const x = event.clientX / window.innerWidth - 0.5;
     const y = event.clientY / window.innerHeight - 0.5;
@@ -32,13 +43,6 @@ export default function Home() {
     event.currentTarget.style.setProperty('--px', `${event.clientX}px`);
     event.currentTarget.style.setProperty('--py', `${event.clientY}px`);
   };
-
-  useEffect(() => {
-    if (stage !== 'threshold') return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const timer = window.setTimeout(() => setStage('inside'), reduced ? 40 : 1550);
-    return () => window.clearTimeout(timer);
-  }, [stage]);
 
   return (
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
@@ -74,7 +78,19 @@ export default function Home() {
         </button>
       </section>
 
-      <div className="passage" aria-hidden="true"><span /><span /><span /><em>Inside / before opening</em></div>
+      <section className="passage" aria-label="Your role before entering" aria-hidden={stage !== 'threshold'}>
+        <span /><span /><span />
+        <article className="passage-brief">
+          <p>Vienna Secession / 15 April 1902</p>
+          <h2>Before the public arrives, you are part of the exhibition team.</h2>
+          <div className="passage-brief__grid">
+            <div><b>Your role</b><span>Help with the final preparations for the XIV Exhibition.</span></div>
+            <div><b>What you will do</b><span>Inspect a letter, understand the rooms and move through Klimt’s Beethoven Frieze.</span></div>
+            <div><b>What you will learn</b><span>How logistics, architecture and art came together — and why something temporary survived.</span></div>
+          </div>
+          <button type="button" onClick={() => setStage('inside')}>Begin the final check <i>→</i></button>
+        </article>
+      </section>
 
       <section className="interior" aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
         <div className="interior__architecture" aria-hidden="true">
@@ -97,7 +113,7 @@ export default function Home() {
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
           <p className="helper-role">The public arrives later. For now, you’re helping with the final preparations.</p>
-          <button className="interior-reveal" type="button" onClick={() => setInteriorRevealed(true)}>Look around the room</button>
+          <button className="interior-reveal" type="button" onClick={() => setInteriorRevealed(true)}>Enter the room <i>→</i></button>
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>Your final check</b><span>Choose where to begin. Each area reveals a different decision behind opening day.</span></p>
@@ -184,9 +200,46 @@ export default function Home() {
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezePosition > 3.75 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small></div>}
+          {friezePosition > 3.75 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small><button type="button" onClick={() => setFocus('invitation')}>Final preparations →</button></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
+      </section>
+
+      <section className={`chapter chapter--invitation ${focus === 'invitation' ? 'is-open' : ''}`} aria-hidden={focus !== 'invitation'}>
+        <img className="chapter__art" src="/images/correspondence-terey-v1.png" alt="A hand-drawn reconstructed letter, invitation and addressed envelope" />
+        <article className="invitation-copy">
+          <span className="reconstruction">Reconstructed from archival correspondence</span>
+          <p className="chapter-kicker">12 April 1902 · Budapest → Vienna</p>
+          <h3>People are already travelling to Vienna.</h3>
+          <p>Dr. Gabriel von Térey will attend the opening.</p>
+          <p>He asks for one additional invitation.</p>
+          <p>The cards should be sent to Hotel Kaiserhof.</p>
+          <div className="ending-cue"><b>What this changes</b><span>The unfinished exhibition is about to become public.</span></div>
+          <button className="chapter-link" type="button" onClick={() => { setDoorsOpen(false); setFocus('doors'); }}>Return to the prepared room</button>
+        </article>
+      </section>
+
+      <section className={`chapter chapter--doors ${focus === 'doors' ? 'is-open' : ''} ${doorsOpen ? 'is-opening' : ''}`} aria-hidden={focus !== 'doors'}>
+        <img className="doors-room" src="/images/secession-interior-v4.png" alt="The prepared exhibition room" />
+        <div className="door-leaf door-leaf--left" aria-hidden="true" />
+        <div className="door-leaf door-leaf--right" aria-hidden="true" />
+        <div className="doors-copy">
+          <span>The room is calm. Movement gathers outside.</span>
+          <h3>The doors are about to open.</h3>
+          <button type="button" onClick={openDoors}>Open the doors</button>
+        </div>
+      </section>
+
+      <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
+        <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
+        <div className="gold-afterline" aria-hidden="true" />
+        <article className="afterlife-copy">
+          <p>The exhibition ended.<br />The rooms changed.<br /><em>The Beethoven Frieze survived.</em></p>
+          <span>Vienna, today</span>
+          <h3>You can still walk into that room.</h3>
+          <div className="takeaway"><b>What you carry out</b><span>Exhibitions are built through people and practical decisions.</span><span>Meaning emerges between art, architecture and movement.</span><span>Something conceived as temporary can survive.</span></div>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Visit</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format.</p></details><button type="button" onClick={replay}>Replay</button></nav>
+        </article>
       </section>
     </main>
   );

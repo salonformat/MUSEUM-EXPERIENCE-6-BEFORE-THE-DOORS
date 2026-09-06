@@ -60,11 +60,19 @@ button { font:inherit; }
 .passage span:nth-child(1) { inset:0 66% 0 0; transform:translateX(-101%); }
 .passage span:nth-child(2) { inset:0 0 0 66%; transform:translateX(101%); }
 .passage span:nth-child(3) { inset:0 34%; transform:scaleY(0); transform-origin:center; }
-.passage em { position:absolute; z-index:2; left:50%; top:50%; color:var(--plaster); font-family:"Della Respira",serif; font-size:clamp(1rem,1.7vw,1.5rem); font-style:normal; letter-spacing:.02em; opacity:0; transform:translate(-50%,-40%); white-space:nowrap; }
-.stage-threshold .passage { visibility:visible; }
+.stage-threshold .passage { visibility:visible; pointer-events:auto; }
 .stage-threshold .passage span:nth-child(1),.stage-threshold .passage span:nth-child(2) { animation:closeSides 1.05s .35s cubic-bezier(.7,0,.3,1) forwards; }
 .stage-threshold .passage span:nth-child(3) { animation:closeCentre .55s 1s ease forwards; }
-.stage-threshold .passage em { animation:passageNote .7s .82s ease both; }
+.passage-brief { position:absolute; z-index:3; left:50%; top:50%; width:min(1040px,86vw); color:var(--plaster); opacity:0; transform:translate(-50%,-45%); }
+.stage-threshold .passage-brief { animation:briefArrive .9s 1.35s cubic-bezier(.16,1,.3,1) forwards; }
+.passage-brief > p { margin:0 0 clamp(18px,3vh,34px); color:#e4bd4f; font-size:.62rem; font-weight:600; letter-spacing:.19em; text-transform:uppercase; }
+.passage-brief h2 { max-width:13ch; margin:0; font-family:"Della Respira",serif; font-size:clamp(3rem,6.2vw,7.4rem); font-weight:400; line-height:.88; letter-spacing:-.045em; }
+.passage-brief__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(18px,3vw,46px); margin-top:clamp(30px,5vh,58px); padding-top:16px; border-top:1px solid rgb(241 235 221 / 38%); }
+.passage-brief__grid div { display:grid; align-content:start; gap:8px; }
+.passage-brief__grid b { color:var(--rose); font-size:.57rem; letter-spacing:.17em; text-transform:uppercase; }
+.passage-brief__grid span { max-width:19rem; font-family:"Della Respira",serif; font-size:clamp(.85rem,1.05vw,1.05rem); line-height:1.38; }
+.passage-brief button { margin-top:clamp(26px,4vh,44px); padding:12px 15px 10px; border:0; color:var(--graphite); background:#e4bd4f; font-size:.61rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; }
+.passage-brief button i { margin-left:18px; font-family:"Della Respira",serif; font-size:1rem; font-style:normal; }
 
 .interior { z-index:2; visibility:hidden; color:var(--graphite); background:var(--plaster); opacity:0; }
 .stage-inside .interior { visibility:visible; opacity:1; animation:roomReveal 1.55s cubic-bezier(.16,1,.3,1) both; }
@@ -124,6 +132,7 @@ button { font:inherit; }
 @keyframes copyUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:none; } }
 @keyframes attentionIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
 @keyframes passageNote { 0%,100% { opacity:0; transform:translate(-50%,-30%); } 35%,70% { opacity:1; transform:translate(-50%,-50%); } }
+@keyframes briefArrive { to { opacity:1; transform:translate(-50%,-50%); } }
 
 .chapter { position:fixed; inset:0; z-index:18; overflow:hidden; visibility:hidden; color:var(--graphite); background:var(--plaster); opacity:0; pointer-events:none; transition:opacity .55s ease,visibility 0s .55s; }
 .chapter.is-open { visibility:visible; opacity:1; pointer-events:auto; transition:opacity .7s ease; }
@@ -168,7 +177,7 @@ button { font:inherit; }
 input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); cursor:ew-resize; }
 .chapter--frieze { color:var(--plaster); background:var(--graphite); }
 .frieze-pan { position:absolute; inset:0; overflow:hidden; }
-.frieze-pan .chapter__art { width:145%; max-width:none; object-position:center; transform:translateX(calc(var(--frieze) * -11.25%)) scale(1.03); filter:saturate(1.05) contrast(1.02); transition:transform 1.25s cubic-bezier(.16,1,.3,1); }
+.frieze-pan .chapter__art { width:145%; max-width:none; object-position:center; transform:translateX(calc(var(--frieze) * -7.75%)) scale(1.03); filter:saturate(1.05) contrast(1.02); transition:transform 1.25s cubic-bezier(.16,1,.3,1); }
 .frieze-pan::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgb(32 29 26 / 12%),transparent 45%,rgb(32 29 26 / 72%)); pointer-events:none; }
 .frieze-copy { position:absolute; z-index:3; left:6vw; right:6vw; bottom:5vh; }
 .frieze-copy > p { margin:0 0 15px; font-family:"Della Respira",serif; font-size:clamp(2.7rem,6.5vw,7.2rem); line-height:.92; text-shadow:0 3px 24px rgb(32 29 26 / 55%); }
@@ -312,7 +321,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .room-control .view-step { margin-top:0; padding:6px 9px; }
   .chapter-close { top:16px; right:16px; }
   .chapter--frieze { grid-template-rows:55vh 45vh; }
-  .frieze-pan .chapter__art { width:230%; object-position:center; transform:translateX(calc(var(--frieze) * -32.5%)) scale(1.03); }
+  .frieze-pan .chapter__art { width:230%; object-position:center; transform:translateX(calc(var(--frieze) * -14.125%)) scale(1.03); }
   .frieze-copy { display:flex; flex-direction:column; gap:8px; padding:14px 6vw; overflow:auto; }
   .frieze-copy > p { font-size:11vw; }
   .frieze-copy .worker-cue--frieze { flex:0 0 auto; width:100%; }
@@ -358,15 +367,117 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .interior-revealed .attention__item--rooms { left:56%; top:67%; }
   .interior-revealed .attention__item--frieze { right:5%; top:20%; }
   .interior-revealed .attention button span { padding:6px 7px 4px; }
-  .chapter--frieze { grid-template-rows:78vh 22vh; }
+  .chapter--frieze { grid-template-rows:74vh 26vh; }
   .frieze-copy { display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; gap:8px 12px; padding:10px 4vw; overflow:visible; }
-  .frieze-copy > p:not(.worker-cue) { grid-column:1/-1; grid-row:1; font-size:9vw; }
+  .frieze-copy > p:not(.worker-cue) { grid-column:1/-1; grid-row:1; font-size:7.2vw; line-height:.9; white-space:nowrap; }
   .frieze-copy .worker-cue--frieze { grid-column:1; grid-row:2; width:auto; padding:7px 9px; }
   .context-note--frieze { grid-column:2; grid-row:2; width:155px; max-height:62px; padding:8px 9px; overflow:hidden; }
   .context-note--frieze summary span { display:none; }
   .frieze-controls { right:3vw; top:-44px; }
   .frieze-reveal { grid-column:2; grid-row:2; width:180px; margin:0; padding:8px 9px; }
   .frieze-reveal small { display:none; }
+}
+
+.frieze-reveal button { padding:7px 0 4px; border:0; border-bottom:2px solid var(--gold); color:var(--graphite); background:transparent; font-size:.55rem; font-weight:600; letter-spacing:.13em; text-align:left; text-transform:uppercase; cursor:pointer; }
+.frieze-copy:has(.frieze-reveal) .context-note--frieze { display:none; }
+
+/* Final movement: invitation, doors, public success, afterlife. */
+.chapter--invitation { background:var(--rose); }
+.chapter--invitation .chapter__art { object-position:center; }
+.chapter--invitation .chapter__art { position:absolute; left:42%; top:0; width:58%; height:100%; object-fit:cover; object-position:68% center; }
+.invitation-copy { position:absolute; z-index:2; left:0; top:0; width:42%; height:100%; padding:7vh 5vw; overflow:auto; color:var(--graphite); background:var(--rose); }
+.invitation-copy .reconstruction { color:var(--graphite); border-color:var(--graphite); background:rgb(241 235 221 / 38%); }
+.invitation-copy h3 { max-width:9ch; font-size:clamp(3.2rem,5.7vw,6.5rem); }
+.invitation-copy > p:not(.chapter-kicker) { margin:0 0 10px; font-family:"Della Respira",serif; font-size:clamp(.95rem,1.15vw,1.2rem); }
+.ending-cue { display:grid; gap:5px; max-width:27rem; margin-top:20px; padding:12px 14px; color:var(--plaster); background:var(--patina); }
+.ending-cue b { font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; }
+.ending-cue span { font-family:"Della Respira",serif; font-size:.86rem; }
+.chapter--doors { isolation:isolate; color:var(--plaster); background:var(--graphite); }
+.doors-room { position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover; filter:saturate(.75) brightness(.72); }
+.door-leaf { position:absolute; z-index:1; top:0; bottom:0; width:50.4%; background:var(--graphite); transition:transform 1.55s cubic-bezier(.76,0,.24,1); }
+.door-leaf::after { content:""; position:absolute; inset:3vh 18px; border:1px solid rgb(169 130 53 / 62%); }
+.door-leaf--left { left:0; transform-origin:left; }
+.door-leaf--right { right:0; transform-origin:right; }
+.chapter--doors.is-opening .door-leaf--left { transform:translateX(-101%) skewY(-1deg); }
+.chapter--doors.is-opening .door-leaf--right { transform:translateX(101%) skewY(1deg); }
+.doors-copy { position:absolute; z-index:3; left:50%; top:50%; width:min(50rem,80vw); text-align:center; transform:translate(-50%,-50%); transition:opacity .5s ease,transform .8s ease; }
+.doors-copy > span { font-size:.63rem; letter-spacing:.18em; text-transform:uppercase; }
+.doors-copy h3 { max-width:none; margin:22px auto 32px; font-size:clamp(4rem,8.5vw,10rem); line-height:.8; }
+.doors-copy button { padding:13px 18px 10px; border:1px solid var(--gold); color:var(--graphite); background:#e4bd4f; font-size:.62rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; cursor:pointer; }
+.chapter--doors.is-opening .doors-copy { opacity:0; transform:translate(-50%,-50%) scale(1.08); }
+.chapter--epilogue { color:var(--plaster); background:var(--ultramarine); }
+.visitors-number { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; text-align:center; }
+.visitors-number strong { color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(9rem,25vw,30rem); font-weight:300; line-height:.7; letter-spacing:-.1em; }
+.visitors-number span { margin-top:34px; font-family:"Della Respira",serif; font-size:clamp(1.3rem,2.2vw,2.4rem); }
+.visitors-number small { margin-top:9px; font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; }
+.chapter--epilogue.is-open .visitors-number { animation:numberDepart 1.3s 3.4s cubic-bezier(.76,0,.24,1) forwards; }
+.gold-afterline { position:absolute; z-index:2; left:50%; top:0; width:3px; height:100%; background:var(--gold); transform:scaleY(0); transform-origin:top; }
+.chapter--epilogue.is-open .gold-afterline { animation:afterline 1.2s 4.35s ease forwards; }
+.afterlife-copy { position:absolute; inset:0; z-index:3; display:grid; grid-template-columns:1fr 1.25fr; grid-template-rows:auto 1fr auto; gap:20px 7vw; align-content:center; padding:6vh 7vw; color:var(--graphite); background:var(--gallery-white); opacity:0; clip-path:inset(0 50% 0 50%); }
+.chapter--epilogue.is-open .afterlife-copy { animation:afterlifeArrive 1.2s 4.8s cubic-bezier(.16,1,.3,1) forwards; }
+.afterlife-copy > p { grid-row:1 / span 2; margin:0; font-family:"Della Respira",serif; font-size:clamp(2.2rem,4.5vw,5.3rem); line-height:1.02; }
+.afterlife-copy > p em { color:var(--oxblood); font-style:normal; }
+.afterlife-copy > span { align-self:end; color:var(--patina); font-size:.62rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; }
+.afterlife-copy h3 { align-self:start; max-width:10ch; margin:0; font-size:clamp(3rem,5.5vw,6.4rem); }
+.takeaway { display:grid; grid-column:2; gap:7px; padding:16px 18px; color:var(--plaster); background:var(--ultramarine); }
+.takeaway b { color:#e4bd4f; font-size:.57rem; letter-spacing:.16em; text-transform:uppercase; }
+.takeaway span { font-family:"Della Respira",serif; font-size:.82rem; }
+.afterlife-copy nav { grid-column:1/-1; display:flex; align-items:flex-start; gap:25px; padding-top:14px; border-top:1px solid var(--graphite); }
+.afterlife-copy nav a,.afterlife-copy nav button,.afterlife-copy nav summary { border:0; color:inherit; background:transparent; font-size:.59rem; font-weight:600; letter-spacing:.15em; text-decoration:none; text-transform:uppercase; cursor:pointer; }
+.afterlife-copy nav details { max-width:34rem; }
+.afterlife-copy nav details p { font-size:.68rem; line-height:1.45; }
+@keyframes numberDepart { to { opacity:0; transform:scale(2.8); filter:blur(8px); } }
+@keyframes afterline { to { transform:scaleY(1); } }
+@keyframes afterlifeArrive { to { opacity:1; clip-path:inset(0); } }
+
+@media (max-width:760px) {
+  .passage-brief { width:88vw; }
+  .passage-brief > p { margin-bottom:16px; font-size:.53rem; }
+  .passage-brief h2 { max-width:12ch; font-size:10.5vw; }
+  .passage-brief__grid { grid-template-columns:1fr; gap:12px; margin-top:24px; padding-top:13px; }
+  .passage-brief__grid div { grid-template-columns:7.4rem 1fr; gap:10px; }
+  .passage-brief__grid span { font-size:.75rem; line-height:1.28; }
+  .passage-brief button { margin-top:22px; }
+  .chapter--invitation .chapter__art { left:0; top:60%; width:100%; height:40%; object-position:66% center; opacity:1; }
+  .invitation-copy { left:0; top:0; width:100%; height:60%; padding:4vh 6vw 14px; }
+  .invitation-copy h3 { max-width:13ch; margin-bottom:14px; font-size:7.8vw; }
+  .invitation-copy > p:not(.chapter-kicker) { margin-bottom:6px; font-size:.78rem; }
+  .invitation-copy .ending-cue { margin-top:10px; padding:8px 10px; }
+  .invitation-copy .chapter-link { margin-top:9px; }
+  .doors-copy h3 { font-size:13vw; }
+  .visitors-number strong { font-size:27vw; }
+  .afterlife-copy { inset:0; width:auto; height:100%; display:flex; flex-direction:column; gap:13px; padding:5vh 6vw; overflow:auto; opacity:0; clip-path:none; transform:translateY(28px); }
+  .chapter--epilogue.is-open .afterlife-copy { animation:afterlifeMobile 1s 4.8s cubic-bezier(.16,1,.3,1) forwards; }
+  .afterlife-copy > p { font-size:8vw; }
+  .afterlife-copy h3 { font-size:10vw; }
+  .takeaway { width:100%; }
+  .afterlife-copy nav { flex-wrap:wrap; }
+}
+@keyframes afterlifeMobile { to { opacity:1; transform:none; } }
+
+/* The room is the first interior screen: copy inhabits its empty paper, then withdraws. */
+.interior__architecture { inset:0; bottom:0; left:0; top:0; }
+.interior__copy { left:4.5vw; top:7vh; width:min(31vw,500px); height:auto; padding:0; color:var(--ultramarine); background:transparent; text-shadow:0 1px 0 rgb(250 248 242 / 75%); }
+.interior h2 { max-width:7ch; font-size:clamp(3.2rem,5.2vw,6.4rem); line-height:.8; }
+.interior h2 em { display:inline-block; width:auto; margin:.12em 0 0 .06em; color:var(--graphite); background:#e4bd4f; }
+.interior__line { max-width:19rem; margin-top:20px; color:var(--ultramarine); font-size:clamp(.9rem,1.05vw,1.08rem); }
+.room-number { margin-bottom:24px; color:var(--oxblood); }
+.helper-role { max-width:19rem; margin-top:13px; padding-top:11px; color:var(--ultramarine); border-top-color:var(--gold); font-size:clamp(.6rem,.67vw,.7rem); }
+.interior-reveal { margin-top:18px; }
+.interior-reveal i { margin-left:15px; font-family:"Della Respira",serif; font-size:.95rem; font-style:normal; }
+.interior-revealed .interior__copy { opacity:0; transform:translateX(-22%) scale(.96); pointer-events:none; }
+.interior-revealed .interior__architecture { animation:enterDrawnRoom 1.45s cubic-bezier(.16,1,.3,1) both; }
+@keyframes enterDrawnRoom { 0% { transform:scale(1); filter:brightness(.94); } 48% { transform:scale(1.075); filter:brightness(1.02); } 100% { transform:scale(1.025); filter:none; } }
+
+@media (max-width:760px) {
+  .interior__architecture { inset:0; bottom:0; left:0; top:0; }
+  .interior-art { object-position:61% center; }
+  .interior__copy { left:5vw; top:5vh; width:48vw; height:auto; padding:0; }
+  .interior h2 { max-width:7ch; font-size:9.2vw; }
+  .interior__line { max-width:44vw; margin-top:10px; font-size:.7rem; }
+  .room-number { margin-bottom:13px; font-size:.48rem; }
+  .helper-role { max-width:43vw; margin-top:8px; padding-top:7px; font-size:.45rem; }
+  .interior-reveal { margin-top:11px; padding:8px 10px 7px; font-size:.52rem; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
 @media (hover:none) { .cursor-mark { display:none; } }

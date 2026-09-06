@@ -10,6 +10,7 @@ Approved derived scene assets using the same system:
 - `site/public/images/correspondence-arnold-v1.png`
 - `site/public/images/spatial-model-v1.png`
 - `site/public/images/beethoven-frieze-v1.png`
+- `site/public/images/correspondence-terey-v1.png`
 
 ## Medium and line
 
