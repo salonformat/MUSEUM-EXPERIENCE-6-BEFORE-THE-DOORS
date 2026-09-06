@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-:root { --plaster:#f1ebdd; --paper:#d8c9af; --graphite:#201d1a; --gold:#a98235; --patina:#47716d; --grey-green:#70745a; --oxblood:#6b2f2b; --rose:#b77d72; }
+:root { --plaster:#f1ebdd; --paper:#d8c9af; --graphite:#201d1a; --gold:#a98235; --patina:#47716d; --grey-green:#70745a; --oxblood:#6b2f2b; --rose:#b77d72; --ultramarine:#2520e8; --gallery-white:#faf8f2; }
 * { box-sizing:border-box; }
 html,body { margin:0; min-height:100%; background:var(--graphite); }
 body { color:var(--plaster); font-family:"Josefin Sans","Helvetica Neue",sans-serif; overflow:hidden; }
@@ -92,6 +92,7 @@ button { font:inherit; }
 .interior h2 { margin:0; max-width:7.5ch; font-family:"Della Respira",serif; font-size:clamp(3.8rem,7.4vw,8rem); font-weight:400; line-height:.84; letter-spacing:-.05em; }
 .interior__line { max-width:22rem; margin:clamp(22px,3vh,34px) 0 0; font-family:"Della Respira",serif; font-size:clamp(1.02rem,1.28vw,1.28rem); line-height:1.3; }
 .helper-role { max-width:21rem; margin:16px 0 0; padding-top:14px; border-top:2px solid var(--oxblood); font-family:"Josefin Sans",sans-serif; font-size:clamp(.68rem,.77vw,.8rem); font-weight:600; line-height:1.5; letter-spacing:.09em; text-transform:uppercase; }
+.interior-reveal { margin-top:22px; padding:11px 14px 9px; border:1px solid #e4bd4f; color:var(--graphite); background:#e4bd4f; font-size:.61rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; }
 .scene-brief { display:grid; gap:5px; max-width:24rem; margin-top:14px; padding:10px 12px; color:var(--graphite); background:rgb(241 235 221 / 88%); }
 .scene-brief b { color:var(--oxblood); font-size:.56rem; letter-spacing:.16em; text-transform:uppercase; }
 .scene-brief span { font-family:"Della Respira",serif; font-size:.8rem; line-height:1.3; }
@@ -138,6 +139,13 @@ button { font:inherit; }
 .chapter h3 { margin:0 0 24px; font-family:"Della Respira",serif; font-size:clamp(3rem,5.7vw,6.5rem); font-weight:400; line-height:.92; letter-spacing:-.045em; }
 .document-copy > p:not(.chapter-kicker),.rooms-copy > p:not(.chapter-kicker) { max-width:30rem; margin:0 0 13px; font-family:"Della Respira",serif; font-size:clamp(.95rem,1.15vw,1.18rem); line-height:1.36; }
 .context-note { max-width:34rem; margin:22px 0 0; padding:15px 17px 13px; border-left:3px solid var(--patina); background:rgb(241 235 221 / 82%); }
+.context-note summary { display:flex; align-items:baseline; justify-content:space-between; gap:14px; cursor:pointer; list-style:none; }
+.context-note summary::-webkit-details-marker { display:none; }
+.context-note summary::after { content:"+"; flex:0 0 auto; font-family:"Della Respira",serif; font-size:1.25rem; line-height:.7; transition:transform .35s ease; }
+.context-note[open] summary::after { transform:rotate(45deg); }
+.context-note summary b { margin:0; }
+.context-note summary span { font-family:"Della Respira",serif; font-size:.76rem; }
+.context-note > div { margin-top:14px; animation:contextOpen .45s ease both; }
 .context-note b { display:block; margin-bottom:8px; color:var(--patina); font-size:.58rem; letter-spacing:.16em; text-transform:uppercase; }
 .context-note p { margin:0 0 8px; font-family:"Josefin Sans",sans-serif; font-size:clamp(.7rem,.78vw,.82rem); line-height:1.48; }
 .context-note p:last-child { margin-bottom:0; }
@@ -148,6 +156,8 @@ button { font:inherit; }
 .chapter-close { position:absolute; z-index:6; top:28px; right:32px; width:46px; height:46px; border:1px solid var(--graphite); border-radius:48% 53% 45% 51%; color:inherit; background:rgb(241 235 221 / 78%); font-family:"Della Respira",serif; font-size:1.6rem; cursor:pointer; }
 .chapter--rooms { --viewpoint:24; }
 .room-model-art { transform:scale(var(--model-scale)) translateX(var(--model-shift)); transform-origin:62% 49%; transition:transform .8s cubic-bezier(.16,1,.3,1); }
+.room-image-action { position:absolute; z-index:1; left:43%; top:0; width:57%; height:100%; padding:0; overflow:hidden; border:0; background:var(--gallery-white); cursor:zoom-in; transition:left 1s cubic-bezier(.16,1,.3,1),width 1s cubic-bezier(.16,1,.3,1),bottom 1s cubic-bezier(.16,1,.3,1); }
+.chapter--rooms .room-image-action .chapter__art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 1.15s cubic-bezier(.16,1,.3,1),filter 1.15s ease; }
 .rooms-copy { top:auto; bottom:6vh; width:min(31rem,35vw); transform:none; padding:24px 26px; background:rgb(241 235 221 / 91%); box-shadow:8px 8px 0 rgb(71 113 109 / 34%); clip-path:polygon(1% 2%,99% 0,100% 96%,2% 100%); }
 .rooms-copy h3 { margin-bottom:18px; font-size:clamp(2.4rem,4.2vw,4.8rem); }
 .room-control label,.frieze-copy label { display:grid; gap:4px; margin-top:12px; font-size:.62rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; }
@@ -189,6 +199,12 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .document-copy,.rooms-copy { left:0; top:0; bottom:0; width:43%; max-width:none; padding:clamp(46px,6vh,74px) clamp(34px,5vw,82px); overflow:auto; transform:none; background:var(--plaster); box-shadow:none; clip-path:none; }
 .rooms-copy { bottom:190px; }
 .room-control { position:absolute; z-index:3; left:0; bottom:0; width:43%; height:190px; padding:12px clamp(34px,5vw,82px) 20px; border-top:1px solid rgb(32 29 26 / 28%); background:var(--plaster); }
+.chapter--rooms .rooms-copy { transition:transform .95s cubic-bezier(.16,1,.3,1); }
+.chapter--rooms .room-control { opacity:0; visibility:hidden; transform:translateY(100%); transition:opacity .45s ease,transform .8s cubic-bezier(.16,1,.3,1),visibility 0s .8s,width .9s cubic-bezier(.16,1,.3,1); }
+.chapter--rooms.model-revealed .rooms-copy { transform:translateX(-100%); }
+.chapter--rooms.model-revealed .room-image-action { left:0; bottom:190px; width:100%; height:auto; }
+.chapter--rooms.model-revealed .room-control { width:100%; opacity:1; visibility:visible; transform:none; transition-delay:.35s,0s,0s,0s; }
+.chapter--rooms.is-entering .room-model-art { transform:scale(4.4) translate(-6%,8%); transform-origin:55% 48%; filter:brightness(.08) saturate(.3); }
 .chapter--frieze { display:grid; grid-template-rows:minmax(0,64vh) minmax(0,36vh); }
 .frieze-pan { position:relative; inset:auto; grid-row:1; }
 .frieze-pan::after { display:none; }
@@ -208,17 +224,60 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 @keyframes exteriorDraw { 0% { clip-path:polygon(100% 0,100% 0,100% 100%,100% 100%); transform:scale(1.08); } 54% { clip-path:polygon(24% 0,100% 0,100% 100%,40% 100%); } 100% { clip-path:polygon(0 0,100% 0,100% 100%,0 100%); transform:scale(1); } }
 @keyframes roomCurtain { 0% { transform:scaleY(1); } 62% { transform:scaleY(.18) skewY(-3deg); } 100% { transform:scaleY(0); } }
 @keyframes headlineBreathe { 0%,100% { letter-spacing:-.05em; } 50% { letter-spacing:-.025em; } }
+@keyframes contextOpen { from { opacity:0; transform:translateY(-7px); } to { opacity:1; transform:none; } }
 
-@media (max-width:760px) { .exterior__art { inset:-1%; transform-origin:70.3% 82.8%; } .exterior__art img { object-position:68% center; } .exterior::after { background:linear-gradient(90deg,rgb(25 25 130 / 34%),transparent 72%); } .stage-threshold .exterior::after { animation:doorVignetteMobile 1.5s cubic-bezier(.74,0,.18,1) both; } .exterior__copy { left:6vw; top:6vh; max-width:72vw; } .dateline { gap:.8rem; margin-bottom:20px; font-size:.58rem; } .hook-line { margin-bottom:10px; font-size:.52rem; } .exterior h1 { max-width:100%; font-size:clamp(2.35rem,6.8vw,2.9rem); line-height:1.02; } .invitation { margin-top:18px; font-size:.88rem; } .date-ghost { left:6vw; bottom:9vh; font-size:19vw; opacity:.94; } .date-ghost span:last-child { -webkit-text-stroke-width:1px; } .experience-mark { display:none; } .threshold { left:70.3%; top:82.8%; } }
+/* Chromatic editorial direction: ivory belongs to documents, not the interface. */
+.hook-line { display:none; }
+.exterior h1 { font-size:clamp(3.5rem,6.7vw,7.4rem); line-height:.88; }
+.invitation { margin-top:clamp(26px,4vh,46px); padding:12px 16px 10px; color:var(--graphite); background:#e4bd4f; transform:rotate(-1deg); }
+.invitation::after { display:none; }
+.interior { background:var(--gallery-white); }
+.interior__architecture { left:39%; transition:left 1s cubic-bezier(.16,1,.3,1),top 1s cubic-bezier(.16,1,.3,1); }
+.interior__copy { left:0; top:0; width:39%; max-width:none; height:calc(100% - 112px); padding:clamp(38px,6vh,72px) clamp(30px,4vw,68px); color:var(--plaster); background:var(--ultramarine); }
+.interior__copy { transition:transform .95s cubic-bezier(.16,1,.3,1); }
+.attention { opacity:0; visibility:hidden; transform:translateY(100%); transition:opacity .45s ease,transform .8s cubic-bezier(.16,1,.3,1),visibility 0s .8s; }
+.interior-revealed .interior__copy { transform:translateX(-100%); }
+.interior-revealed .interior__architecture { left:0; top:0; }
+.interior-revealed .attention { opacity:1; visibility:visible; transform:none; transition-delay:.3s,0s,0s; }
+.interior h2 { max-width:none; font-size:clamp(4.8rem,7.5vw,8.8rem); line-height:.78; }
+.interior h2 em { display:block; width:max-content; margin-top:.12em; padding:.08em .16em .04em; color:var(--graphite); background:#e4bd4f; font-style:normal; transform:rotate(-1.5deg); }
+.interior__line { font-size:clamp(1.05rem,1.35vw,1.35rem); }
+.helper-role { color:var(--plaster); border-top-color:#e4bd4f; }
+.attention { color:var(--plaster); border-top:0; background:var(--ultramarine); }
+.attention__prompt,.attention button { color:var(--plaster); }
+.attention__prompt b { color:#e4bd4f; }
+.attention button { color:var(--graphite); border-color:rgb(32 29 26 / 72%); background:var(--rose); box-shadow:5px 6px 0 rgb(32 29 26 / 26%); }
+.attention button:nth-of-type(2) { color:var(--plaster); background:var(--patina); }
+.attention button:nth-of-type(3) { color:var(--graphite); background:#e4bd4f; }
+.chapter--letter .document-copy { background:var(--rose); }
+.chapter--letter .reconstruction { color:var(--graphite); border-color:var(--graphite); background:rgb(241 235 221 / 36%); }
+.chapter--letter .worker-cue { border-bottom-color:var(--graphite); }
+.chapter--letter .worker-cue b { color:var(--oxblood); }
+.chapter--letter .context-note { border-left-color:var(--oxblood); background:var(--gallery-white); }
+.chapter--letter .chapter-link { border-bottom-color:var(--graphite); }
+.chapter--rooms .rooms-copy { color:var(--plaster); background:var(--patina); }
+.chapter--rooms .chapter-kicker,.chapter--rooms .worker-cue b { color:#e4bd4f; }
+.chapter--rooms .worker-cue { border-bottom-color:#e4bd4f; }
+.chapter--rooms .context-note { color:var(--graphite); border-left-color:var(--gold); background:var(--gallery-white); }
+.chapter--rooms .room-control { color:var(--plaster); border-top:0; background:var(--ultramarine); }
+.chapter--rooms .room-control label span { color:#e4bd4f; }
+.chapter--rooms .view-step { color:var(--graphite); background:#e4bd4f; }
+.chapter--rooms .chapter-link { color:var(--plaster); border-bottom-color:var(--plaster); }
+.chapter--rooms .chapter-link:disabled { color:rgb(241 235 221 / 48%); border-bottom-color:rgb(241 235 221 / 28%); }
+.chapter--rooms input[type="range"] { accent-color:#e4bd4f; }
+
+@media (max-width:760px) { .exterior__art { inset:-1%; transform-origin:70.3% 82.8%; } .exterior__art img { object-position:68% center; } .exterior::after { background:linear-gradient(90deg,rgb(25 25 130 / 34%),transparent 72%); } .stage-threshold .exterior::after { animation:doorVignetteMobile 1.5s cubic-bezier(.74,0,.18,1) both; } .exterior__copy { left:6vw; top:6vh; max-width:76vw; } .dateline { gap:.8rem; margin-bottom:20px; font-size:.58rem; } .hook-line { margin-bottom:10px; font-size:.52rem; } .exterior h1 { max-width:100%; font-size:clamp(3rem,10.5vw,4rem); line-height:.88; } .invitation { margin-top:22px; font-size:.82rem; } .date-ghost { left:6vw; bottom:9vh; font-size:19vw; opacity:.94; } .date-ghost span:last-child { -webkit-text-stroke-width:1px; } .experience-mark { display:none; } .threshold { left:70.3%; top:82.8%; } }
 @keyframes doorVignetteMobile { 0% { background:radial-gradient(circle at 70.3% 82.8%,transparent 0 3%,rgb(32 29 26 / 0%) 16%); } 58% { background:radial-gradient(circle at 70.3% 82.8%,transparent 0 5%,rgb(32 29 26 / 58%) 27%,rgb(32 29 26 / 82%) 70%); } 100% { background:var(--graphite); } }
 @media (max-width:760px) {
   .interior__architecture { bottom:132px; }
   .interior::before { bottom:132px; }
-  .interior__copy { left:6vw; top:7vh; max-width:58vw; }
+  .interior__architecture { left:0; top:42%; bottom:132px; }
+  .interior__copy { left:0; top:0; width:100%; max-width:none; height:42%; padding:4vh 6vw 16px; }
   .room-number { margin-bottom:20px; font-size:.56rem; }
-  .interior h2 { max-width:7ch; font-size:clamp(3rem,11.5vw,4.5rem); line-height:.88; }
-  .interior__line { margin-top:16px; font-size:.9rem; }
-  .helper-role { max-width:58vw; margin-top:11px; padding:10px 9px 8px; border-top:2px solid var(--oxblood); background:rgb(241 235 221 / 88%); font-size:.54rem; line-height:1.45; }
+  .interior h2 { max-width:none; font-size:clamp(3.4rem,13.5vw,5.2rem); line-height:.78; }
+  .interior h2 em { display:inline-block; margin:.12em 0 0 .12em; }
+  .interior__line { margin-top:12px; font-size:.86rem; }
+  .helper-role { max-width:88vw; margin-top:8px; padding:8px 0 0; border-top:2px solid #e4bd4f; background:transparent; font-size:.5rem; line-height:1.35; }
   .interior-art { object-position:62% center; }
   .attention { inset:auto 0 0; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:40px 68px; height:132px; gap:4px 7px; padding:10px 3vw; }
   .attention__prompt { grid-column:1/-1; display:flex; align-items:baseline; width:auto; gap:9px; }
@@ -231,6 +290,8 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--rooms .chapter__art { top:50%; height:32%; }
   .rooms-copy { left:0; top:0; bottom:auto; width:100%; height:50%; max-height:none; padding:3vh 3vw 10px; transform:none; }
   .room-control { left:0; bottom:0; width:100%; height:18%; min-height:135px; padding:8px 4vw 10px; }
+  .room-image-action { left:0; top:50%; width:100%; height:32%; }
+  .chapter--rooms.model-revealed .room-image-action { left:0; top:0; bottom:135px; width:100%; height:auto; }
   .chapter h3 { max-width:8ch; font-size:clamp(2.5rem,12vw,4rem); }
   .document-copy > p:not(.chapter-kicker),.rooms-copy > p:not(.chapter-kicker) { max-width:84vw; font-size:.9rem; }
   .document-copy { overflow:auto; padding-right:6vw; }
