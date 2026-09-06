@@ -35,7 +35,7 @@ export default function Home() {
         <div className="exterior__art" aria-hidden="true">
           <img src="/images/secession-exterior-v8.png?v=controlled-ink" alt="" draggable="false" />
         </div>
-        <div className="date-ghost" aria-hidden="true">1902</div>
+        <div className="date-ghost" aria-hidden="true"><span>19</span><span>02</span></div>
         <div className="dome-glint" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         <div className="exterior__copy">
