@@ -84,9 +84,9 @@ export default function Home() {
           <h2>You’re here. Good.</h2>
           <p className="interior__line">There are still a few things to sort out.</p>
           <p className="helper-role">The public arrives later. For now, you’re helping with the final preparations.</p>
-          <div className="scene-brief"><b>What to do</b><span>Choose one part of the unfinished exhibition to inspect. Each reveals a different decision behind opening day.</span></div>
         </div>
         <nav className="attention" aria-label="Areas in the room">
+          <p className="attention__prompt"><b>Your final check</b><span>Choose where to begin. Each area reveals a different decision behind opening day.</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
             <i /><span><b>Correspondence</b><small>Inspect the letter from Dresden</small></span>
           </button>
@@ -122,7 +122,7 @@ export default function Home() {
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
-      <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--viewpoint': viewpoint, '--model-scale': 1.02 + viewpoint * .0008, '--model-shift': `${(viewpoint - 50) * -.055}%`} as React.CSSProperties}>
+      <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--viewpoint': viewpoint, '--model-scale': 1.24 - viewpoint * .0022, '--model-shift': `${(viewpoint - 50) * -.22}%`} as React.CSSProperties}>
         <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
@@ -132,14 +132,16 @@ export default function Home() {
           <p>Designed to be experienced together.</p>
           <aside className="context-note">
             <b>Why it matters</b>
-            <p>Twenty-one artists worked together under Josef Hoffmann’s direction. Max Klinger’s Beethoven stood in the main hall; Klimt’s frieze occupied the left side hall.</p>
-            <p>An opening in the wall kept the sculpture in view. Moving your viewpoint reveals the exhibition’s central idea: the works only become whole through their relationship.</p>
+            <p>Under Josef Hoffmann’s direction, twenty-one artists shaped one exhibition. Klinger’s statue stood in the main hall, Klimt’s frieze in the left side hall, and a wall opening connected both views.</p>
             <strong>What you learn</strong><span>Gesamtkunstwerk here is spatial: painting, sculpture and architecture shape one experience.</span>
           </aside>
-          <label htmlFor="viewpoint">Follow the view across the model <span>{viewpoint > 58 ? 'Now the connection is clear: frieze, opening and sculpture form one sequence.' : 'Slide right: begin with the frieze and continue through the opening to the statue.'}</span></label>
-          <input id="viewpoint" type="range" min="0" max="100" value={viewpoint} onChange={(event) => setViewpoint(Number(event.target.value))} />
-          <button className="chapter-link" type="button" onClick={() => setFocus('frieze')} disabled={viewpoint <= 58}>{viewpoint > 58 ? 'Enter Klimt’s room' : 'Follow the view to Beethoven first'}</button>
         </article>
+        <div className="room-control">
+          <div className="view-step" aria-live="polite"><b>{viewpoint < 34 ? '01 / The frieze' : viewpoint < 72 ? '02 / The opening' : '03 / Beethoven'}</b><span>{viewpoint < 34 ? 'Begin in Klimt’s left side hall.' : viewpoint < 72 ? 'Continue toward the opening in the wall.' : 'The view pulls back: painting, architecture and sculpture become one composition.'}</span></div>
+          <label htmlFor="viewpoint">Follow the view across the model <span>{viewpoint > 72 ? 'The relationship is visible. You have completed the spatial check.' : 'Move slowly from left to right.'}</span></label>
+          <input id="viewpoint" type="range" min="0" max="100" value={viewpoint} onChange={(event) => setViewpoint(Number(event.target.value))} />
+          <button className="chapter-link" type="button" onClick={() => setFocus('frieze')} disabled={viewpoint <= 72}>{viewpoint > 72 ? 'Enter Klimt’s room' : 'Complete the view first'}</button>
+        </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
