@@ -103,11 +103,17 @@ export default function Home() {
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
+          <p className="worker-cue"><b>Your part</b><span>Read what has not yet been settled.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
           <h3>Has the marble head arrived?</h3>
           <p>Klinger meant to send it with the Beethoven monument, but the dispatch was delayed.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what price is being asked for Beethoven?</p>
+          <aside className="context-note">
+            <b>What this reveals</b>
+            <p>The exhibition was also a practical undertaking. Works had to travel, correspondence had to arrive, invitations had to be sent and prices had to be decided.</p>
+            <p>This is not a fictional emergency. The uncertainty documented in Ernst Arnold’s letter is enough: five days before opening, transport and money were still part of the work.</p>
+          </aside>
           <button className="chapter-link" type="button" onClick={() => setFocus('rooms')}>Look at the rooms</button>
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
@@ -118,9 +124,15 @@ export default function Home() {
         <div className="sightline" aria-hidden="true" />
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
+          <p className="worker-cue"><b>Your part</b><span>Check the view from Klimt’s side hall to Beethoven.</span></p>
           <h3>Make the room make sense.</h3>
           <p>Painting. Sculpture. Architecture.</p>
           <p>Designed to be experienced together.</p>
+          <aside className="context-note">
+            <b>What this reveals</b>
+            <p>Twenty-one artists worked together under Josef Hoffmann’s direction. Max Klinger’s Beethoven stood in the main hall; Klimt’s frieze occupied the left side hall.</p>
+            <p>An opening in the wall kept the sculpture in view. Moving your viewpoint reveals the exhibition’s central idea: the works only become whole through their relationship.</p>
+          </aside>
           <label htmlFor="viewpoint">Alter the viewpoint <span>{viewpoint > 58 ? 'The relationship comes into view.' : 'Follow the opening.'}</span></label>
           <input id="viewpoint" type="range" min="0" max="100" value={viewpoint} onChange={(event) => setViewpoint(Number(event.target.value))} />
           <button className="chapter-link" type="button" onClick={() => setFocus('frieze')}>Enter Klimt’s room</button>
@@ -131,10 +143,15 @@ export default function Home() {
       <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
         <div className="frieze-pan"><img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" /></div>
         <div className="frieze-copy">
+          <p className="worker-cue worker-cue--frieze"><b>Your part</b><span>Walk the left side hall once before the public does. Follow the procession to its end.</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][Math.min(4, Math.floor(friezePosition / 21))]}</p>
+          <aside className="context-note context-note--frieze">
+            <b>Why this room matters</b>
+            <p>The Beethoven Frieze was conceived for this exhibition, not as an isolated permanent mural. Its rhythm, scale and procession belonged to Hoffmann’s temporary architecture and to the encounter with Klinger’s Beethoven.</p>
+          </aside>
           <label htmlFor="frieze-progress">Move through the room</label>
           <input id="frieze-progress" type="range" min="0" max="100" value={friezePosition} onChange={(event) => setFriezePosition(Number(event.target.value))} />
-          {friezePosition > 88 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small></div>}
+          {friezePosition > 88 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary. Now look back through the opening: Klimt’s room and Klinger’s Beethoven were designed to be experienced together.</small></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
