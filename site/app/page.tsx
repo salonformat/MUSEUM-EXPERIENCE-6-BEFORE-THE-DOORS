@@ -129,11 +129,7 @@ export default function Home() {
           <p className="hook-line">XIV Exhibition / Final check</p>
           <h1>Ah, there<br /><em>you</em> are.</h1>
           <p className="opening-role"><b>The XIV Exhibition opens today.</b><span>Klinger’s Beethoven, Klimt’s frieze and Hoffmann’s rooms are meant to become one experience. You’re here for the final check.</span></p>
-          <button className="invitation" type="button" onClick={enterThreshold}>
-            Go to the entrance <i>→</i>
-          </button>
         </div>
-        <svg className="door-guide" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true"><path d="M 315 326 C 430 326, 520 456, 686 594" /></svg>
         <aside className="experience-mark" aria-label="Experience context">
           <span>Before the doors open</span>
           <span>XIV Exhibition</span>
@@ -141,21 +137,22 @@ export default function Home() {
         </aside>
         <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
           <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
-          <span className="threshold__label"><b>Final check</b>Enter</span>
+          <span className="threshold__label"><b>Enter</b>Begin final check</span>
         </button>
       </section>
 
       <section className="passage" aria-label="Your role before entering" aria-hidden={stage !== 'threshold'}>
         <span /><span /><span />
         <article className="passage-brief">
-          <p>Vienna Secession / 15 April 1902</p>
-          <h2>Before the public arrives, you are part of the exhibition team.</h2>
+          <p>Your briefing / XIV Exhibition</p>
+          <h2>The public arrives later today.</h2>
+          <p className="passage-brief__lead">Before the doors open, three final checks still need your attention.</p>
           <div className="passage-brief__grid">
-            <div><b>Your role</b><span>Help with the final preparations for the XIV Exhibition.</span></div>
-            <div><b>What you will do</b><span>Inspect a letter, understand the rooms and move through Klimt’s Beethoven Frieze.</span></div>
-            <div><b>What you will learn</b><span>How logistics, architecture and art came together — and why something temporary survived.</span></div>
+            <div><strong>01</strong><b>Correspondence</b><span>See how transport, prices and invitations shape an exhibition.</span></div>
+            <div><strong>02</strong><b>The rooms</b><span>Understand how architecture connects painting and sculpture.</span></div>
+            <div><strong>03</strong><b>The frieze</b><span>Follow Klimt’s search for happiness across the walls.</span></div>
           </div>
-          <button type="button" onClick={beginRoom}>Begin the final check <i>→</i></button>
+          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button type="button" onClick={beginRoom}>Enter the workroom <i>→</i></button></footer>
         </article>
       </section>
 
