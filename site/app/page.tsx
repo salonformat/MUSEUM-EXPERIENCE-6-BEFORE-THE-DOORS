@@ -45,7 +45,6 @@ export default function Home() {
         </div>
         <div className="grain grain--inside" aria-hidden="true" />
         <div className="interior__copy">
-          <p className="interior__kicker">Before the doors open</p>
           <h2>You’re here. Good.</h2>
           <p>There are still a few things to sort out.</p>
         </div>
