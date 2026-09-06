@@ -5,6 +5,12 @@ These two approved illustrations define the binding visual language for every fu
 - `site/public/images/secession-exterior-v8.png`
 - `site/public/images/secession-interior-v4.png`
 
+Approved derived scene assets using the same system:
+
+- `site/public/images/correspondence-arnold-v1.png`
+- `site/public/images/spatial-model-v1.png`
+- `site/public/images/beethoven-frieze-v1.png`
+
 ## Medium and line
 
 - Visibly hand-drawn ink combined with oil pastel/chalk.

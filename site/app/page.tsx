@@ -3,9 +3,13 @@
 import { useEffect, useState } from 'react';
 
 type Stage = 'outside' | 'threshold' | 'inside';
+type Focus = null | 'letter' | 'rooms' | 'frieze';
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('outside');
+  const [focus, setFocus] = useState<Focus>(null);
+  const [viewpoint, setViewpoint] = useState(24);
+  const [friezePosition, setFriezePosition] = useState(0);
 
   const moveScene = (event: React.PointerEvent<HTMLElement>) => {
     const x = event.clientX / window.innerWidth - 0.5;
@@ -82,16 +86,57 @@ export default function Home() {
           <p className="helper-role">The public arrives later. For now, you’re helping with the final preparations.</p>
         </div>
         <nav className="attention" aria-label="Areas in the room">
-          <button className="attention__item attention__item--letters" type="button">
+          <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
             <i /><span><b>Correspondence</b><small>Inspect the letter from Dresden</small></span>
           </button>
-          <button className="attention__item attention__item--rooms" type="button">
+          <button className="attention__item attention__item--rooms" type="button" onClick={() => setFocus('rooms')}>
             <i /><span><b>The rooms</b><small>Examine the opening and sightline</small></span>
           </button>
-          <button className="attention__item attention__item--frieze" type="button">
+          <button className="attention__item attention__item--frieze" type="button" onClick={() => setFocus('frieze')}>
             <i /><span><b>The frieze</b><small>Enter Klimt’s left side hall</small></span>
           </button>
         </nav>
+      </section>
+
+      <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
+        <img className="chapter__art" src="/images/correspondence-arnold-v1.png" alt="A hand-drawn reconstructed letter with two telegram slips" />
+        <div className="chapter__veil" />
+        <article className="document-copy">
+          <span className="reconstruction">Reconstructed from archival correspondence</span>
+          <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
+          <h3>Has the marble head arrived?</h3>
+          <p>Klinger meant to send it with the Beethoven monument, but the dispatch was delayed.</p>
+          <p>Two telegrams have already been sent.</p>
+          <p>And one more question: what price is being asked for Beethoven?</p>
+          <button className="chapter-link" type="button" onClick={() => setFocus('rooms')}>Look at the rooms</button>
+        </article>
+        <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
+      </section>
+
+      <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--viewpoint': viewpoint, '--model-scale': 1.02 + viewpoint * .0008, '--model-shift': `${(viewpoint - 50) * -.055}%`} as React.CSSProperties}>
+        <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
+        <div className="sightline" aria-hidden="true" />
+        <article className="rooms-copy">
+          <p className="chapter-kicker">The rooms</p>
+          <h3>Make the room make sense.</h3>
+          <p>Painting. Sculpture. Architecture.</p>
+          <p>Designed to be experienced together.</p>
+          <label htmlFor="viewpoint">Alter the viewpoint <span>{viewpoint > 58 ? 'The relationship comes into view.' : 'Follow the opening.'}</span></label>
+          <input id="viewpoint" type="range" min="0" max="100" value={viewpoint} onChange={(event) => setViewpoint(Number(event.target.value))} />
+          <button className="chapter-link" type="button" onClick={() => setFocus('frieze')}>Enter Klimt’s room</button>
+        </article>
+        <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
+      </section>
+
+      <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
+        <div className="frieze-pan"><img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" /></div>
+        <div className="frieze-copy">
+          <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][Math.min(4, Math.floor(friezePosition / 21))]}</p>
+          <label htmlFor="frieze-progress">Move through the room</label>
+          <input id="frieze-progress" type="range" min="0" max="100" value={friezePosition} onChange={(event) => setFriezePosition(Number(event.target.value))} />
+          {friezePosition > 88 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small></div>}
+        </div>
+        <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
     </main>
   );
