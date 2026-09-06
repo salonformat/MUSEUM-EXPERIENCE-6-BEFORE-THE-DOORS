@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Stage = 'outside' | 'threshold' | 'inside';
 type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'doors' | 'epilogue';
@@ -13,11 +13,62 @@ export default function Home() {
   const [interiorRevealed, setInteriorRevealed] = useState(false);
   const [modelRevealed, setModelRevealed] = useState(false);
   const [doorsOpen, setDoorsOpen] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
+  const audioContext = useRef<AudioContext | null>(null);
+  const audioMaster = useRef<GainNode | null>(null);
+  const climaxPlayed = useRef(false);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
+
+  const ensureSound = () => {
+    if (audioContext.current) return audioContext.current;
+    const AudioCtor = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const context = new AudioCtor();
+    const master = context.createGain();
+    master.gain.value = soundEnabled ? .16 : 0;
+    master.connect(context.destination);
+    const roomTone = context.createOscillator();
+    const roomGain = context.createGain();
+    roomTone.type = 'sine';
+    roomTone.frequency.value = 48;
+    roomGain.gain.value = .035;
+    roomTone.connect(roomGain).connect(master);
+    roomTone.start();
+    audioContext.current = context;
+    audioMaster.current = master;
+    return context;
+  };
+
+  const soundCue = (kind: 'threshold' | 'room' | 'paper' | 'passage' | 'frieze' | 'climax' | 'doors') => {
+    const context = ensureSound();
+    const master = audioMaster.current;
+    if (!master) return;
+    const now = context.currentTime;
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+    const settings = {
+      threshold:[72,42,.85,'sine'], room:[110,165,1.1,'sine'], paper:[620,410,.18,'triangle'],
+      passage:[86,260,1.35,'sine'], frieze:[190,235,.32,'triangle'], climax:[146,438,2.4,'sine'], doors:[55,82,1.8,'sine']
+    }[kind] as [number,number,number,OscillatorType];
+    oscillator.type = settings[3];
+    oscillator.frequency.setValueAtTime(settings[0], now);
+    oscillator.frequency.exponentialRampToValueAtTime(settings[1], now + settings[2]);
+    filter.type = 'lowpass';
+    filter.frequency.value = kind === 'paper' ? 1800 : 720;
+    gain.gain.setValueAtTime(.0001, now);
+    gain.gain.exponentialRampToValueAtTime(kind === 'climax' ? .24 : .11, now + .035);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + settings[2]);
+    oscillator.connect(filter).connect(gain).connect(master);
+    oscillator.start(now); oscillator.stop(now + settings[2] + .05);
+  };
+
+  const enterThreshold = () => { soundCue('threshold'); setStage('threshold'); };
+  const beginRoom = () => { soundCue('room'); setStage('inside'); };
 
   const enterKlimtRoom = () => {
     if (roomEntering) return;
+    soundCue('passage');
     setRoomEntering(true);
     window.setTimeout(() => {
       setFocus('frieze');
@@ -27,6 +78,7 @@ export default function Home() {
 
   const openDoors = () => {
     if (doorsOpen) return;
+    soundCue('doors');
     setDoorsOpen(true);
     window.setTimeout(() => setFocus('epilogue'), 1700);
   };
@@ -34,6 +86,17 @@ export default function Home() {
   const replay = () => {
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (audioMaster.current && audioContext.current) {
+      audioMaster.current.gain.setTargetAtTime(soundEnabled ? .16 : 0, audioContext.current.currentTime, .08);
+    }
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    if (focus !== 'frieze') return;
+    if (friezeIndex === 4 && !climaxPlayed.current) { climaxPlayed.current = true; soundCue('climax'); }
+  }, [focus, friezeIndex]);
 
   const moveScene = (event: React.PointerEvent<HTMLElement>) => {
     const x = event.clientX / window.innerWidth - 0.5;
@@ -47,6 +110,7 @@ export default function Home() {
   return (
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <div className="cursor-mark" aria-hidden="true" />
+      <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <div className="opening-slate" aria-hidden="true">
         <span>Vienna / 1902</span>
         <b>Before the doors open</b>
@@ -63,7 +127,7 @@ export default function Home() {
           <p className="dateline"><span>Vienna</span><span>15 April 1902</span></p>
           <p className="hook-line">You arrive before the public does.</p>
           <h1>The exhibition<br />opens today.</h1>
-          <button className="invitation" type="button" onClick={() => setStage('threshold')}>
+          <button className="invitation" type="button" onClick={enterThreshold}>
             You should probably come inside.
           </button>
         </div>
@@ -72,7 +136,7 @@ export default function Home() {
           <span>XIV Exhibition</span>
           <span>Vienna Secession</span>
         </aside>
-        <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={() => setStage('threshold')} disabled={stage !== 'outside'}>
+        <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
           <span className="threshold__ring" aria-hidden="true" />
           <span className="threshold__label">Enter</span>
         </button>
@@ -88,7 +152,7 @@ export default function Home() {
             <div><b>What you will do</b><span>Inspect a letter, understand the rooms and move through Klimt’s Beethoven Frieze.</span></div>
             <div><b>What you will learn</b><span>How logistics, architecture and art came together — and why something temporary survived.</span></div>
           </div>
-          <button type="button" onClick={() => setStage('inside')}>Begin the final check <i>→</i></button>
+          <button type="button" onClick={beginRoom}>Begin the final check <i>→</i></button>
         </article>
       </section>
 
@@ -113,7 +177,7 @@ export default function Home() {
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
           <p className="helper-role">The public arrives later. For now, you’re helping with the final preparations.</p>
-          <button className="interior-reveal" type="button" onClick={() => setInteriorRevealed(true)}>Enter the room <i>→</i></button>
+          <button className="interior-reveal" type="button" onClick={() => { soundCue('room'); setInteriorRevealed(true); }}>Enter the room <i>→</i></button>
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>Your final check</b><span>Choose where to begin. Each area reveals a different decision behind opening day.</span></p>
@@ -176,7 +240,8 @@ export default function Home() {
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
-      <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
+      <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''} ${friezeIndex === 4 ? 'frieze-climax' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
+        <div className="frieze-threshold" aria-hidden="true"><span>Painting.</span><span>Sculpture.</span><span>Architecture.</span></div>
         <div className="frieze-pan"
           onPointerDown={(event) => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add('is-dragging'); friezeDrag.current = { x: event.clientX, position: friezePosition }; }}
           onPointerMove={(event) => { const drag = friezeDrag.current; if (!drag) return; event.preventDefault(); setFriezePosition(Math.min(4, Math.max(0, drag.position + (drag.x - event.clientX) / window.innerWidth * 5))); }}
@@ -233,6 +298,7 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
+        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v8.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
         <article className="afterlife-copy">
           <p>The exhibition ended.<br />The rooms changed.<br /><em>The Beethoven Frieze survived.</em></p>
           <span>Vienna, today</span>
