@@ -149,9 +149,9 @@ export default function Home() {
           <h2>The public arrives later today.</h2>
           <p className="passage-brief__lead">Before the doors open, three questions still need your attention.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Correspondence</b><span>Has Klinger’s marble head arrived — and what asking price should be communicated for his Beethoven sculpture?</span></div>
-            <div><strong>02</strong><b>The rooms</b><span>Does the view connect Klimt’s frieze, the wall opening and Klinger’s sculpture?</span></div>
-            <div><strong>03</strong><b>The frieze</b><span>Can the full movement be followed — from the search for happiness to the final kiss?</span></div>
+            <div><strong>01</strong><b>Check the letter</b><span>A part of the Beethoven monument may still be missing. And one question about its price remains unanswered.</span></div>
+            <div><strong>02</strong><b>Check the room</b><span>Will visitors be able to see Klimt’s wall painting and Klinger’s Beethoven statue as one scene?</span></div>
+            <div><strong>03</strong><b>Check the frieze</b><span>Follow the story across the walls. Does the journey from struggle to the final kiss make sense?</span></div>
           </div>
           <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button type="button" onClick={beginRoom}>Enter the workroom <i>→</i></button></footer>
         </article>
