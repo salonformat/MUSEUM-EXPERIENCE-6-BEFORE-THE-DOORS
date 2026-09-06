@@ -18,7 +18,7 @@ export default function Home() {
     <main className={`experience stage-${stage}`}>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
-          <img src="/images/secession-exterior-working.png" alt="" draggable="false" />
+          <img src="/images/secession-exterior-v3.png" alt="" draggable="false" />
         </div>
         <div className="grain" aria-hidden="true" />
         <div className="exterior__copy">

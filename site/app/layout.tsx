@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import '@fontsource/della-respira/400.css';
+import '@fontsource/josefin-sans/400.css';
+import '@fontsource/josefin-sans/600.css';
 import './globals.css';
 
 export const metadata: Metadata = {
