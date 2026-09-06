@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Stage = 'outside' | 'threshold' | 'inside';
 type Focus = null | 'letter' | 'rooms' | 'frieze';
@@ -12,7 +12,7 @@ export default function Home() {
   const [roomEntering, setRoomEntering] = useState(false);
   const [interiorRevealed, setInteriorRevealed] = useState(false);
   const [modelRevealed, setModelRevealed] = useState(false);
-  const [friezeDrag, setFriezeDrag] = useState<{ x: number; position: number } | null>(null);
+  const friezeDrag = useRef<{ x: number; position: number } | null>(null);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
 
   const enterKlimtRoom = () => {
@@ -162,12 +162,12 @@ export default function Home() {
 
       <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
         <div className="frieze-pan"
-          onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setFriezeDrag({ x: event.clientX, position: friezePosition }); }}
-          onPointerMove={(event) => { if (!friezeDrag) return; setFriezePosition(Math.min(4, Math.max(0, friezeDrag.position + (friezeDrag.x - event.clientX) / window.innerWidth * 5))); }}
-          onPointerUp={() => setFriezeDrag(null)}
-          onPointerCancel={() => setFriezeDrag(null)}
-          onWheel={(event) => setFriezePosition((position) => Math.min(4, Math.max(0, position + event.deltaY / 360)))}>
-          <img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" />
+          onPointerDown={(event) => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add('is-dragging'); friezeDrag.current = { x: event.clientX, position: friezePosition }; }}
+          onPointerMove={(event) => { const drag = friezeDrag.current; if (!drag) return; event.preventDefault(); setFriezePosition(Math.min(4, Math.max(0, drag.position + (drag.x - event.clientX) / window.innerWidth * 5))); }}
+          onPointerUp={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); event.currentTarget.releasePointerCapture(event.pointerId); }}
+          onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
+          onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
+          <img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" draggable="false" onDragStart={(event) => event.preventDefault()} />
         </div>
         <div className="frieze-copy">
           <p className="worker-cue worker-cue--frieze"><b>Drag to move</b><span>Follow the wall from left to right.</span></p>
