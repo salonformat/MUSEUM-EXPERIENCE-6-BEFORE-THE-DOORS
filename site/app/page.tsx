@@ -130,9 +130,10 @@ export default function Home() {
           <h1>Ah, there<br /><em>you</em> are.</h1>
           <p className="opening-role"><b>The XIV Exhibition opens today.</b><span>Klinger’s Beethoven, Klimt’s frieze and Hoffmann’s rooms are meant to become one experience. You’re here for the final check.</span></p>
           <button className="invitation" type="button" onClick={enterThreshold}>
-            Come in. The final check is waiting.
+            Go to the entrance <i>→</i>
           </button>
         </div>
+        <svg className="door-guide" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true"><path d="M 315 326 C 430 326, 520 456, 686 594" /></svg>
         <aside className="experience-mark" aria-label="Experience context">
           <span>Before the doors open</span>
           <span>XIV Exhibition</span>

@@ -594,6 +594,12 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .opening-role span { display:block; }
 .exterior__copy .opening-role { animation:copyUp .9s 2.54s cubic-bezier(.16,1,.3,1) both; }
 .exterior__copy .invitation { animation-delay:2.72s; }
+.exterior__copy .invitation { padding:12px 16px 10px; border:1px solid var(--graphite); box-shadow:7px 8px 0 rgb(32 29 26 / 78%); transition:transform .25s ease,box-shadow .25s ease; }
+.exterior__copy .invitation:hover,.exterior__copy .invitation:focus-visible { transform:translate(3px,3px) rotate(-1deg); box-shadow:4px 5px 0 rgb(32 29 26 / 82%); }
+.exterior__copy .invitation i { margin-left:18px; font-family:"Della Respira",serif; font-size:1rem; font-style:normal; }
+.door-guide { position:absolute; z-index:4; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+.door-guide path { fill:none; stroke:#e4bd4f; stroke-width:2.2; stroke-linecap:round; stroke-dasharray:1120; stroke-dashoffset:1120; filter:drop-shadow(1px 2px 0 rgb(32 29 26 / 36%)); animation:guideDraw 1.6s 3.05s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes guideDraw { to { stroke-dashoffset:0; } }
 .threshold { isolation:isolate; width:112px; height:138px; }
 .threshold::before { content:""; position:fixed; z-index:-2; inset:0; background:radial-gradient(ellipse 4.5% 9% at 68.5% 82%,transparent 0 48%,rgb(32 29 26 / 9%) 60%,rgb(32 29 26 / 28%) 100%); opacity:.72; transition:opacity .45s ease,background .65s ease; pointer-events:none; }
 .threshold:hover::before,.threshold:focus-visible::before { opacity:1; background:radial-gradient(ellipse 5.5% 11% at 68.5% 82%,rgb(228 189 79 / 24%) 0 40%,rgb(32 29 26 / 10%) 56%,rgb(32 29 26 / 36%) 100%); }
@@ -619,6 +625,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .opening-role { max-width:73vw; margin-top:13px; padding:9px 10px 8px; font-size:.86rem; }
   .opening-role b { font-size:.5rem; }
   .invitation { margin-top:15px; font-size:.8rem; }
+  .exterior__copy .invitation { padding:10px 12px 8px; box-shadow:5px 6px 0 rgb(32 29 26 / 78%); }
   .threshold::before { background:radial-gradient(ellipse 6.5% 8% at 70.3% 82.8%,transparent 0 45%,rgb(32 29 26 / 8%) 57%,rgb(32 29 26 / 26%) 100%); }
   .threshold:hover::before,.threshold:focus-visible::before { background:radial-gradient(ellipse 7% 9% at 70.3% 82.8%,rgb(228 189 79 / 24%) 0 40%,rgb(32 29 26 / 10%) 56%,rgb(32 29 26 / 34%) 100%); }
   .dateline { gap:.65rem; }
