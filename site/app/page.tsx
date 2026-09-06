@@ -113,7 +113,7 @@ export default function Home() {
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <div className="opening-slate" aria-hidden="true">
         <span>An immersive cultural experience</span>
-        <div className="opening-glimpse"><img src="/images/secession-exterior-v8.png" alt="" /><i /><i /></div>
+        <div className="opening-glimpse"><img src="/images/secession-exterior-v9.png" alt="" /><i /><i /></div>
         <b>Before the doors open</b>
         <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
@@ -121,7 +121,7 @@ export default function Home() {
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
-          <img src="/images/secession-exterior-v8.png?v=controlled-ink" alt="" draggable="false" />
+          <img src="/images/secession-exterior-v9.png?v=quiet-pastel" alt="" draggable="false" />
         </div>
         <div className="dome-glint" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
@@ -300,7 +300,7 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
-        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v8.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
+        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v9.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Final preparations complete</span>
           <h3>The doors<br /><em>are open.</em></h3>

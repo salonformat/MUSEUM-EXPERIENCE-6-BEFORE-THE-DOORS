@@ -3,6 +3,7 @@
 These two approved illustrations define the binding visual language for every future illustration in **Before the Doors Open**:
 
 - `site/public/images/secession-exterior-v8.png`
+- `site/public/images/secession-exterior-v9.png` — current opening version with quieter, broader ultramarine pastel fields
 - `site/public/images/secession-interior-v4.png`
 
 Approved derived scene assets using the same system:

@@ -564,7 +564,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 
 /* A conclusive final state: the assignment is visibly complete. */
 .afterlife-copy { grid-template-columns:1.2fr .8fr; grid-template-rows:auto 1fr auto auto; gap:18px 6vw; align-content:stretch; padding:6vh 6vw 4vh; color:var(--plaster); background:var(--ultramarine); clip-path:inset(0 50%); }
-.afterlife-copy::before { content:""; position:absolute; z-index:-1; inset:0 0 0 52%; opacity:.2; background:url('/images/secession-exterior-v8.png') 68% center/cover no-repeat; filter:grayscale(1) contrast(1.6); mix-blend-mode:screen; }
+.afterlife-copy::before { content:""; position:absolute; z-index:-1; inset:0 0 0 52%; opacity:.2; background:url('/images/secession-exterior-v9.png') 68% center/cover no-repeat; filter:grayscale(1) contrast(1.6); mix-blend-mode:screen; }
 .afterlife-copy::after { right:-5vw; bottom:-12vh; width:58vw; height:62vh; opacity:.11; mix-blend-mode:screen; }
 .completion-stamp { grid-column:1/-1; grid-row:1; justify-self:start; align-self:start!important; padding:8px 10px 6px; color:var(--graphite)!important; background:#e4bd4f; transform:rotate(-1deg); }
 .afterlife-copy h3 { grid-column:1; grid-row:2; align-self:center; max-width:none; color:var(--plaster); font-size:clamp(5rem,10vw,12rem); line-height:.72; }
