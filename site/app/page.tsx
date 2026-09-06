@@ -33,7 +33,7 @@ export default function Home() {
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
-          <img src="/images/secession-exterior-v7.png?v=putzweiss" alt="" draggable="false" />
+          <img src="/images/secession-exterior-v8.png?v=controlled-ink" alt="" draggable="false" />
         </div>
         <div className="date-ghost" aria-hidden="true">1902</div>
         <div className="dome-glint" aria-hidden="true" />
@@ -48,7 +48,7 @@ export default function Home() {
         </div>
         <aside className="experience-mark" aria-label="Experience context">
           <span>Before the doors open</span>
-          <span>XXIV Exhibition</span>
+          <span>XIV Exhibition</span>
           <span>Vienna Secession</span>
         </aside>
         <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={() => setStage('threshold')} disabled={stage !== 'outside'}>
@@ -61,7 +61,7 @@ export default function Home() {
 
       <section className="interior" aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
         <div className="interior__architecture" aria-hidden="true">
-          <img className="interior-art" src="/images/secession-interior-v3.png?v=white-workroom" alt="" draggable="false" />
+          <img className="interior-art" src="/images/secession-interior-v4.png?v=controlled-ink" alt="" draggable="false" />
           <div className="pastel pastel--patina" />
           <div className="pastel pastel--blue" />
           <div className="pastel pastel--rose" />
