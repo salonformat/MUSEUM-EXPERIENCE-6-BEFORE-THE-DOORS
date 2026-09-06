@@ -128,7 +128,7 @@ export default function Home() {
           <p className="dateline"><span>Vienna</span><span>15 April</span><strong>1902</strong></p>
           <p className="hook-line">XIV Exhibition / Final check</p>
           <h1>Ah, there<br /><em>you</em> are.</h1>
-          <p className="opening-role"><b>The XIV Exhibition opens today.</b><span>Klinger’s Beethoven, Klimt’s frieze and Hoffmann’s rooms are meant to become one experience. You’re here for the final check.</span></p>
+          <p className="opening-role"><b>The XIV Exhibition opens today</b><span>Klinger. Klimt. Hoffmann.</span><em>You’re here for the final check.</em></p>
         </div>
         <aside className="experience-mark" aria-label="Experience context">
           <span>Before the doors open</span>
