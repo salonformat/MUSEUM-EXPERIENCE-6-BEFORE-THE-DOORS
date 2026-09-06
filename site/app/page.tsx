@@ -12,6 +12,8 @@ export default function Home() {
   const [roomEntering, setRoomEntering] = useState(false);
   const [interiorRevealed, setInteriorRevealed] = useState(false);
   const [modelRevealed, setModelRevealed] = useState(false);
+  const [friezeDrag, setFriezeDrag] = useState<{ x: number; position: number } | null>(null);
+  const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
 
   const enterKlimtRoom = () => {
     if (roomEntering) return;
@@ -159,10 +161,17 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--frieze ${focus === 'frieze' ? 'is-open' : ''}`} aria-hidden={focus !== 'frieze'} style={{'--frieze': friezePosition} as React.CSSProperties}>
-        <div className="frieze-pan"><img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" /></div>
+        <div className="frieze-pan"
+          onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); setFriezeDrag({ x: event.clientX, position: friezePosition }); }}
+          onPointerMove={(event) => { if (!friezeDrag) return; setFriezePosition(Math.min(4, Math.max(0, friezeDrag.position + (friezeDrag.x - event.clientX) / window.innerWidth * 5))); }}
+          onPointerUp={() => setFriezeDrag(null)}
+          onPointerCancel={() => setFriezeDrag(null)}
+          onWheel={(event) => setFriezePosition((position) => Math.min(4, Math.max(0, position + event.deltaY / 360)))}>
+          <img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" />
+        </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>What to do</b><span>Walk the left side hall once before the public does. Follow the procession to its end.</span></p>
-          <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezePosition]}</p>
+          <p className="worker-cue worker-cue--frieze"><b>Drag to move</b><span>Follow the wall from left to right.</span></p>
+          <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Why / Learn</b><span>Why this room matters</span></summary>
             <div><p>The exhibition honoured Ludwig van Beethoven on the seventy-fifth anniversary of his death. Around 1900 he was revered as the gifted artist who suffers yet creates something universal.</p>
@@ -171,11 +180,11 @@ export default function Home() {
             <strong>What you learn</strong><span>The frieze changes meaning when it is experienced as a route through a specific room.</span></div>
           </details>
           <div className="frieze-controls" aria-label="Move through the frieze">
-            <span>0{friezePosition + 1} / 05</span>
-            {friezePosition > 0 && <button type="button" onClick={() => setFriezePosition(friezePosition - 1)}>Back along the wall</button>}
-            {friezePosition < 4 && <button type="button" onClick={() => setFriezePosition(friezePosition + 1)}>Continue along the wall</button>}
+            <span>0{friezeIndex + 1} / 05</span>
+            {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
+            {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezePosition === 4 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary. Now look back through the opening: Klimt’s room and Klinger’s Beethoven were designed to be experienced together.</small></div>}
+          {friezePosition > 3.75 && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
