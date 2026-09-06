@@ -6,9 +6,11 @@ The opening should feel like entering an editorial illustration that slowly beco
 
 ## Visual system
 
-- Gold and white define the world: layered warm paper, chalk and plaster whites with restrained gold lines, light and ornament.
-- Gold is used with discipline rather than as a glossy luxury effect. It marks thresholds, architectural rhythm and moments of attention.
-- Soot black appears only where needed for typography, accessible contrast and the brief darkness of the exterior-to-interior threshold.
+- The palette is rooted in Vienna around 1900 rather than reduced to “Klimt gold”: warm plaster white, paper ivory, graphite black, aged gold, muted turquoise, grey-green, oxblood and a restrained dusty rose.
+- Opening palette, proposed digital values: Plaster `#F1EBDD`, Paper `#D8C9AF`, Graphite `#201D1A`, Aged Gold `#A98235`, Patina `#47716D`, Grey-Green `#70745A`, Oxblood `#6B2F2B`, Dusty Rose `#B77D72`.
+- White and paper tones carry most of the opening. Graphite provides the Secession-era graphic contrast. Patina and grey-green establish exterior air, stone and shadow; oxblood and dusty rose appear only in small human or paper details.
+- Gold is a controlled material event, not a glossy luxury wash. It begins as a narrow architectural or typographic signal and increases only as the experience moves toward the Frieze.
+- This restraint protects the brief’s later visual escalation: the Frieze sequence can become materially richer, warmer and more ornamental than the surrounding interface.
 - Flat planes, drawn architectural lines, paper grain and selective ornament instead of photorealistic reconstruction.
 - Strong changes of scale: small editorial date lines against a monumental building silhouette; intimate handwritten marks against large quiet fields.
 - Original Salon Format illustration placeholders are framed as production placeholders, never as faux-historical imagery.
@@ -50,7 +52,7 @@ Sound, if enabled: sparse exterior air and restrained distant movement. No music
 
 Activating the doorway does not cut immediately to another page. The exterior illustration separates into shallow paper layers while the doorway remains fixed. The frame darkens around it and the visitor moves through a compressed corridor of shadow. Exterior ambience narrows and falls away; a quieter interior room tone replaces it.
 
-A brief white-to-charcoal-to-white tonal passage marks the architectural threshold, with a thin gold edge held in view. Door edges and drawn lines can momentarily become the layout grid of the next scene, making the transition feel designed rather than cinematic in a generic way.
+A brief plaster-to-graphite-to-paper tonal passage marks the architectural threshold. A thin aged-gold edge remains in view while muted patina falls away outside. Door edges and drawn lines can momentarily become the layout grid of the next scene, making the transition feel designed rather than cinematic in a generic way.
 
 The transition lasts only long enough to register a change of place. It remains skippable by continued input and becomes a direct dissolve under reduced motion.
 
@@ -99,3 +101,17 @@ Sound, if enabled: restrained room tone, a distant footstep or paper movement, f
 - No Beethoven Frieze sequence.
 - No invented historical details, dialogue, crowd scene or crisis.
 - No generic AI-generated historical imagery.
+
+## Colour research basis
+
+- The Vienna Secession describes the Beethoven Frieze as a decisive move toward two-dimensional depiction, expressive line and dominant ornament, marking the beginning of Klimt’s golden period.
+- The Belvedere records the Frieze’s material range as casein colour, stucco, drawing, glass, mother-of-pearl and gold applications. Gold therefore behaves as material and surface, not merely as a flat brand colour.
+- Wien Museum research on Viennese poster art around 1900 identifies hard black-and-white contrasts, unconventional colour adjacencies, geometric ornament and large colour fields; a contemporary description of an 1899 Secession poster specifically evokes blue and yellow.
+- The Leopold Museum’s *Attersee* (1900), first shown at the Secession in 1901, supports turquoise with grey and green as a period-appropriate counterweight to gold.
+
+Research references:
+
+- https://secession.at/beethovenfrieze
+- https://sammlung.belvedere.at/de/objects/10504/beethovenfries-die-feindlichen-gewalten--tafel-2-stirnwan
+- https://www.wienmuseum.at/kraftflaechen_wiener_plakatkunst_um_1900
+- https://onlinecollection.leopoldmuseum.org/objekt/4328-am-attersee/
