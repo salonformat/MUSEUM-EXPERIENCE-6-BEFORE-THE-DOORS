@@ -676,7 +676,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .passage-brief h2 { font-size:9vw; }
   .passage-brief > .passage-brief__lead { margin-top:10px; font-size:.74rem; }
   .passage-brief__grid { grid-template-columns:repeat(3,1fr); gap:5px; margin-top:18px; }
-  .passage-brief__grid div { display:grid; grid-template-columns:1fr; min-height:132px; gap:4px; padding:10px 8px 9px; }
+  .passage-brief__grid div { display:grid; grid-template-columns:1fr; min-height:154px; gap:4px; padding:10px 8px 9px; }
   .passage-brief__grid strong { right:7px; top:5px; font-size:1.6rem; }
   .passage-brief__grid b { padding-right:0; font-size:.43rem; }
   .passage-brief__grid span { margin-top:23px; font-size:.61rem; line-height:1.24; }

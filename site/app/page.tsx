@@ -147,11 +147,11 @@ export default function Home() {
         <article className="passage-brief">
           <p>Your briefing / XIV Exhibition</p>
           <h2>The public arrives later today.</h2>
-          <p className="passage-brief__lead">Before the doors open, three final checks still need your attention.</p>
+          <p className="passage-brief__lead">Before the doors open, three questions still need your attention.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Correspondence</b><span>See how transport, prices and invitations shape an exhibition.</span></div>
-            <div><strong>02</strong><b>The rooms</b><span>Understand how architecture connects painting and sculpture.</span></div>
-            <div><strong>03</strong><b>The frieze</b><span>Follow Klimt’s search for happiness across the walls.</span></div>
+            <div><strong>01</strong><b>Correspondence</b><span>Has Klinger’s marble head arrived — and what asking price should be communicated for his Beethoven sculpture?</span></div>
+            <div><strong>02</strong><b>The rooms</b><span>Does the view connect Klimt’s frieze, the wall opening and Klinger’s sculpture?</span></div>
+            <div><strong>03</strong><b>The frieze</b><span>Can the full movement be followed — from the search for happiness to the final kiss?</span></div>
           </div>
           <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button type="button" onClick={beginRoom}>Enter the workroom <i>→</i></button></footer>
         </article>
