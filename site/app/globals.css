@@ -27,6 +27,8 @@ button { font:inherit; }
 .exterior__copy h1 { animation-delay:2.4s; }
 .exterior__copy .invitation { animation-delay:2.62s; }
 .dateline { display:flex; gap:1.3rem; margin:0 0 clamp(26px,4.5vh,48px); font-size:clamp(.66rem,.72vw,.78rem); font-weight:600; letter-spacing:.2em; text-transform:uppercase; }
+.dateline { align-items:center; }
+.dateline strong { margin-left:-.45rem; padding:5px 7px 3px; color:var(--plaster); background:var(--oxblood); font-family:"Della Respira",serif; font-size:.78rem; font-weight:400; letter-spacing:.04em; line-height:1; transform:rotate(-1.5deg); }
 .hook-line { width:max-content; margin:0 0 14px; padding:0 0 6px; border-bottom:1px solid var(--gold); color:#d8b861; font-size:clamp(.58rem,.64vw,.69rem); font-weight:600; letter-spacing:.16em; text-transform:uppercase; }
 .exterior h1 { margin:0; max-width:10ch; font-family:"Della Respira",serif; font-size:clamp(3rem,5.9vw,6.4rem); font-weight:400; line-height:.98; letter-spacing:-.035em; }
 .invitation { position:relative; display:block; width:max-content; max-width:100%; margin:clamp(22px,3.2vh,38px) 0 0; padding:0 0 8px; border:0; color:inherit; background:transparent; font-family:"Della Respira",serif; font-size:clamp(.96rem,1.12vw,1.16rem); text-align:left; cursor:pointer; }
@@ -535,6 +537,82 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .frieze-copy:has(.frieze-reveal) .frieze-reveal { grid-column:1/-1; grid-row:2; display:flex; align-items:center; justify-content:space-between; width:100%; gap:14px; padding:8px 10px; }
   .frieze-copy:has(.frieze-reveal) .frieze-reveal span { max-width:13rem; font-size:.82rem; line-height:1.15; }
   .frieze-copy:has(.frieze-reveal) .frieze-reveal button { flex:0 0 auto; font-size:.48rem; }
+}
+
+/* Make the kiss unmistakably the culmination, not merely the fifth pan position. */
+.kiss-focus { position:absolute; z-index:4; inset:0; color:var(--graphite); opacity:0; pointer-events:none; background:radial-gradient(ellipse 17% 30% at 72% 36%,transparent 0 68%,rgb(32 29 26 / 18%) 74%,rgb(32 29 26 / 68%) 100%); }
+.kiss-focus i { position:absolute; left:72%; top:36%; width:19vw; min-width:180px; aspect-ratio:.72; border:3px solid #e4bd4f; border-radius:48% 53% 46% 51%; box-shadow:0 0 0 8px rgb(228 189 79 / 14%),0 0 80px rgb(228 189 79 / 58%); transform:translate(-50%,-50%) rotate(-2deg) scale(.55); }
+.kiss-focus b { position:absolute; left:72%; top:66%; padding:8px 11px 6px; background:#e4bd4f; font-size:.56rem; letter-spacing:.18em; text-transform:uppercase; transform:translateX(-50%) rotate(-1deg); }
+.frieze-climax .kiss-focus { animation:kissReveal 2.1s .2s cubic-bezier(.16,1,.3,1) forwards; }
+.frieze-climax .kiss-focus i { animation:kissCircle 2.1s .2s cubic-bezier(.16,1,.3,1) forwards; }
+.frieze-climax .frieze-pan .chapter__art { transform-origin:72% 36%; filter:saturate(.78) contrast(1.04); }
+@keyframes kissReveal { to { opacity:1; } }
+@keyframes kissCircle { 55% { transform:translate(-50%,-50%) rotate(2deg) scale(1.08); } 100% { transform:translate(-50%,-50%) rotate(-1deg) scale(1); } }
+
+/* A conclusive final state: the assignment is visibly complete. */
+.afterlife-copy { grid-template-columns:1.2fr .8fr; grid-template-rows:auto 1fr auto auto; gap:18px 6vw; align-content:stretch; padding:6vh 6vw 4vh; color:var(--plaster); background:var(--ultramarine); clip-path:inset(0 50%); }
+.afterlife-copy::before { content:""; position:absolute; z-index:-1; inset:0 0 0 52%; opacity:.2; background:url('/images/secession-exterior-v8.png') 68% center/cover no-repeat; filter:grayscale(1) contrast(1.6); mix-blend-mode:screen; }
+.afterlife-copy::after { right:-5vw; bottom:-12vh; width:58vw; height:62vh; opacity:.11; mix-blend-mode:screen; }
+.completion-stamp { grid-column:1/-1; grid-row:1; justify-self:start; align-self:start!important; padding:8px 10px 6px; color:var(--graphite)!important; background:#e4bd4f; transform:rotate(-1deg); }
+.afterlife-copy h3 { grid-column:1; grid-row:2; align-self:center; max-width:none; color:var(--plaster); font-size:clamp(5rem,10vw,12rem); line-height:.72; }
+.afterlife-copy h3 em { color:#e4bd4f; font-style:normal; }
+.afterlife-copy > p { grid-column:2; grid-row:2; align-self:start; margin-top:8vh; color:var(--plaster); font-size:clamp(1.25rem,2.1vw,2.4rem); line-height:1.14; }
+.afterlife-copy > p em { color:var(--rose); }
+.today-note { grid-column:1; grid-row:3; display:grid; gap:5px; align-self:end; max-width:30rem; padding:13px 15px 11px; color:var(--graphite); background:var(--gallery-white); }
+.today-note b { color:var(--patina); font-size:.54rem; letter-spacing:.17em; text-transform:uppercase; }
+.today-note span { font-family:"Della Respira",serif; font-size:1rem; }
+.takeaway { grid-column:2; grid-row:3; align-self:end; color:var(--graphite); background:var(--rose); }
+.takeaway b { color:var(--oxblood); }
+.afterlife-copy nav { grid-column:1/-1; grid-row:4; border-top-color:rgb(241 235 221 / 48%); }
+.afterlife-copy nav a,.afterlife-copy nav button,.afterlife-copy nav summary { color:var(--plaster); }
+
+@media (max-width:760px) {
+  .kiss-focus { background:radial-gradient(ellipse 25% 29% at 65% 33%,transparent 0 63%,rgb(32 29 26 / 17%) 70%,rgb(32 29 26 / 68%) 100%); }
+  .kiss-focus i { left:65%; top:33%; width:31vw; min-width:0; }
+  .kiss-focus b { left:65%; top:60%; }
+  .afterlife-copy { display:grid; grid-template-columns:1fr; grid-template-rows:auto auto auto auto auto; gap:12px; padding:6vh 6vw 3vh; clip-path:none; }
+  .afterlife-copy::before { inset:0; opacity:.1; }
+  .completion-stamp { grid-column:1; grid-row:1; }
+  .afterlife-copy h3 { grid-column:1; grid-row:2; font-size:15vw; line-height:.72; }
+  .afterlife-copy > p { grid-column:1; grid-row:3; margin:0; max-width:27rem; font-size:4.8vw; }
+  .today-note { grid-column:1; grid-row:4; width:100%; padding:9px 11px; }
+  .today-note span { font-size:.78rem; }
+  .takeaway { grid-column:1; grid-row:5; gap:4px; padding:10px 12px; }
+  .takeaway span { font-size:.69rem; }
+  .afterlife-copy nav { grid-column:1; grid-row:6; padding-top:10px; gap:16px; }
+}
+
+/* Opening invitation: the visitor is expected and has a concrete responsibility. */
+.exterior__copy { max-width:min(46rem,52vw); }
+.exterior h1 { max-width:9ch; }
+.exterior h1 em { display:inline-block; margin:.1em 0 0 .08em; padding:.05em .14em .03em; color:var(--graphite); background:var(--rose); font-style:normal; transform:rotate(-1.2deg); text-shadow:none; }
+.opening-role { display:grid; width:max-content; max-width:32rem; gap:6px; margin:clamp(18px,2.4vh,28px) 0 0; padding:11px 14px 10px; border-left:3px solid #e4bd4f; color:var(--graphite); background:rgb(241 235 221 / 93%); font-family:"Della Respira",serif; font-size:clamp(1.02rem,1.22vw,1.3rem); line-height:1.3; text-shadow:none; transform:rotate(.35deg); }
+.opening-role b { color:var(--oxblood); font-family:"Josefin Sans",sans-serif; font-size:.59rem; letter-spacing:.16em; text-transform:uppercase; }
+.opening-role span { display:block; }
+.exterior__copy .opening-role { animation:copyUp .9s 2.54s cubic-bezier(.16,1,.3,1) both; }
+.exterior__copy .invitation { animation-delay:2.72s; }
+.threshold { isolation:isolate; width:112px; height:138px; }
+.threshold::before { content:""; position:fixed; z-index:-2; inset:0; background:radial-gradient(ellipse 4.5% 9% at 68.5% 82%,transparent 0 48%,rgb(32 29 26 / 9%) 60%,rgb(32 29 26 / 28%) 100%); opacity:.72; transition:opacity .45s ease,background .65s ease; pointer-events:none; }
+.threshold:hover::before,.threshold:focus-visible::before { opacity:1; background:radial-gradient(ellipse 5.5% 11% at 68.5% 82%,rgb(228 189 79 / 24%) 0 40%,rgb(32 29 26 / 10%) 56%,rgb(32 29 26 / 36%) 100%); }
+.threshold__ring { display:none; }
+.threshold__portal { position:absolute; left:50%; top:43%; width:44px; height:69px; transform:translate(-50%,-50%); }
+.threshold__portal i { position:absolute; inset:0; border:2px solid #e4bd4f; clip-path:polygon(2% 0,98% 2%,100% 97%,3% 100%); box-shadow:0 0 24px rgb(228 189 79 / 42%); animation:portalBreathe 2.8s ease-in-out infinite; }
+.threshold__portal i:nth-child(2) { inset:-5px 4px 5px -4px; border-width:1px; opacity:.58; animation-delay:-.7s; }
+.threshold__portal i:nth-child(3) { inset:5px -5px -4px 5px; border-color:var(--rose); border-width:1px; opacity:.72; animation-delay:-1.4s; }
+.threshold__label { top:92px; display:grid; gap:2px; min-width:94px; color:var(--plaster); background:var(--graphite); text-align:center; }
+.threshold__label b { color:#e4bd4f; font-size:.43rem; font-weight:600; letter-spacing:.16em; }
+@keyframes portalBreathe { 0%,100% { transform:scale(.94) rotate(-.6deg); opacity:.58; } 50% { transform:scale(1.06) rotate(.7deg); opacity:1; } }
+
+@media (max-width:760px) {
+  .exterior__copy { max-width:83vw; }
+  .exterior h1 { max-width:8ch; font-size:10vw; }
+  .opening-role { max-width:73vw; margin-top:13px; padding:9px 10px 8px; font-size:.86rem; }
+  .opening-role b { font-size:.5rem; }
+  .invitation { margin-top:15px; font-size:.8rem; }
+  .threshold::before { background:radial-gradient(ellipse 6.5% 8% at 70.3% 82.8%,transparent 0 45%,rgb(32 29 26 / 8%) 57%,rgb(32 29 26 / 26%) 100%); }
+  .threshold:hover::before,.threshold:focus-visible::before { background:radial-gradient(ellipse 7% 9% at 70.3% 82.8%,rgb(228 189 79 / 24%) 0 40%,rgb(32 29 26 / 10%) 56%,rgb(32 29 26 / 34%) 100%); }
+  .dateline { gap:.65rem; }
+  .dateline strong { margin-left:-.18rem; padding:4px 6px 3px; font-size:.64rem; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
 @media (hover:none) { .cursor-mark { display:none; } }

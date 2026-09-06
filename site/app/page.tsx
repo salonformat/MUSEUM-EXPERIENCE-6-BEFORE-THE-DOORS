@@ -120,15 +120,15 @@ export default function Home() {
         <div className="exterior__art" aria-hidden="true">
           <img src="/images/secession-exterior-v8.png?v=controlled-ink" alt="" draggable="false" />
         </div>
-        <div className="date-ghost" aria-hidden="true"><span>19</span><span>02</span></div>
         <div className="dome-glint" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
         <div className="exterior__copy">
-          <p className="dateline"><span>Vienna</span><span>15 April 1902</span></p>
-          <p className="hook-line">You arrive before the public does.</p>
-          <h1>The exhibition<br />opens today.</h1>
+          <p className="dateline"><span>Vienna</span><span>15 April</span><strong>1902</strong></p>
+          <p className="hook-line">XIV Exhibition / Final check</p>
+          <h1>Ah, there<br /><em>you</em> are.</h1>
+          <p className="opening-role"><b>The XIV Exhibition opens today.</b><span>Klinger’s Beethoven, Klimt’s frieze and Hoffmann’s rooms are meant to become one experience. You’re here for the final check.</span></p>
           <button className="invitation" type="button" onClick={enterThreshold}>
-            You should probably come inside.
+            Come in. The final check is waiting.
           </button>
         </div>
         <aside className="experience-mark" aria-label="Experience context">
@@ -137,8 +137,8 @@ export default function Home() {
           <span>Vienna Secession</span>
         </aside>
         <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
-          <span className="threshold__ring" aria-hidden="true" />
-          <span className="threshold__label">Enter</span>
+          <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
+          <span className="threshold__label"><b>Final check</b>Enter</span>
         </button>
       </section>
 
@@ -249,6 +249,7 @@ export default function Home() {
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" draggable="false" onDragStart={(event) => event.preventDefault()} />
+          <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>
         </div>
         <div className="frieze-copy">
           <p className="worker-cue worker-cue--frieze"><b>Drag to move</b><span>Follow the wall from left to right.</span></p>
@@ -300,11 +301,12 @@ export default function Home() {
         <div className="gold-afterline" aria-hidden="true" />
         <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v8.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
         <article className="afterlife-copy">
-          <p>The exhibition ended.<br />The rooms changed.<br /><em>The Beethoven Frieze survived.</em></p>
-          <span>Vienna, today</span>
-          <h3>You can still walk into that room.</h3>
+          <span className="completion-stamp">Final preparations complete</span>
+          <h3>The doors<br /><em>are open.</em></h3>
+          <p>The exhibition ended. The rooms changed. <em>The Beethoven Frieze survived.</em></p>
+          <div className="today-note"><b>Vienna, today</b><span>You can still walk into that room.</span></div>
           <div className="takeaway"><b>What you carry out</b><span>Exhibitions are built through people and practical decisions.</span><span>Meaning emerges between art, architecture and movement.</span><span>Something conceived as temporary can survive.</span></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Visit</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format.</p></details><button type="button" onClick={replay}>Replay</button></nav>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
         </article>
       </section>
     </main>
