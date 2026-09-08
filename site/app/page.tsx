@@ -72,7 +72,13 @@ export default function Home() {
   };
 
   const enterThreshold = () => { soundCue('threshold'); setStage('threshold'); };
-  const beginRoom = () => { soundCue('room'); setStage('inside'); };
+  const beginRoom = () => { soundCue('room'); setInteriorRevealed(false); setStage('inside'); };
+
+  useEffect(() => {
+    if (stage !== 'inside' || interiorRevealed) return;
+    const roomArrival = window.setTimeout(() => setInteriorRevealed(true), 2350);
+    return () => window.clearTimeout(roomArrival);
+  }, [stage, interiorRevealed]);
 
   const enterKlimtRoom = () => {
     if (roomEntering) return;
@@ -199,7 +205,7 @@ export default function Home() {
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
           <p className="helper-role">The public arrives later. Your three checks are waiting in the room — begin wherever you like.</p>
-          <button className="interior-reveal" type="button" onClick={() => { soundCue('room'); setInteriorRevealed(true); }}>Look around the room <i>→</i></button>
+          <span className="room-arrival-cue"><i />The room is coming into view</span>
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>You’re in the workroom.</b><span>Complete the three checks from your briefing. Begin wherever you like.</span></p>
