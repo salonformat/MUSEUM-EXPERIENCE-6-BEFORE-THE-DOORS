@@ -31,6 +31,8 @@ export default function Home() {
   const audioMaster = useRef<GainNode | null>(null);
   const climaxPlayed = useRef(false);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
+  const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
+  const friezeMarkers = [{x:28,y:43},{x:48,y:39},{x:62,y:49},{x:58,y:34},{x:75,y:42}];
   const friezeComplete = friezePosition >= 3.94 && friezeSeen.length === 5;
   const completedCount = Number(letterComplete) + Number(roomComplete) + Number(friezeComplete);
   const inspectionComplete = completedCount === 3;
@@ -103,6 +105,19 @@ export default function Home() {
     if (!modelRevealed) return;
     const rect = event.currentTarget.getBoundingClientRect();
     setRoomView(Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)));
+  };
+
+  const inspectWorkroom = (event: React.PointerEvent<HTMLElement>) => {
+    if (focus) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
+    event.currentTarget.style.setProperty('--room-x', `${x * 100}%`);
+    event.currentTarget.style.setProperty('--room-y', `${y * 100}%`);
+    event.currentTarget.style.setProperty('--room-mx', `${(x - .5) * -18}px`);
+    event.currentTarget.style.setProperty('--room-my', `${(y - .5) * -12}px`);
+    event.currentTarget.style.setProperty('--room-back-x', `${(x - .5) * 6}px`);
+    event.currentTarget.style.setProperty('--room-back-y', `${(y - .5) * 4}px`);
   };
 
   const markFriezeStage = () => {
@@ -224,7 +239,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section className={`interior ${letterComplete ? 'has-correspondence' : ''} ${roomComplete ? 'has-sightline' : ''} ${friezeComplete ? 'has-frieze' : ''}`} aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
+      <section className={`interior ${letterComplete ? 'has-correspondence' : ''} ${roomComplete ? 'has-sightline' : ''} ${friezeComplete ? 'has-frieze' : ''}`} aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'} onPointerMove={inspectWorkroom}>
         <div className="interior__architecture" aria-hidden="true">
           <img className="interior-art" src={`${asset('secession-interior-v4.png')}?v=controlled-ink`} alt="" draggable="false" />
           <div className="pastel pastel--patina" />
@@ -240,6 +255,7 @@ export default function Home() {
           <div className="ink-line ink-line--two" />
         </div>
         <div className="grain grain--inside" aria-hidden="true" />
+        <div className="workroom-lens" aria-hidden="true" />
         <div className="interior__copy">
           <span className="room-number">15 April 1902 / Before opening</span>
           <h2>You’re here.<em>Good.</em></h2>
@@ -248,7 +264,7 @@ export default function Home() {
           <span className="room-arrival-cue"><i />The room is coming into view</span>
         </div>
         <nav className="attention" aria-label="Areas in the room">
-          <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move through the room. Every completed check will visibly change it.'}</span></p>
+          <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move your pointer through the drawing. Choose any glowing work point; every completed check changes this room.'}</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
             <i /><span><b>The Dresden letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
           </button>
@@ -329,10 +345,12 @@ export default function Home() {
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
+          <button className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); markFriezeStage(); }} aria-label={`${friezeSeen.includes(friezeIndex) ? 'Marked' : 'Inspect'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Marked ✓' : 'Move here · click to mark'}</b></button>
+          {friezeSeen.includes(friezeIndex) && friezeIndex < 4 && <button className="frieze-stage-next" style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); setFriezePosition(friezeIndex + 1); }}><small>Stage {friezeIndex + 1} marked</small>Next stage <b>→</b></button>}
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>Your task</b><span>Drag through the work. At each of its five stages, stop and mark what you have seen. The final kiss only completes the route after all five stages are checked.</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Stage ${friezeIndex + 1} marked` : `Stage ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Choose NEXT STAGE beside the marked motif.' : 'The complete route can now be confirmed below.') : 'Find the softly glowing mark in the drawing and click it.'}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Why / Learn</b><span>Why this room matters</span></summary>
@@ -342,10 +360,9 @@ export default function Home() {
             <strong>What you learn</strong><span>The frieze changes meaning when it is experienced as a route through a specific room.</span></div>
           </details>
           <div className="frieze-controls" aria-label="Move through the frieze">
-            <span>0{friezeIndex + 1} / 05</span>
+            <span>0{friezeIndex + 1} / 05 · {friezeSeen.length} marked</span>
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
-            <button className={friezeSeen.includes(friezeIndex) ? 'is-seen' : ''} type="button" onClick={markFriezeStage}>{friezeSeen.includes(friezeIndex) ? 'Stage marked ✓' : 'Mark this stage'}</button>
           </div>
           {friezeComplete && <div className="frieze-reveal"><span>Frieze route cleared.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus(null)}><small>All five stages marked</small>Stamp this check and return →</button></div>}
         </div>
