@@ -721,33 +721,63 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .door-aura { left:70.3%; top:87.5%; }
 }
 
-/* Contemporary Secession layer: direct grotesk, slash navigation and motion. */
-.system-mark { position:fixed; z-index:22; left:50%; top:16px; display:flex; align-items:baseline; gap:9px; min-width:300px; padding:8px 11px 7px; color:var(--plaster); background:var(--graphite); font-family:"Josefin Sans",sans-serif; transform:translateX(-50%); transition:color .35s ease,background .35s ease,opacity .35s ease; }
-.system-mark::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--gold); transform:scaleX(var(--section-progress,.166)); transform-origin:left; transition:transform .65s cubic-bezier(.16,1,.3,1); }
-.system-mark b { font-size:.98rem; font-weight:600; letter-spacing:-.04em; }
-.system-mark span { font-size:.57rem; font-weight:600; letter-spacing:.12em; text-transform:lowercase; }
-.system-mark small { margin-left:auto; font-size:.5rem; font-weight:600; letter-spacing:.14em; }
-.stage-outside .system-mark { opacity:0; pointer-events:none; }
-.experience:has(.chapter--letter.is-open) { --section-progress:.333; }
-.experience:has(.chapter--rooms.is-open) { --section-progress:.5; }
-.experience:has(.chapter--frieze.is-open) { --section-progress:.666; }
-.experience:has(.chapter--invitation.is-open) { --section-progress:.833; }
-.experience:has(.chapter--doors.is-open),.experience:has(.chapter--epilogue.is-open) { --section-progress:1; }
-.experience:has(.chapter--letter.is-open) .system-mark,.experience:has(.chapter--rooms.is-open) .system-mark,.stage-inside .system-mark { color:var(--graphite); background:rgb(250 248 242 / 92%); }
-.experience:has(.chapter--frieze.is-open) .system-mark,.experience:has(.chapter--doors.is-open) .system-mark,.experience:has(.chapter--epilogue.is-open) .system-mark { color:var(--plaster); background:rgb(32 29 26 / 92%); }
-.chapter-kicker::before,.reconstruction::before { content:"/"; margin-right:.38em; color:var(--gold); }
-.worker-cue b::before { content:"/"; margin-right:.38em; }
+/* Salon Format work notation: clarity translated into our own narrative device. */
+.work-ledger { position:fixed; z-index:22; left:50%; top:16px; display:grid; grid-template-columns:12px auto auto; grid-template-rows:auto auto; align-items:center; gap:2px 8px; min-width:252px; padding:7px 10px 7px 8px; color:var(--plaster); background:rgb(32 29 26 / 88%); font-family:"Josefin Sans",sans-serif; transform:translateX(-50%) rotate(-.25deg); backdrop-filter:blur(7px); transition:color .35s ease,background .35s ease,opacity .35s ease; }
+.work-ledger i { grid-row:1 / span 2; display:block; width:9px; height:9px; background:var(--gold); clip-path:polygon(8% 15%,85% 0,100% 82%,17% 100%); transform:rotate(var(--ledger-turn,-6deg)); transition:transform .55s cubic-bezier(.16,1,.3,1),background .35s ease; }
+.work-ledger span { grid-column:2; font-size:.43rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; opacity:.7; }
+.work-ledger b { grid-column:2; font-family:"Della Respira",serif; font-size:.73rem; font-weight:400; line-height:1; text-transform:none; }
+.work-ledger small { grid-column:3; grid-row:1 / span 2; align-self:center; margin-left:auto; font-size:.47rem; font-weight:600; letter-spacing:.12em; }
+.stage-outside .work-ledger { opacity:0; pointer-events:none; }
+.experience:has(.chapter--letter.is-open) { --ledger-turn:-2deg; }
+.experience:has(.chapter--rooms.is-open) { --ledger-turn:3deg; }
+.experience:has(.chapter--frieze.is-open) { --ledger-turn:8deg; }
+.experience:has(.chapter--invitation.is-open) { --ledger-turn:13deg; }
+.experience:has(.chapter--doors.is-open),.experience:has(.chapter--epilogue.is-open) { --ledger-turn:18deg; }
+.experience:has(.chapter--letter.is-open) .work-ledger,.experience:has(.chapter--rooms.is-open) .work-ledger,.stage-inside .work-ledger { color:var(--graphite); background:rgb(250 248 242 / 88%); }
+.experience:has(.chapter--frieze.is-open) .work-ledger,.experience:has(.chapter--doors.is-open) .work-ledger,.experience:has(.chapter--epilogue.is-open) .work-ledger { color:var(--plaster); background:rgb(32 29 26 / 88%); }
 .chapter-link,.interior-reveal,.passage-brief footer button,.doors-copy button { border-radius:0; }
-.chapter-link::before,.interior-reveal::before { content:"+"; display:inline-block; margin-right:9px; color:var(--gold); font-size:1.1em; transition:transform .35s ease; }
-.chapter-link:hover::before,.chapter-link:focus-visible::before,.interior-reveal:hover::before,.interior-reveal:focus-visible::before { transform:rotate(90deg); }
+.chapter-link::before,.interior-reveal::before { content:"↳"; display:inline-block; margin-right:9px; color:var(--gold); font-size:1.1em; transition:transform .35s ease; }
+.chapter-link:hover::before,.chapter-link:focus-visible::before,.interior-reveal:hover::before,.interior-reveal:focus-visible::before { transform:translate(3px,2px); }
 .passage-brief__grid div { border:1px solid var(--graphite); box-shadow:5px 6px 0 rgb(241 235 221 / 13%); }
-.attention__prompt b::before { content:"/"; margin-right:.35em; color:var(--gold); }
 
 @media (max-width:760px) {
-  .system-mark { top:9px; min-width:232px; padding:6px 8px 5px; }
-  .system-mark b { font-size:.78rem; }
-  .system-mark span { font-size:.45rem; }
-  .system-mark small { font-size:.42rem; }
+  .work-ledger { top:9px; min-width:205px; padding:6px 8px 5px 7px; }
+  .work-ledger b { font-size:.64rem; }
+  .work-ledger span { font-size:.38rem; }
+  .work-ledger small { font-size:.4rem; }
+}
+
+/* Cinematic prologue: the illustration arrives as architecture, not a thumbnail. */
+.opening-slate { grid-template-columns:minmax(0,56%) 1fr; grid-template-rows:auto 1fr auto auto; gap:14px; align-items:end; padding:clamp(30px,5vw,82px); isolation:isolate; animation:slateAway 1.15s 5.05s cubic-bezier(.76,0,.24,1) forwards; }
+.opening-slate::after { content:""; position:absolute; z-index:0; inset:0; background:linear-gradient(90deg,var(--graphite) 0 32%,rgb(32 29 26 / 86%) 46%,rgb(32 29 26 / 7%) 76%); pointer-events:none; }
+.opening-slate > span,.opening-slate > b,.opening-slate > p,.opening-slate__modes,.opening-slate > small { position:relative; z-index:2; }
+.opening-slate > span { grid-column:1; grid-row:1; align-self:start; width:max-content; padding:6px 8px 4px; color:var(--graphite); background:var(--gold); opacity:0; animation:prologueLabel .65s .22s ease forwards; }
+.opening-slate > b { grid-column:1 / span 2; grid-row:2; align-self:center; max-width:6.3ch; font-size:clamp(5rem,10.2vw,12rem); line-height:.73; opacity:0; transform:translateY(35px); animation:prologueTitle 1s .55s cubic-bezier(.16,1,.3,1) forwards; }
+.opening-slate > p { grid-column:1; grid-row:3; align-self:end; max-width:31rem; padding-right:3vw; font-size:clamp(1.05rem,1.35vw,1.4rem); opacity:0; animation:prologueCopy .8s 1.25s ease forwards; }
+.opening-slate__modes { grid-column:1; grid-row:4; border:0; opacity:0; animation:prologueCopy .8s 1.55s ease forwards; }
+.opening-glimpse { z-index:0; right:-2vw; top:-3vh; width:61vw; height:106vh; clip-path:polygon(18% 0,100% 0,100% 100%,3% 100%,13% 71%,5% 45%); animation:prologueImage 1.3s .08s cubic-bezier(.16,1,.3,1) forwards; }
+.opening-glimpse img { width:100%; height:100%; margin:0; object-position:69% center; filter:saturate(1.05) contrast(1.04) brightness(.82); transform:scale(1.12); animation:prologueDrift 5.6s ease-out both; }
+.opening-glimpse > i { top:-1%; bottom:-1%; width:51%; border:0; }
+.opening-glimpse > i:first-of-type { animation:prologueDoorLeft 1.55s .35s cubic-bezier(.76,0,.24,1) forwards; }
+.opening-glimpse > i:last-of-type { animation:prologueDoorRight 1.55s .35s cubic-bezier(.76,0,.24,1) forwards; }
+.opening-slate > small { z-index:3; }
+@keyframes prologueLabel { to { opacity:1; transform:rotate(-.6deg); } }
+@keyframes prologueTitle { to { opacity:1; transform:none; } }
+@keyframes prologueCopy { to { opacity:1; } }
+@keyframes prologueImage { from { opacity:0; transform:scale(.96) translateX(7%); } to { opacity:1; transform:none; } }
+@keyframes prologueDrift { to { transform:scale(1.025) translate(-1.5%,.5%); } }
+@keyframes prologueDoorLeft { to { transform:translateX(-102%); } }
+@keyframes prologueDoorRight { to { transform:translateX(102%); } }
+
+@media (max-width:760px) {
+  .opening-slate { display:grid; grid-template-columns:1fr; grid-template-rows:auto 1fr auto auto; gap:11px; padding:5vh 6vw 4vh; }
+  .opening-slate::after { background:linear-gradient(180deg,rgb(32 29 26 / 15%),var(--graphite) 58%,var(--graphite) 100%); }
+  .opening-glimpse { right:-8vw; top:-5vh; width:95vw; height:64vh; clip-path:polygon(12% 0,100% 0,100% 92%,0 100%,7% 55%); }
+  .opening-glimpse img { object-position:67% 30%; }
+  .opening-slate > span { grid-column:1; grid-row:1; font-size:.48rem; }
+  .opening-slate > b { grid-column:1; grid-row:2; align-self:end; max-width:6.1ch; margin-bottom:4vh; font-size:clamp(4.3rem,16.5vw,6.7rem); }
+  .opening-slate > p { grid-column:1; grid-row:3; max-width:88%; padding:0; font-size:.92rem; }
+  .opening-slate__modes { grid-column:1; grid-row:4; padding-top:10px; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
 @media (hover:none) { .cursor-mark { display:none; } }

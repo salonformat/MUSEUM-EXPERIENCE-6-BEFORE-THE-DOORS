@@ -118,7 +118,7 @@ export default function Home() {
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <div className="cursor-mark" aria-hidden="true" />
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
-      <aside className="system-mark" aria-hidden="true"><b>secession</b><span>/{systemLabel}</span><small>{systemNumber} / 05</small></aside>
+      <aside className="work-ledger" aria-hidden="true"><i /><span>Final check</span><b>{systemLabel}</b><small>{systemNumber} — 05</small></aside>
       <div className="opening-slate" aria-hidden="true">
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
