@@ -492,15 +492,7 @@ export default function Home() {
         <div className="public-arrival" aria-hidden="true">
           <img src={asset('secession-interior-v4.png')} alt="" />
           <div className="public-shadows"><i /><i /><i /><i /><i /></div>
-          <svg className="ink-crowd" viewBox="0 0 1200 700" preserveAspectRatio="none">
-            <defs><filter id="roughInk"><feTurbulence baseFrequency=".018 .075" numOctaves="3" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="10"/><feGaussianBlur stdDeviation=".35"/></filter></defs>
-            <g filter="url(#roughInk)">
-              <path className="ink-person ink-person--one" d="M-40 710 L-18 485 Q-4 394 50 364 Q87 343 128 368 Q174 404 183 491 L203 710Z M47 354 Q29 319 42 279 Q61 244 101 252 Q137 263 144 305 Q142 341 119 363 Q81 374 47 354Z"/>
-              <path className="ink-person ink-person--two" d="M438 710 L451 500 Q463 420 510 390 Q555 363 600 393 Q643 432 651 510 L674 710Z M515 378 Q502 345 515 310 Q537 279 574 288 Q609 301 614 340 Q608 373 586 393 Q549 399 515 378Z"/>
-              <path className="ink-person ink-person--three" d="M1015 710 L1027 468 Q1040 389 1086 360 Q1132 337 1172 371 Q1207 411 1219 494 L1244 710Z M1088 349 Q1073 313 1089 279 Q1112 250 1149 261 Q1183 276 1186 316 Q1179 347 1156 365 Q1121 370 1088 349Z"/>
-            </g>
-          </svg>
-          <div className="public-fragments"><i /><i /><i /></div>
+          <div className="public-type"><span>The public</span><b>enters.</b></div>
           <div className="public-graphite"><i /><i /><i /></div>
           <div className="arrival-stamps"><span>Correspondence cleared</span><span>Sightline confirmed</span><span>Frieze route complete</span></div>
         </div>
