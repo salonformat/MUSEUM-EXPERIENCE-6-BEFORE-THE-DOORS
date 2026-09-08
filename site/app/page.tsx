@@ -223,13 +223,13 @@ export default function Home() {
 
   useEffect(() => {
     if (focus !== 'frieze' || !friezeComplete) return;
-    const done = window.setTimeout(() => setFocus(null), 4800);
+    const done = window.setTimeout(() => setFocus(null), 3400);
     return () => window.clearTimeout(done);
   }, [focus, friezeComplete]);
 
   useEffect(() => {
     if (focus !== 'frieze' || !friezeSeen.includes(friezeIndex) || friezeIndex >= 4) return;
-    const advance = window.setTimeout(() => setFriezePosition(friezeIndex + 1), 1150);
+    const advance = window.setTimeout(() => setFriezePosition(friezeIndex + 1), 480);
     return () => window.clearTimeout(advance);
   }, [focus, friezeIndex, friezeSeen]);
 
