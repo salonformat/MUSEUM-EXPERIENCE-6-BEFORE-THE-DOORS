@@ -1504,3 +1504,33 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .global-navigation a { min-width:132px; padding:0 12px; font-size:.66rem; }
   .opening-slate .skip-prologue { border:2px solid var(--graphite); color:var(--graphite); background:#e4bd4f; }
 }
+
+/* Final navigation safety: controls occupy their own top rail, never action space. */
+.global-navigation { top:12px; right:14px; bottom:auto; height:42px; gap:5px; }
+.global-navigation button,.global-navigation a { min-height:42px; box-shadow:none; }
+.global-navigation button { min-width:82px; padding:0 12px; }
+.global-navigation a { min-width:150px; padding:0 15px; }
+.chapter-close { top:66px; right:18px; }
+.sound-toggle { top:12px; }
+.work-ledger { top:12px; }
+
+/* The correspondence can never become a dead end. */
+.chapter--letter .check-complete-action.next-action { position:fixed!important; z-index:15!important; right:3vw!important; bottom:3vh!important; left:auto!important; width:min(440px,44vw)!important; min-height:86px!important; margin:0!important; padding:16px 58px 14px 18px!important; color:var(--graphite)!important; background:#e4bd4f!important; border:2px solid var(--graphite)!important; box-shadow:11px 13px 0 rgb(32 29 26 / 30%)!important; }
+.chapter--letter .check-complete-action.next-action::before { content:"NEXT"; position:absolute; right:14px; top:-13px; padding:5px 7px 3px; color:var(--plaster); background:var(--oxblood); font-size:.48rem; letter-spacing:.14em; transform:rotate(2deg); }
+
+@media (max-width:760px) {
+  .global-navigation { top:8px; right:8px; bottom:auto; height:36px; }
+  .global-navigation button,.global-navigation a { min-height:36px; }
+  .global-navigation button { min-width:62px; padding:0 8px; font-size:.49rem; }
+  .global-navigation a { min-width:112px; padding:0 9px; font-size:.57rem; }
+  .sound-toggle { top:8px; left:8px; height:36px; padding:0 9px; font-size:.48rem; }
+  .work-ledger { top:52px; left:8px; right:auto; }
+  .chapter-close { top:52px; right:9px; width:40px; height:40px; }
+  .chapter--letter .check-complete-action.next-action { right:3vw!important; bottom:3vh!important; width:94vw!important; min-height:72px!important; padding:12px 48px 10px 13px!important; font-size:.64rem!important; }
+}
+
+@media (max-width:430px) {
+  .global-navigation a { min-width:102px; font-size:.53rem; }
+  .global-navigation button { min-width:56px; }
+  .sound-toggle { max-width:92px; }
+}

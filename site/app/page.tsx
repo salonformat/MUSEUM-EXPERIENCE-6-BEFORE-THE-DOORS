@@ -288,7 +288,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => setFocus('invitation')}><small>Checklist created · transport / price</small>Complete the correspondence dispatch →</button> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
+          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => setFocus('invitation')}><small>Both issues logged — this check continues</small>Open the invitation dispatch →</button> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
