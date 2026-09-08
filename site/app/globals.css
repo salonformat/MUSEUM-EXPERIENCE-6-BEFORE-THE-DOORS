@@ -1490,7 +1490,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .opening-slate .prologue-title strong { font-size:clamp(3.7rem,6.6vw,7.6rem); }
   .opening-slate > p { grid-column:1 / -1; left:clamp(36px,4.5vw,76px); right:auto; bottom:10vh; width:min(44rem,52vw); font-size:clamp(.9rem,1.08vw,1.12rem); }
   .opening-slate .opening-slate__modes { left:clamp(36px,4.5vw,76px); bottom:3.5vh; }
-  .opening-slate .skip-prologue { left:81%; top:50%; width:min(470px,31vw); min-height:126px; padding:20px 54px 17px 22px; border:2px solid #fff; color:#fff; background:transparent; box-shadow:10px 12px 0 rgb(32 29 26 / 34%); transform:translate(-50%,-50%) rotate(-1.2deg); }
+  .opening-slate .skip-prologue { left:68%; top:50%; width:min(500px,32vw); min-height:126px; padding:20px 54px 17px 22px; border:2px solid var(--plaster); color:#fff; background:var(--graphite); box-shadow:11px 12px 0 #e4bd4f,18px 20px 0 rgb(32 29 26 / 25%); transform:translate(-50%,-50%) rotate(-1.2deg); }
   .opening-slate .skip-prologue small { color:#fff!important; font-size:.53rem!important; }
   .opening-slate .skip-prologue b { color:#fff; font-size:clamp(1rem,1.35vw,1.38rem)!important; letter-spacing:.1em!important; }
   .opening-slate .skip-prologue i { color:#e4bd4f; }
@@ -1688,4 +1688,15 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 @media (hover:none) {
   .workroom-lens { opacity:.65; }
   .interior-revealed .interior-art { transform:scale(1.012); }
+}
+
+/* One shared architectural anchor: artwork, portal, glow and entry zoom meet at the real door. */
+@media (min-width:761px) {
+  .exterior__art { top:-5.5%; right:-2.5%; bottom:.5%; left:-2.5%; }
+  .threshold { left:65.5%; top:83%; }
+  .door-aura { left:65.5%; top:83%; }
+  .threshold::before { background:radial-gradient(ellipse 4.5% 9% at 65.5% 83%,transparent 0 48%,rgb(32 29 26 / 9%) 60%,rgb(32 29 26 / 28%) 100%); }
+  .threshold:hover::before,.threshold:focus-visible::before { background:radial-gradient(ellipse 5.5% 11% at 65.5% 83%,rgb(228 189 79 / 24%) 0 40%,rgb(32 29 26 / 10%) 56%,rgb(32 29 26 / 36%) 100%); }
+  .stage-threshold .exterior__art { transform-origin:65.5% 83%; }
+  .opening-slate > p { bottom:15vh; }
 }
