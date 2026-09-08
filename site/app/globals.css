@@ -417,7 +417,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 @keyframes workroomThreshold { 50% { box-shadow:10px 11px 0 #e4bd4f,17px 18px 34px rgb(37 32 232 / 28%); } }
 
 /* Keep the post-dispatch continuation undeniably visible. */
-.dispatch-flight > .next-action { position:relative!important; z-index:3!important; display:grid!important; width:min(430px,82vw)!important; opacity:1!important; visibility:visible!important; pointer-events:auto!important; }
+.chapter--invitation.is-open .dispatch-flight > .next-action { position:relative!important; z-index:3!important; display:grid!important; width:min(430px,82vw)!important; opacity:1!important; visibility:visible!important; pointer-events:auto!important; }
 
 @media (max-width:760px) {
   .passage-brief footer .workroom-entry { width:100%; min-height:70px; padding:11px 13px 10px; }
@@ -1453,6 +1453,9 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .release-opening small { font-size:.5rem; }
   .release-opening b { font-size:1rem; }
   .final-walkthrough-entry { width:88vw!important; min-height:84px; }
+  .interior-revealed .attention__prompt { position:absolute; left:4vw; top:7vh; display:grid!important; width:auto; max-width:72vw; padding:9px 11px 8px; color:var(--plaster); background:var(--graphite); box-shadow:7px 8px 0 rgb(228 189 79 / 72%); transform:rotate(-.5deg); }
+  .interior-revealed .attention__prompt b { color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:.58rem; letter-spacing:.13em; text-transform:uppercase; }
+  .interior-revealed .attention__prompt span { font-size:.65rem; line-height:1.25; }
 }
 
 @media (max-width:430px) {
