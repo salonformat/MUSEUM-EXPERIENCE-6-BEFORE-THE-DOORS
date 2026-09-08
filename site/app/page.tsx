@@ -138,10 +138,10 @@ export default function Home() {
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
-        <b>Before the doors open</b>
-        <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
+        <h1 className="prologue-title"><span>Before</span><em>the doors</em><strong>open.</strong></h1>
+        <p><strong>The XIV Exhibition opens today.</strong> German artist Max Klinger’s monumental Beethoven sculpture stands at its centre. Klimt’s frieze and Josef Hoffmann’s spatial design were created around it. Step into the exhibition team’s final check.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
-        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Skip introduction</small><b>Enter the experience</b><i>→</i></button>
+        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Begin in Vienna · 15 April 1902</small><b>Enter the experience</b><i>→</i></button>
         <small>Salon Format</small>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
@@ -179,9 +179,9 @@ export default function Home() {
         <article className="passage-brief">
           <p>Your briefing / XIV Exhibition</p>
           <h2>The public arrives later today.</h2>
-          <p className="passage-brief__lead">Before the doors open, the exhibition team needs three final checks from you.</p>
+          <p className="passage-brief__lead">Before the doors open, the exhibition team needs three final checks from you. Each one connects to Max Klinger’s monumental Beethoven sculpture at the centre of the exhibition.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Review Arnold’s letter</b><span>Confirm that the marble head was delayed — and note Klinger’s unanswered request for Beethoven’s price.</span></div>
+            <div><strong>01</strong><b>Review the Dresden letter</b><span>Art dealer Ernst Arnold writes about Klinger’s dispatch. Mark the delayed marble head and an unanswered price request.</span></div>
             <div><strong>02</strong><b>Inspect the room model</b><span>Find the wall opening that connects Klimt’s painted room with the view of Klinger’s Beethoven statue.</span></div>
             <div><strong>03</strong><b>Complete the frieze check</b><span>Move through all five stages — from the search for happiness to the final kiss.</span></div>
           </div>
@@ -215,7 +215,7 @@ export default function Home() {
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>You’re in the workroom.</b><span>Complete the three checks from your briefing. Begin wherever you like.</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
-            <i /><span><b>Arnold’s letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
+            <i /><span><b>The Dresden letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
           </button>
           <button className="attention__item attention__item--rooms" type="button" onClick={() => { setModelRevealed(false); setFocus('rooms'); }}>
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
@@ -231,10 +231,10 @@ export default function Home() {
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
-          <p className="worker-cue"><b>Your task</b><span>Read Arnold’s message. Then click the two task cards at the bottom of the document to mark what still needs follow-up.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Read the message from Dresden art dealer Ernst Arnold. Then click the two task cards below to mark what still needs follow-up.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
           <h3>The marble head is delayed.</h3>
-          <p>Klinger meant to send it with the Beethoven monument, but the dispatch was delayed.</p>
+          <p>Max Klinger meant to send the marble head with his monumental Beethoven sculpture, but the dispatch was delayed.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what sale price is being asked for Klinger’s Beethoven sculpture?</p>
           <div className="letter-checks" aria-label="Open points in the letter">
