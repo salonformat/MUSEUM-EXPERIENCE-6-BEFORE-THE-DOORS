@@ -12,6 +12,11 @@ export default function Home() {
   const [roomEntering, setRoomEntering] = useState(false);
   const [interiorRevealed, setInteriorRevealed] = useState(false);
   const [modelRevealed, setModelRevealed] = useState(false);
+  const [letterHeadFound, setLetterHeadFound] = useState(false);
+  const [letterPriceFound, setLetterPriceFound] = useState(false);
+  const [letterComplete, setLetterComplete] = useState(false);
+  const [roomView, setRoomView] = useState(18);
+  const [roomComplete, setRoomComplete] = useState(false);
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
@@ -138,7 +143,7 @@ export default function Home() {
         <div className="exterior__copy">
           <p className="dateline"><span>Vienna</span><span>15 April</span><strong>1902</strong></p>
           <p className="hook-line">XIV Exhibition / Final check</p>
-          <h1>Ah, there<br /><em>you</em> are.</h1>
+          <h1><span>Ah, there</span><em>You are.</em></h1>
           <div className="opening-role">
             <p className="opening-role__edition">The XIV Exhibition opens today.</p>
             <p className="opening-role__names"><span>Klinger</span><span>Klimt</span><span>Hoffmann</span></p>
@@ -154,8 +159,7 @@ export default function Home() {
           <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
         </button>
         <button className="entry-cue" type="button" onClick={enterThreshold} disabled={stage !== 'outside'}>
-          <b>Enter the Secession</b><small>Click here or on the dark doorway</small>
-          <svg viewBox="0 0 600 150" aria-hidden="true"><path d="M4 12 C155 20, 350 55, 578 132" /><path d="M558 113 L580 133 L550 139" /></svg>
+          <b>Enter the Secession <i>→</i></b><small>The dark doorway is the entrance</small>
         </button>
       </section>
 
@@ -194,16 +198,16 @@ export default function Home() {
           <span className="room-number">15 April 1902 / Before opening</span>
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
-          <p className="helper-role">The public arrives later. Until then, the final preparations are in your hands.</p>
+          <p className="helper-role">The public arrives later. Your three checks are waiting in the room — begin wherever you like.</p>
           <button className="interior-reveal" type="button" onClick={() => { soundCue('room'); setInteriorRevealed(true); }}>Look around the room <i>→</i></button>
         </div>
         <nav className="attention" aria-label="Areas in the room">
-          <p className="attention__prompt"><b>Your final check</b><span>Choose where to begin. Each area reveals a different decision behind opening day.</span></p>
+          <p className="attention__prompt"><b>You’re in the workroom.</b><span>Complete the three checks from your briefing. Begin wherever you like.</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
-            <i /><span><b>Correspondence</b><small>Inspect the letter from Dresden</small></span>
+            <i /><span><b>Arnold’s letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
           </button>
           <button className="attention__item attention__item--rooms" type="button" onClick={() => { setModelRevealed(false); setFocus('rooms'); }}>
-            <i /><span><b>The rooms</b><small>Examine the opening and sightline</small></span>
+            <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
           </button>
           <button className="attention__item attention__item--frieze" type="button" onClick={() => setFocus('frieze')}>
             <i /><span><b>The frieze</b><small>Enter Klimt’s left side hall</small></span>
@@ -216,12 +220,16 @@ export default function Home() {
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
-          <p className="worker-cue"><b>What to do</b><span>Read what has not yet been settled.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Find both unresolved points in Arnold’s letter and mark them for follow-up.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
           <h3>Has the marble head arrived?</h3>
           <p>Klinger meant to send it with the Beethoven monument, but the dispatch was delayed.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what sale price is being asked for Klinger’s Beethoven sculpture?</p>
+          <div className="letter-checks" aria-label="Open points in the letter">
+            <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><i />Delayed dispatch<span>{letterHeadFound ? 'Marble head marked' : 'Find the delayed object'}</span></button>
+            <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><i />Unanswered question<span>{letterPriceFound ? 'Price request marked' : 'Find what Vienna must answer'}</span></button>
+          </div>
           <details className="context-note">
             <summary><b>Why / Learn</b><span>What this letter changes</span></summary>
             <div><p>The exhibition was also a practical undertaking. Works had to travel, correspondence had to arrive, invitations had to be sent and prices had to be decided.</p>
@@ -229,19 +237,20 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          <button className="chapter-link" type="button" onClick={() => setFocus('rooms')}>Look at the rooms</button>
+          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}>Prepare follow-up note ✓</button> : <p className="check-progress">Mark both open points to complete this check.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
-      <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'}>
+      <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
         <div className="room-image-action">
           <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
-          {modelRevealed && <button className="room-opening-hotspot" type="button" onClick={enterKlimtRoom}><i aria-hidden="true" /><b>Wall opening</b><span>Move into Klimt’s room</span></button>}
+          {modelRevealed && <div className="sightline-planes" aria-hidden="true"><i style={{transform:`translateX(-${roomView * .52}%)`}} /><i style={{transform:`translateX(${roomView * .52}%)`}} /></div>}
+          {modelRevealed && <div className={`room-opening-hotspot ${roomView >= 72 ? 'is-aligned' : ''}`}><i aria-hidden="true" /><b>Wall opening</b><span>{roomView >= 72 ? 'Beethoven is visible' : 'Adjust the viewpoint'}</span></div>}
         </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
-          <p className="worker-cue"><b>Your task</b><span>Inspect the model first. Find how the wall opening keeps Klimt’s frieze and Klinger’s Beethoven statue connected.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Adjust the viewpoint until Klinger’s statue is clearly visible through the wall opening. Then confirm the sightline.</span></p>
           <h3>Make the room make sense.</h3>
           <p>Painting. Sculpture. Architecture.</p>
           <p>Designed to be experienced together.</p>
@@ -250,11 +259,12 @@ export default function Home() {
             <div><p>Under Josef Hoffmann’s direction, twenty-one artists shaped one exhibition. Klinger’s statue stood in the main hall, Klimt’s frieze in the left side hall, and a wall opening connected both views.</p>
             <strong>What you learn</strong><span>Gesamtkunstwerk here is spatial: painting, sculpture and architecture shape one experience.</span></div>
           </details>
-          <button className="chapter-link model-reveal" type="button" onClick={() => setModelRevealed(true)}>Inspect the model</button>
+          <button className="chapter-link model-reveal" type="button" onClick={() => setModelRevealed(true)}>Start the sightline test</button>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>What you are checking</b><span>Move your pointer across the drawing. The opening frames Klinger’s statue from Klimt’s room, linking painting, sculpture and architecture.</span></div>
-          <span className="room-control__hint">When you understand the sightline, use the highlighted wall opening.</span>
+          <div className="view-step"><b>Adjust the viewpoint</b><span>Move the control until the statue sits clearly inside the wall opening.</span></div>
+          <label className="sightline-control"><span>Separate</span><input type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>Connected</span></label>
+          {roomView >= 72 ? <button className="sightline-confirm" type="button" onClick={() => { setRoomComplete(true); enterKlimtRoom(); }}>Confirm sightline & enter Klimt’s room →</button> : <span className="room-control__hint">Keep moving toward “connected”.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -295,12 +305,12 @@ export default function Home() {
         <article className="invitation-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
           <p className="chapter-kicker">12 April 1902 · Budapest → Vienna</p>
-          <h3>People are already travelling to Vienna.</h3>
-          <p>Dr. Gabriel von Térey will attend the opening.</p>
-          <p>He asks for one additional invitation.</p>
-          <p>The cards should be sent to Hotel Kaiserhof.</p>
-          <div className="ending-cue"><b>What this changes</b><span>The unfinished exhibition is about to become public.</span></div>
-          <button className="chapter-link" type="button" onClick={() => { setDoorsOpen(false); setFocus('doors'); }}>Return to the prepared room</button>
+          <h3>One invitation is still outstanding.</h3>
+          <p>Gabriel von Térey writes from Budapest’s National Gallery. He knew Klinger’s <em>Beethoven</em> from the artist’s studio and planned to attend the opening.</p>
+          <p>He asks for a second invitation for Joseph Beer, a restorer at the National Gallery.</p>
+          <p>Both cards are to be delivered to Hotel Kaiserhof.</p>
+          <div className="ending-cue"><b>Your final action</b><span>Make sure both visitors receive their invitations before they come to the Secession.</span></div>
+          <button className="chapter-link invitation-action" type="button" onClick={() => { soundCue('paper'); setDoorsOpen(false); setFocus('doors'); }}>Send both cards to Hotel Kaiserhof →</button>
         </article>
       </section>
 
