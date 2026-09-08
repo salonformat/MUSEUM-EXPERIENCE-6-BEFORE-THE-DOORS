@@ -141,7 +141,7 @@ export default function Home() {
         <b>Before the doors open</b>
         <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
-        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Skip introduction</small><b>Go to the experience</b><i>→</i></button>
+        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Skip introduction</small><b>Enter the experience</b><i>→</i></button>
         <small>Salon Format</small>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>

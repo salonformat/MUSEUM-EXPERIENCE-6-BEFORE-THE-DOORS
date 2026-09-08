@@ -354,7 +354,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .skip-prologue i { grid-column:2; grid-row:1 / span 2; color:var(--graphite); font-family:"Della Respira",serif; font-size:2rem; font-style:normal; transition:transform .25s ease; }
 .skip-prologue:hover,.skip-prologue:focus-visible { box-shadow:14px 16px 0 var(--ultramarine),22px 24px 0 rgb(32 29 26 / 22%); }
 .skip-prologue:hover i,.skip-prologue:focus-visible i { transform:translateX(7px); }
-@keyframes skipAppears { from { opacity:0; transform:translate(-50%,-38%) rotate(-1.4deg) scale(.94); } to { opacity:1; transform:translate(-50%,-50%) rotate(-1.4deg); } }
+@keyframes skipAppears { from { opacity:0; transform:translate(-50%,-38%) rotate(-2.35deg) scale(.94); } to { opacity:1; transform:translate(-50%,-50%) rotate(-2.35deg); } }
 @keyframes skipSignal { 50% { box-shadow:10px 11px 0 var(--ultramarine),17px 18px 32px rgb(37 32 232 / 28%); } }
 @keyframes skipSlate { to { opacity:0; visibility:hidden; clip-path:inset(0 0 100% 0); } }
 
@@ -363,6 +363,13 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .skip-prologue small { font-size:.38rem!important; }
   .skip-prologue b { font-size:.62rem!important; }
   .skip-prologue i { font-size:1.45rem; }
+}
+
+.skip-prologue { width:min(390px,31vw); min-height:104px; padding:17px 20px 15px; }
+.skip-prologue b { font-size:clamp(1rem,1.38vw,1.42rem)!important; white-space:nowrap; }
+@media (max-width:760px) {
+  .skip-prologue { left:67%; width:57vw; min-height:76px; padding:11px 13px 10px; }
+  .skip-prologue b { font-size:clamp(.67rem,2.7vw,.9rem)!important; }
 }
 
 /* The briefing ends in a threshold, not a quiet footer link. */
