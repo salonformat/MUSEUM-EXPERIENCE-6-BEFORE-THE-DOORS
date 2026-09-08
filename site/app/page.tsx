@@ -88,7 +88,7 @@ export default function Home() {
   const beginRoom = () => {
     soundCue('room');
     if (workroomAmbience.current && soundEnabled) {
-      workroomAmbience.current.volume = .11;
+      workroomAmbience.current.volume = .16;
       void workroomAmbience.current.play().catch(() => undefined);
     }
     setInteriorRevealed(false);
@@ -199,7 +199,7 @@ export default function Home() {
       audioMaster.current.gain.setTargetAtTime(soundEnabled ? .16 : 0, audioContext.current.currentTime, .08);
     }
     if (publicAmbience.current) publicAmbience.current.volume = soundEnabled && doorsOpen ? .28 : 0;
-    if (workroomAmbience.current) workroomAmbience.current.volume = soundEnabled && stage === 'inside' && !doorsOpen ? .11 : 0;
+    if (workroomAmbience.current) workroomAmbience.current.volume = soundEnabled && stage === 'inside' && !doorsOpen ? .16 : 0;
   }, [soundEnabled, doorsOpen, stage]);
 
   useEffect(() => {
@@ -288,11 +288,11 @@ export default function Home() {
           <span>XIV Exhibition</span>
           <span>Vienna Secession</span>
         </aside>
-        <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
+        <button className="threshold" type="button" aria-label="Open the entrance door of the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
           <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
         </button>
         <button className="entry-cue" type="button" onClick={enterThreshold} disabled={stage !== 'outside'}>
-          <b>Enter the Secession <i>→</i></b><small>The dark doorway is the entrance</small>
+          <b>Open the door <i>→</i></b><small>Continue through the dark entrance</small>
         </button>
       </section>
 
@@ -491,9 +491,9 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="public-arrival" aria-hidden="true">
           <img src={asset('secession-interior-v4.png')} alt="" />
-          <svg className="ink-visitors" viewBox="0 0 1200 700" preserveAspectRatio="none"><g>
-            <path d="M95 690 Q103 575 115 468 Q126 405 151 389 Q176 374 191 401 Q204 437 197 486 Q190 558 211 690 M129 389 Q117 357 131 327 Q151 304 174 326 Q190 347 177 381"/><path d="M252 690 Q247 582 270 493 Q286 432 319 423 Q350 421 365 458 Q374 511 356 690 M287 416 Q280 380 296 356 Q319 338 341 361 Q351 388 335 416"/><path d="M445 690 Q432 592 450 470 Q463 410 491 397 Q524 390 541 432 Q550 501 536 690 M468 390 Q457 357 476 333 Q500 316 520 342 Q531 370 515 395"/><path d="M624 690 Q615 562 637 450 Q652 391 684 382 Q716 386 728 425 Q739 501 721 690 M660 377 Q651 343 670 318 Q695 304 713 331 Q720 360 704 383"/><path d="M801 690 Q793 594 814 486 Q827 426 858 412 Q889 406 906 446 Q918 515 901 690 M835 406 Q827 371 845 349 Q869 332 889 358 Q897 384 882 412"/><path d="M985 690 Q979 579 1001 466 Q1014 403 1047 395 Q1079 396 1093 436 Q1101 512 1082 690 M1024 388 Q1017 354 1034 329 Q1059 315 1078 342 Q1086 370 1070 397"/>
-          </g></svg>
+          <div className="public-shadows"><i /><i /><i /><i /><i /></div>
+          <div className="public-fragments"><i /><i /><i /></div>
+          <div className="public-graphite"><i /><i /><i /></div>
           <div className="arrival-stamps"><span>Correspondence cleared</span><span>Sightline confirmed</span><span>Frieze route complete</span></div>
         </div>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
@@ -505,7 +505,7 @@ export default function Home() {
           <p>The doors are open. The public can enter now. <em>Your final checks made the complete spatial experience visible.</em></p>
           <div className="today-note"><b>Vienna, today</b><span>You can still walk into that room.</span></div>
           <div className="takeaway inspection-record"><b>Final inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Take the record with you ↓</button></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Public-arrival ambience: “Museum Gallery ambience soft walla calm steps” by visionear, CC0, via Freesound.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
         </article>
       </section>
     </main>
