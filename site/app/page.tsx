@@ -245,8 +245,8 @@ export default function Home() {
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
         <div className="room-image-action">
           <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
-          {modelRevealed && <div className="sightline-planes" aria-hidden="true"><i style={{transform:`translateX(-${roomView * .52}%)`}} /><i style={{transform:`translateX(${roomView * .52}%)`}} /></div>}
-          {modelRevealed && <div className={`room-opening-hotspot ${roomView >= 72 ? 'is-aligned' : ''}`}><i aria-hidden="true" /><b>Wall opening</b><span>{roomView >= 72 ? 'Beethoven is visible' : 'Adjust the viewpoint'}</span></div>}
+          {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 72 ? 'is-aligned' : ''}`} style={{'--view-x':`${22 + roomView * .3}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
+          {modelRevealed && <div className={`room-opening-hotspot ${roomView >= 72 ? 'is-aligned' : ''}`}><i aria-hidden="true" /><b>Wall opening</b><span>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</span></div>}
         </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
@@ -262,7 +262,7 @@ export default function Home() {
           <button className="chapter-link model-reveal" type="button" onClick={() => setModelRevealed(true)}>Start the sightline test</button>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>Adjust the viewpoint</b><span>Move the control until the statue sits clearly inside the wall opening.</span></div>
+          <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
           <label className="sightline-control"><span>Separate</span><input type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>Connected</span></label>
           {roomView >= 72 ? <button className="sightline-confirm" type="button" onClick={() => { setRoomComplete(true); enterKlimtRoom(); }}>Confirm sightline & enter Klimt’s room →</button> : <span className="room-control__hint">Keep moving toward “connected”.</span>}
         </div>

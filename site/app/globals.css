@@ -980,12 +980,14 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .chapter--letter .check-complete-action { position:fixed; z-index:7; right:3vw; bottom:calc(3vh + 92px); margin:0; padding:12px 15px 10px; box-shadow:6px 7px 0 rgb(32 29 26 / 18%); }
 
 /* The model is an actual sightline adjustment. */
-.chapter--rooms.model-revealed .room-model-art { transform:translateX(calc((var(--room-view) - 50) * .34px)) scale(calc(1.085 - var(--room-view) * .00045)); filter:saturate(calc(.72 + var(--room-view) * .004)) contrast(1.03); }
-.sightline-planes { position:absolute; z-index:2; left:33%; top:18%; display:flex; width:30%; height:52%; overflow:hidden; pointer-events:none; filter:drop-shadow(5px 8px 0 rgb(32 29 26 / 13%)); }
-.sightline-planes i { flex:0 0 51%; height:100%; background:rgb(241 235 221 / 94%); border:2px solid var(--graphite); transition:transform .3s cubic-bezier(.16,1,.3,1); }
-.sightline-planes i:first-child { clip-path:polygon(2% 1%,100% 0,97% 99%,0 96%); border-right-color:var(--patina); }
-.sightline-planes i:last-child { clip-path:polygon(0 0,98% 2%,100% 97%,3% 100%); border-left-color:var(--gold); }
-.chapter--rooms[style*="--room-view: 100"] .sightline-planes { filter:drop-shadow(0 0 18px rgb(228 189 79 / 34%)); }
+.chapter--rooms.model-revealed .room-model-art { transform:scale(1.04); filter:saturate(.92) contrast(1.03); }
+.sightline-viewfinder { position:absolute; z-index:2; inset:0; pointer-events:none; }
+.sightline-viewfinder::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 10% 23% at var(--view-x) 37%,transparent 0 67%,rgb(32 29 26 / 12%) 78%,rgb(32 29 26 / 29%) 100%); transition:background .25s linear,opacity .45s ease; }
+.sightline-viewfinder i { position:absolute; left:var(--view-x); top:37%; width:clamp(70px,9vw,135px); height:clamp(130px,23vh,230px); border:2px solid var(--oxblood); border-radius:49% 52% 46% 54%; box-shadow:0 0 0 7px rgb(107 47 43 / 8%); transform:translate(-50%,-50%) rotate(-1deg); transition:left .25s linear,border-color .35s ease,box-shadow .35s ease; }
+.sightline-viewfinder span { position:absolute; left:6%; top:37%; width:calc(var(--view-x) - 6%); height:2px; background:linear-gradient(90deg,transparent,var(--oxblood)); transform-origin:right; transform:rotate(-2deg); opacity:.6; transition:width .25s linear,background .35s ease; }
+.sightline-viewfinder.is-aligned::before { background:radial-gradient(ellipse 12% 27% at var(--view-x) 37%,rgb(228 189 79 / 13%) 0 55%,transparent 68%,rgb(32 29 26 / 17%) 88%); }
+.sightline-viewfinder.is-aligned i { border-color:#e4bd4f; box-shadow:0 0 0 9px rgb(228 189 79 / 10%),0 0 42px 12px rgb(228 189 79 / 34%); }
+.sightline-viewfinder.is-aligned span { background:linear-gradient(90deg,transparent,#e4bd4f); opacity:.9; }
 .room-opening-hotspot { pointer-events:none; }
 .room-opening-hotspot.is-aligned i { border-color:#e4bd4f; box-shadow:0 0 0 8px rgb(228 189 79 / 13%),0 0 35px rgb(228 189 79 / 54%); }
 .sightline-control { display:grid!important; grid-template-columns:auto minmax(150px,1fr) auto; gap:10px!important; align-items:center; margin:10px 0 0!important; padding:9px 11px; color:var(--plaster); background:var(--graphite); }
