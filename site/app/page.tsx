@@ -499,13 +499,14 @@ export default function Home() {
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
         <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
+        <div className="finale-portal" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /><i /></div>
         <article className="afterlife-copy">
-          <span className="completion-stamp">Final inspection passed · 3 / 3</span>
-          <h3>The exhibition<br /><em>is ready.</em></h3>
-          <p>The doors are open. The public can enter now. <em>Your final checks made the complete spatial experience visible.</em></p>
-          <div className="today-note"><b>Vienna, today</b><span>You can still walk into that room.</span></div>
+          <span className="completion-stamp">Final inspection · 3 / 3</span>
+          <h3><em>Ready.</em></h3>
+          <p>The doors are open. <em>You connected the work behind the exhibition with the way its art is experienced.</em></p>
+          <div className="today-note"><b>Vienna · 15 April 1902</b><span>The public enters.</span></div>
           <div className="takeaway inspection-record"><b>Final inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Take the record with you ↓</button></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Visit the frieze today →</a><button type="button" onClick={replay}>Experience again</button><details><summary>Sources</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details></nav>
         </article>
       </section>
     </main>
