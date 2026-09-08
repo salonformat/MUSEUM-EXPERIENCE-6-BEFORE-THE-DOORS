@@ -115,6 +115,17 @@ export default function Home() {
     setWalkthroughChecks((checks) => checks.includes(item) ? checks : [...checks, item]);
   };
 
+  const goBack = () => {
+    if (focus === 'epilogue') return setFocus('doors');
+    if (focus === 'doors') return setFocus('walkthrough');
+    if (focus === 'walkthrough') return setFocus(null);
+    if (focus === 'invitation') return setFocus('letter');
+    if (focus) return setFocus(null);
+    if (stage === 'inside') return setStage('threshold');
+    if (stage === 'threshold') return setStage('outside');
+    if (introSkipped) setIntroSkipped(false);
+  };
+
   const openDoors = () => {
     if (doorsOpen) return;
     soundCue('doors');
@@ -154,6 +165,10 @@ export default function Home() {
   return (
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <div className="cursor-mark" aria-hidden="true" />
+      <nav className="global-navigation" aria-label="Experience navigation">
+        {(introSkipped || stage !== 'outside' || focus) && <button type="button" onClick={goBack}><i>←</i><span>Back</span></button>}
+        <a href="https://salonformat.com" target="_blank" rel="noreferrer">Salon Format</a>
+      </nav>
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <aside className="work-ledger" aria-live="polite"><i /><span>Opening day · final inspection</span><b>{systemLabel}</b><small>{completedCount} / 3 ready</small></aside>
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
@@ -163,7 +178,6 @@ export default function Home() {
         <p><strong>The XIV Exhibition opens today.</strong> German artist Max Klinger’s monumental Beethoven sculpture stands at its centre. Klimt’s frieze and Josef Hoffmann’s spatial design were created around it. Step into the exhibition team’s final check.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
         <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Begin in Vienna · 15 April 1902</small><b>Enter the experience</b><i>→</i></button>
-        <small>Salon Format</small>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
