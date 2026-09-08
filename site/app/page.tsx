@@ -199,17 +199,15 @@ export default function Home() {
   }, [focus, friezeComplete]);
 
   useEffect(() => {
-    if (focus !== 'rooms' || roomView < 72 || roomComplete) return;
-    setRoomComplete(true);
-    soundCue('room');
+    if (focus !== 'rooms' || roomView < 72) return;
+    if (!roomComplete) { setRoomComplete(true); soundCue('room'); }
     const done = window.setTimeout(() => setFocus(null), 2200);
     return () => window.clearTimeout(done);
   }, [focus, roomView, roomComplete]);
 
   useEffect(() => {
-    if (focus !== 'invitation' || !dispatchSent || letterComplete) return;
-    setLetterComplete(true);
-    soundCue('paper');
+    if (focus !== 'invitation' || !dispatchSent) return;
+    if (!letterComplete) { setLetterComplete(true); soundCue('paper'); }
     const done = window.setTimeout(() => setFocus(null), 3400);
     return () => window.clearTimeout(done);
   }, [focus, dispatchSent, letterComplete]);
