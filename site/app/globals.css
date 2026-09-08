@@ -687,18 +687,18 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 }
 
 /* Exterior display trial: sharper early-20th-century character, contemporary proportions. */
-.exterior h1 { max-width:8.5ch; font-family:"Josefin Sans",sans-serif; font-size:clamp(3.55rem,6.65vw,7.25rem); font-weight:400; line-height:.81; letter-spacing:-.075em; text-transform:none; }
+.exterior h1 { max-width:9ch; font-family:"Della Respira",serif; font-size:clamp(3.55rem,6.45vw,7.1rem); font-style:normal; font-weight:400; line-height:.86; letter-spacing:-.055em; text-transform:none; }
 .exterior h1 em { display:inline; margin:0; padding:0; color:inherit; background:transparent; font-family:inherit; font-style:normal; font-weight:400; letter-spacing:inherit; transform:none; }
 
 /* Editorial opening facts: one quiet axis, no mid-century collage cards. */
-.opening-role { position:relative; display:grid; grid-template-columns:1fr; width:min(27rem,38vw); margin-top:clamp(18px,2.4vh,28px); padding:0; border:0; color:var(--plaster); text-shadow:0 2px 18px rgb(17 13 82 / 32%); }
+.opening-role { position:relative; display:grid; grid-template-columns:1fr; width:min(28rem,40vw); margin:clamp(24px,3vh,34px) 0 0 .32em; padding:0; border:0; color:var(--plaster); text-shadow:0 2px 18px rgb(17 13 82 / 32%); }
 .opening-role p { margin:0; }
-.opening-role__edition { grid-column:1 / -1; color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.62rem,.72vw,.76rem); font-weight:700; letter-spacing:.2em; line-height:1; text-transform:uppercase; }
-.opening-role__today { margin-top:7px !important; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.12rem,1.45vw,1.5rem); font-weight:400; line-height:1; letter-spacing:-.035em; }
-.opening-role__names { display:flex; gap:8px; margin-top:11px !important; padding:0; border:0; font-family:"Josefin Sans",sans-serif; font-size:clamp(.55rem,.64vw,.68rem); font-weight:600; letter-spacing:.16em; line-height:1; text-transform:uppercase; }
+.opening-role__edition { grid-column:1 / -1; color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.72rem,.82vw,.86rem); font-weight:700; letter-spacing:.19em; line-height:1; text-transform:uppercase; }
+.opening-role__today { margin-top:9px !important; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.35rem,1.68vw,1.72rem); font-weight:400; line-height:1; letter-spacing:-.035em; }
+.opening-role__names { display:flex; gap:10px; margin-top:14px !important; padding:0; border:0; font-family:"Josefin Sans",sans-serif; font-size:clamp(.64rem,.73vw,.77rem); font-weight:600; letter-spacing:.15em; line-height:1; text-transform:uppercase; }
 .opening-role__names span { display:inline-flex; align-items:center; }
 .opening-role__names span:not(:last-child)::after { content:"/"; margin-left:8px; color:#e4bd4f; }
-.opening-role__task { margin-top:14px !important; max-width:18rem; font-family:"Josefin Sans",sans-serif; font-size:clamp(.9rem,1.05vw,1.1rem); font-weight:400; line-height:1.2; letter-spacing:-.018em; }
+.opening-role__task { margin-top:clamp(20px,2.4vh,28px) !important; max-width:20rem; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.05rem,1.22vw,1.28rem); font-weight:400; line-height:1.2; letter-spacing:-.018em; }
 
 /* The door is the button: stronger proximity, plain-language instruction. */
 .threshold { width:154px; height:180px; }
@@ -712,13 +712,42 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 @keyframes doorGlow { 0%,100% { filter:brightness(.85); } 50% { filter:brightness(1.3); } }
 
 @media (max-width:760px) {
-  .opening-role { width:min(58vw,360px); padding-top:0; }
-  .opening-role__edition { font-size:.52rem; }
-  .opening-role__today { margin-top:5px !important; font-size:1.08rem; }
-  .opening-role__names { gap:5px; margin-top:7px !important; font-size:.43rem; }
+  .opening-role { width:min(61vw,380px); margin:18px 0 0 .22em; padding-top:0; }
+  .opening-role__edition { font-size:.59rem; }
+  .opening-role__today { margin-top:7px !important; font-size:1.2rem; }
+  .opening-role__names { gap:6px; margin-top:9px !important; font-size:.49rem; }
   .opening-role__names span:not(:last-child)::after { margin-left:5px; }
-  .opening-role__task { margin-top:9px !important; max-width:13rem; font-size:.78rem; }
+  .opening-role__task { margin-top:15px !important; max-width:15rem; font-size:.9rem; }
   .door-aura { left:70.3%; top:87.5%; }
+}
+
+/* Contemporary Secession layer: direct grotesk, slash navigation and motion. */
+.system-mark { position:fixed; z-index:22; left:50%; top:16px; display:flex; align-items:baseline; gap:9px; min-width:300px; padding:8px 11px 7px; color:var(--plaster); background:var(--graphite); font-family:"Josefin Sans",sans-serif; transform:translateX(-50%); transition:color .35s ease,background .35s ease,opacity .35s ease; }
+.system-mark::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--gold); transform:scaleX(var(--section-progress,.166)); transform-origin:left; transition:transform .65s cubic-bezier(.16,1,.3,1); }
+.system-mark b { font-size:.98rem; font-weight:600; letter-spacing:-.04em; }
+.system-mark span { font-size:.57rem; font-weight:600; letter-spacing:.12em; text-transform:lowercase; }
+.system-mark small { margin-left:auto; font-size:.5rem; font-weight:600; letter-spacing:.14em; }
+.stage-outside .system-mark { opacity:0; pointer-events:none; }
+.experience:has(.chapter--letter.is-open) { --section-progress:.333; }
+.experience:has(.chapter--rooms.is-open) { --section-progress:.5; }
+.experience:has(.chapter--frieze.is-open) { --section-progress:.666; }
+.experience:has(.chapter--invitation.is-open) { --section-progress:.833; }
+.experience:has(.chapter--doors.is-open),.experience:has(.chapter--epilogue.is-open) { --section-progress:1; }
+.experience:has(.chapter--letter.is-open) .system-mark,.experience:has(.chapter--rooms.is-open) .system-mark,.stage-inside .system-mark { color:var(--graphite); background:rgb(250 248 242 / 92%); }
+.experience:has(.chapter--frieze.is-open) .system-mark,.experience:has(.chapter--doors.is-open) .system-mark,.experience:has(.chapter--epilogue.is-open) .system-mark { color:var(--plaster); background:rgb(32 29 26 / 92%); }
+.chapter-kicker::before,.reconstruction::before { content:"/"; margin-right:.38em; color:var(--gold); }
+.worker-cue b::before { content:"/"; margin-right:.38em; }
+.chapter-link,.interior-reveal,.passage-brief footer button,.doors-copy button { border-radius:0; }
+.chapter-link::before,.interior-reveal::before { content:"+"; display:inline-block; margin-right:9px; color:var(--gold); font-size:1.1em; transition:transform .35s ease; }
+.chapter-link:hover::before,.chapter-link:focus-visible::before,.interior-reveal:hover::before,.interior-reveal:focus-visible::before { transform:rotate(90deg); }
+.passage-brief__grid div { border:1px solid var(--graphite); box-shadow:5px 6px 0 rgb(241 235 221 / 13%); }
+.attention__prompt b::before { content:"/"; margin-right:.35em; color:var(--gold); }
+
+@media (max-width:760px) {
+  .system-mark { top:9px; min-width:232px; padding:6px 8px 5px; }
+  .system-mark b { font-size:.78rem; }
+  .system-mark span { font-size:.45rem; }
+  .system-mark small { font-size:.42rem; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
 @media (hover:none) { .cursor-mark { display:none; } }

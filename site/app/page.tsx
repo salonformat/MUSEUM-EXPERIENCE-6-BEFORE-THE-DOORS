@@ -19,6 +19,8 @@ export default function Home() {
   const audioMaster = useRef<GainNode | null>(null);
   const climaxPlayed = useRef(false);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
+  const systemLabel = focus === 'letter' ? 'correspondence' : focus === 'rooms' ? 'the rooms' : focus === 'frieze' ? 'the frieze' : focus === 'invitation' ? 'invitation' : focus === 'doors' ? 'opening' : focus === 'epilogue' ? 'afterlife' : stage === 'threshold' ? 'briefing' : 'workroom';
+  const systemNumber = focus === 'letter' ? '01' : focus === 'rooms' ? '02' : focus === 'frieze' ? '03' : focus === 'invitation' ? '04' : focus === 'doors' || focus === 'epilogue' ? '05' : '00';
 
   const ensureSound = () => {
     if (audioContext.current) return audioContext.current;
@@ -116,6 +118,7 @@ export default function Home() {
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <div className="cursor-mark" aria-hidden="true" />
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
+      <aside className="system-mark" aria-hidden="true"><b>secession</b><span>/{systemLabel}</span><small>{systemNumber} / 05</small></aside>
       <div className="opening-slate" aria-hidden="true">
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
