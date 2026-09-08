@@ -1804,3 +1804,11 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .interior-revealed .interior__copy { top:16vh; max-width:70vw; transform:none; }
   .interior-revealed .interior__copy h2 { font-size:13vw; }
 }
+
+/* Mobile exterior headline: two complete lines, never cropped by the viewport. */
+@media (max-width:760px) {
+  .exterior__copy { left:5vw; right:5vw; width:90vw; max-width:none; overflow:visible; }
+  .exterior__copy h1 { width:90vw; max-width:none; font-size:clamp(2.75rem,12.2vw,4.15rem); line-height:.82; letter-spacing:-.045em; }
+  .exterior__copy h1 span,.exterior__copy h1 em { display:block; width:max-content; max-width:90vw; }
+  .exterior__copy h1 em { margin-left:8vw; }
+}
