@@ -7,6 +7,7 @@ type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'doors' | 'ep
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('outside');
+  const [introSkipped, setIntroSkipped] = useState(false);
   const [focus, setFocus] = useState<Focus>(null);
   const [friezePosition, setFriezePosition] = useState(0);
   const [roomEntering, setRoomEntering] = useState(false);
@@ -134,12 +135,13 @@ export default function Home() {
       <div className="cursor-mark" aria-hidden="true" />
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <aside className="work-ledger" aria-hidden="true"><i /><span>Final check</span><b>{systemLabel}</b><small>{systemNumber} — 05</small></aside>
-      <div className="opening-slate" aria-hidden="true">
+      <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
         <b>Before the doors open</b>
         <p>An interactive journey into the making of the Vienna Secession’s XIV Exhibition.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
+        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Skip introduction</small><b>Go to experience</b><i>→</i></button>
         <small>Salon Format</small>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
@@ -229,15 +231,15 @@ export default function Home() {
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
-          <p className="worker-cue"><b>Your task</b><span>Find both unresolved points in Arnold’s letter and mark them for follow-up.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Read Arnold’s message. Then click the two task cards at the bottom of the document to mark what still needs follow-up.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
-          <h3>Has the marble head arrived?</h3>
+          <h3>The marble head is delayed.</h3>
           <p>Klinger meant to send it with the Beethoven monument, but the dispatch was delayed.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what sale price is being asked for Klinger’s Beethoven sculpture?</p>
           <div className="letter-checks" aria-label="Open points in the letter">
-            <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><i />Delayed dispatch<span>{letterHeadFound ? 'Marble head marked' : 'Find the delayed object'}</span></button>
-            <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><i />Unanswered question<span>{letterPriceFound ? 'Price request marked' : 'Find what Vienna must answer'}</span></button>
+            <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><i />Open point 01<span>{letterHeadFound ? 'Marble head marked ✓' : 'Mark the delayed marble head'}</span></button>
+            <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><i />Open point 02<span>{letterPriceFound ? 'Price request marked ✓' : 'Mark Klinger’s unanswered price request'}</span></button>
           </div>
           <details className="context-note">
             <summary><b>Why / Learn</b><span>What this letter changes</span></summary>
@@ -246,7 +248,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Both points marked</small>Complete letter check → Return to workroom</button> : <p className="check-progress">Mark both open points to complete this check.</p>}
+          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Both points marked</small>Complete letter check → Return to workroom</button> : <p className="check-progress">Next: click both open-point cards below.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
