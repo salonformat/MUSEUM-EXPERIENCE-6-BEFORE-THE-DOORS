@@ -1924,3 +1924,151 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--epilogue.is-open .public-type span,
   .chapter--epilogue.is-open .public-type b { animation-duration:.01ms; animation-delay:0s; }
 }
+
+/* Mobile editorial pass: one instruction, one action and one image at a time. */
+@media (max-width:760px) {
+  .experience { min-height:100svh; }
+  .global-navigation { z-index:100; }
+  .sound-toggle { z-index:100; max-width:82px; overflow:hidden; }
+  .work-ledger { z-index:90; top:50px; max-width:42vw; padding:6px 8px; }
+  .work-ledger b { font-size:.46rem; }
+  .work-ledger small { font-size:.45rem; }
+
+  /* Prologue: the premise is readable, but no longer competes with the title and CTA. */
+  .opening-slate .prologue-title { top:12vh; }
+  .opening-slate .skip-prologue { top:39%; }
+  .opening-slate > p {
+    top:51%;
+    display:-webkit-box;
+    width:88vw;
+    max-height:7.2em;
+    overflow:hidden;
+    font-size:.75rem;
+    line-height:1.3;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:5;
+  }
+  .opening-slate > p em { display:block; margin-top:7px; }
+  .opening-slate .opening-slate__modes { bottom:2.5vh; }
+
+  /* Briefing: vertically scrollable cards, never three squeezed columns. */
+  .passage { overflow:auto; }
+  .passage-brief {
+    left:5vw;
+    top:82px;
+    bottom:18px;
+    width:90vw;
+    overflow:auto;
+    padding:0 5px 20px 0;
+    transform:none;
+  }
+  .stage-threshold .passage-brief { animation:briefArriveMobile .7s .3s cubic-bezier(.16,1,.3,1) forwards; }
+  .passage-brief > p:first-child { margin-bottom:8px; }
+  .passage-brief h2 { max-width:none; font-size:8.6vw; line-height:.9; }
+  .passage-brief > .passage-brief__lead { margin-top:9px; font-size:.78rem!important; }
+  .passage-brief__grid { grid-template-columns:1fr; gap:7px; margin-top:13px; }
+  .passage-brief__grid div { grid-template-columns:38px 1fr; min-height:0; padding:9px 10px; }
+  .passage-brief__grid strong { position:static; grid-column:1; grid-row:1 / span 2; align-self:center; font-size:1.3rem; }
+  .passage-brief__grid b { grid-column:2; font-size:.51rem; }
+  .passage-brief__grid span { grid-column:2; margin:2px 0 0; font-size:.68rem; line-height:1.2; }
+  .passage-brief footer { gap:9px; margin-top:10px; }
+  .passage-brief footer > span { font-size:.65rem; }
+  .passage-brief footer .workroom-entry { min-height:72px; }
+  @keyframes briefArriveMobile { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+  /* The workroom is image-led; the prompt is a compact status label. */
+  .interior-revealed .interior__copy { display:none; }
+  .interior-revealed .attention__prompt { left:4vw; top:96px; max-width:62vw; padding:7px 9px; }
+  .interior-revealed .attention__prompt span { display:none; }
+  .interior-revealed .attention button span { max-width:120px; }
+
+  /* Archival chapter: the document stays visible; background copy becomes optional context. */
+  .chapter--letter .document-copy {
+    top:0;
+    width:100%;
+    height:46%;
+    padding:98px 5vw 12px;
+    overflow:auto;
+  }
+  .chapter--letter .document-copy h3 { margin:8px 0; font-size:7.4vw; }
+  .chapter--letter .document-copy > p:not(.worker-cue):not(.chapter-kicker):not(.check-progress) { display:none; }
+  .chapter--letter .worker-cue { margin-bottom:7px!important; }
+  .chapter--letter .worker-cue span { font-size:.7rem; }
+  .chapter--letter .context-note { margin-top:7px; }
+  .chapter--letter .chapter__art { top:46%; height:54%; object-position:center; }
+  .chapter--letter .document-hotspots { top:46%; }
+  .chapter--letter .document-hotspots button { width:43vw; }
+  .chapter--letter .document-hotspots button:first-child { left:4%; right:auto; top:12%; }
+  .chapter--letter .document-hotspots button:last-child { right:4%; bottom:12%; }
+
+  /* Sightline: instruction withdraws when manipulation starts. */
+  .chapter--rooms .rooms-copy { top:0; bottom:auto; width:100%; height:45%; padding:98px 5vw 12px; overflow:auto; }
+  .chapter--rooms .rooms-copy h3 { margin:7px 0; font-size:8vw; }
+  .chapter--rooms .rooms-copy > p:not(.worker-cue):not(.chapter-kicker) { display:none; }
+  .chapter--rooms .worker-cue { margin-bottom:7px!important; }
+  .chapter--rooms .worker-cue span { font-size:.7rem; }
+  .chapter--rooms .room-image-action { top:45%; height:55%; }
+  .chapter--rooms.model-revealed .rooms-copy { transform:translateY(-105%); }
+
+  /* Frieze: one compact task card; the artwork owns the rest of the screen. */
+  .chapter--frieze { grid-template-rows:78svh 22svh; }
+  .chapter--frieze .frieze-copy .worker-cue--frieze { left:4vw; top:92px; width:58vw; padding:7px 8px; }
+  .chapter--frieze .frieze-copy .worker-cue--frieze span { display:none; }
+  .chapter--frieze .frieze-copy > p:not(.worker-cue) { left:4vw; bottom:2.5vh; max-width:70vw; padding:7px 9px; font-size:6vw; }
+  .chapter--frieze .context-note--frieze { position:absolute; right:4vw; bottom:2.5vh; width:auto; max-height:none; }
+  .chapter--frieze .context-note--frieze summary span { display:none; }
+  .frieze-object-marker { width:128px; }
+
+  /* Invitation dispatch: cards and envelope are always on-screen and touchable. */
+  .chapter--invitation .chapter__art { inset:0; width:100%; height:100%; opacity:.13; filter:grayscale(1) contrast(1.5); }
+  .chapter--invitation .invitation-copy {
+    inset:0;
+    width:100%;
+    height:100%;
+    padding:96px 5vw 230px;
+    overflow:auto;
+    background:rgb(32 29 26 / 94%);
+  }
+  .chapter--invitation .invitation-copy h3 { max-width:15ch; margin:7px 0; font-size:7.2vw; }
+  .chapter--invitation .invitation-copy > p:not(.chapter-kicker) { display:none; }
+  .chapter--invitation .ending-cue { margin-top:8px; padding:8px 9px; }
+  .chapter--invitation .ending-cue span { font-size:.72rem; }
+  .chapter--invitation .dispatch-workbench {
+    position:fixed;
+    z-index:20;
+    left:4vw;
+    right:auto;
+    bottom:18px;
+    display:grid;
+    width:92vw;
+    grid-template-columns:1fr;
+    gap:8px;
+    padding:10px;
+    border:2px solid #e4bd4f;
+    background:var(--graphite);
+    box-shadow:8px 9px 0 rgb(228 189 79 / 30%);
+  }
+  .chapter--invitation .dispatch-cards { grid-template-columns:1fr 1fr; gap:7px; }
+  .chapter--invitation .dispatch-cards button { min-height:76px; padding:7px 8px; }
+  .chapter--invitation .dispatch-cards button b { font-size:.67rem; }
+  .chapter--invitation .dispatch-cards button small,
+  .chapter--invitation .dispatch-cards button span { font-size:.42rem; }
+  .chapter--invitation .dispatch-envelope { min-height:54px; }
+  .chapter--invitation .dispatch-envelope span { left:auto; right:9px; bottom:7px; text-align:right; }
+  .chapter--invitation .dispatch-confirmation { right:4vw; bottom:222px; width:92vw; }
+
+  /* Final check: concise prompt and separated physical checkpoints. */
+  .walkthrough-copy { top:96px; width:56vw; }
+  .walkthrough-copy h3 { margin:6px 0; font-size:8.5vw; }
+  .walkthrough-copy p { display:none; }
+  .walkthrough-checks button { width:39vw; }
+  .walkthrough-checks button:nth-child(1) { left:4%; bottom:17%; }
+  .walkthrough-checks button:nth-child(2) { left:47%; top:48%; }
+  .walkthrough-checks button:nth-child(3) { right:4%; top:27%; }
+
+  /* Finale remains scrollable and gives each takeaway its own line. */
+  .afterlife-copy { padding:82px 6vw 28px; overflow:auto; }
+  .afterlife-copy h3 { font-size:13vw; }
+  .afterlife-copy > p { font-size:4.4vw; }
+  .afterlife-copy nav { padding-bottom:18px; }
+}
