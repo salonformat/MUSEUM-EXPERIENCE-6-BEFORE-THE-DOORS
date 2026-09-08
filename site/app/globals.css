@@ -2168,3 +2168,42 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--epilogue .inspection-record { grid-column:1; grid-row:4; width:100%; margin:0; padding:14px 14px 12px; box-shadow:7px 8px 0 var(--oxblood); }
   .chapter--epilogue .afterlife-copy nav { grid-column:1; grid-row:5; justify-content:flex-start; flex-wrap:wrap; padding-bottom:12px; }
 }
+
+/* The briefing ends with one unmistakable, quiet primary action. */
+.passage-brief footer .workroom-entry {
+  width:min(620px,48vw);
+  min-height:132px;
+  padding:21px 72px 18px 24px;
+  border:2px solid var(--plaster);
+  background:var(--ultramarine);
+  box-shadow:13px 15px 0 #e4bd4f;
+  clip-path:none;
+  animation:none;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s ease,background .35s ease;
+}
+.passage-brief footer .workroom-entry::before { display:none; animation:none; }
+.passage-brief footer .workroom-entry small { color:#e4bd4f; font-size:.62rem; }
+.passage-brief footer .workroom-entry b {
+  display:block;
+  max-width:none;
+  color:var(--plaster);
+  font:400 clamp(2rem,3.1vw,3.8rem)/.94 "Della Respira",serif;
+  letter-spacing:-.045em;
+  white-space:nowrap;
+}
+.passage-brief footer .workroom-entry i { position:absolute; right:24px; top:50%; transform:translateY(-50%); }
+.passage-brief footer .workroom-entry:hover,
+.passage-brief footer .workroom-entry:focus-visible { color:var(--graphite); background:#e4bd4f; box-shadow:13px 15px 0 var(--ultramarine); transform:translate(-4px,-5px); }
+.passage-brief footer .workroom-entry:hover small,
+.passage-brief footer .workroom-entry:focus-visible small { color:var(--oxblood); }
+.passage-brief footer .workroom-entry:hover b,
+.passage-brief footer .workroom-entry:focus-visible b { color:var(--graphite); }
+.passage-brief footer .workroom-entry:hover i,
+.passage-brief footer .workroom-entry:focus-visible i { transform:translate(7px,-50%); }
+
+@media (max-width:760px) {
+  .passage-brief footer .workroom-entry { width:100%; min-height:92px; padding:14px 50px 12px 15px; box-shadow:8px 9px 0 #e4bd4f; }
+  .passage-brief footer .workroom-entry small { font-size:.49rem; }
+  .passage-brief footer .workroom-entry b { font-size:clamp(1.55rem,7.2vw,2.2rem); white-space:normal; }
+  .passage-brief footer .workroom-entry i { right:15px; font-size:2rem; }
+}

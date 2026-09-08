@@ -307,7 +307,7 @@ export default function Home() {
             <div><strong>02</strong><b>Inspect the room model</b><span>Find the wall opening that connects Klimt’s painted room with the view of Klinger’s Beethoven statue.</span></div>
             <div><strong>03</strong><b>Complete the frieze check</b><span>Move through all five stages — from the search for happiness to the final kiss.</span></div>
           </div>
-          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b><em>Enter</em><span>the workroom</span></b><i>→</i></button></footer>
+          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
       </section>
 
@@ -340,7 +340,7 @@ export default function Home() {
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
             <i /><span><b>The Dresden letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
           </button>
-          <button className="attention__item attention__item--rooms" type="button" onClick={() => { setModelRevealed(false); setFocus('rooms'); }}>
+          <button className="attention__item attention__item--rooms" type="button" onClick={() => { soundCue('room'); setModelRevealed(true); setFocus('rooms'); }}>
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
           </button>
           <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => setFocus('frieze')}>
@@ -398,7 +398,6 @@ export default function Home() {
             <div><p>Under Josef Hoffmann’s direction, twenty-one artists shaped one exhibition. Klinger’s statue stood in the main hall, Klimt’s frieze in the left side hall, and a wall opening connected both views.</p>
             <strong>What you learn</strong><span>Gesamtkunstwerk here is spatial: painting, sculpture and architecture shape one experience.</span></div>
           </details>
-          <button className="chapter-link model-reveal setup-action" type="button" onClick={() => { soundCue('room'); setModelRevealed(true); }}><small>Begin check 02</small>Start the sightline test →</button>
         </article>
         <div className="room-control">
           <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
