@@ -139,10 +139,9 @@ export default function Home() {
           <p className="hook-line">XIV Exhibition / Final check</p>
           <h1>Ah, there<br /><em>you</em> are.</h1>
           <div className="opening-role">
-            <p className="opening-role__edition">The XIV Exhibition</p>
-            <p className="opening-role__today">opens today.</p>
+            <p className="opening-role__edition">The XIV Exhibition opens today.</p>
             <p className="opening-role__names"><span>Klinger</span><span>Klimt</span><span>Hoffmann</span></p>
-            <p className="opening-role__task">You’re here for the final check.</p>
+            <p className="opening-role__task"><b>Your role</b><span>You’re the temporary helper. Go inside and check what still needs attention before the public arrives.</span></p>
           </div>
         </div>
         <aside className="experience-mark" aria-label="Experience context">
@@ -232,12 +231,13 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'}>
-        <button className="room-image-action" type="button" onClick={enterKlimtRoom} aria-label="Move through the wall opening into Klimt’s room">
+        <div className="room-image-action">
           <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
-        </button>
+          {modelRevealed && <button className="room-opening-hotspot" type="button" onClick={enterKlimtRoom}><i aria-hidden="true" /><b>Wall opening</b><span>Move into Klimt’s room</span></button>}
+        </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
-          <p className="worker-cue"><b>What to do</b><span>Select the drawn room and move through the wall opening toward Klinger’s statue.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Inspect the model first. Find how the wall opening keeps Klimt’s frieze and Klinger’s Beethoven statue connected.</span></p>
           <h3>Make the room make sense.</h3>
           <p>Painting. Sculpture. Architecture.</p>
           <p>Designed to be experienced together.</p>
@@ -249,8 +249,8 @@ export default function Home() {
           <button className="chapter-link model-reveal" type="button" onClick={() => setModelRevealed(true)}>Inspect the model</button>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>Frieze → Opening → Beethoven</b><span>The architecture keeps painting and sculpture in one field of view.</span></div>
-          <button className="chapter-link room-enter" type="button" onClick={enterKlimtRoom}>Move through the opening</button>
+          <div className="view-step"><b>What you are checking</b><span>Move your pointer across the drawing. The opening frames Klinger’s statue from Klimt’s room, linking painting, sculpture and architecture.</span></div>
+          <span className="room-control__hint">When you understand the sightline, use the highlighted wall opening.</span>
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -263,7 +263,7 @@ export default function Home() {
           onPointerUp={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); event.currentTarget.releasePointerCapture(event.pointerId); }}
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
-          <img className="chapter__art" src="/images/beethoven-frieze-v1.png" alt="An original hand-drawn abstract interpretation of the Beethoven Frieze" draggable="false" onDragStart={(event) => event.preventDefault()} />
+          <img className="chapter__art" src="/images/beethoven-frieze-v2.png" alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
           <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>
         </div>
         <div className="frieze-copy">
@@ -314,7 +314,7 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
-        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v10.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v1.png" alt="" /></div>
+        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v10.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v2.png" alt="" /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Final preparations complete</span>
           <h3>The doors<br /><em>are open.</em></h3>

@@ -533,7 +533,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .memory-echo img:nth-child(3) { object-position:right; }
 .chapter--epilogue.is-open .memory-echo { animation:memoryEcho 1.4s 3.75s cubic-bezier(.16,1,.3,1) both; }
 @keyframes memoryEcho { 0% { opacity:0; transform:scale(1.12); filter:blur(10px); } 38% { opacity:.32; filter:blur(0); } 100% { opacity:0; transform:scale(1); } }
-.afterlife-copy::after { content:""; position:absolute; z-index:-1; right:-4vw; bottom:-8vh; width:44vw; height:55vh; opacity:.055; background:url('/images/beethoven-frieze-v1.png') right center/cover no-repeat; filter:grayscale(1) contrast(2); transform:rotate(-2deg); pointer-events:none; }
+.afterlife-copy::after { content:""; position:absolute; z-index:-1; right:-4vw; bottom:-8vh; width:44vw; height:55vh; opacity:.055; background:url('/images/beethoven-frieze-v2.png') right center/cover no-repeat; filter:grayscale(1) contrast(2); transform:rotate(-2deg); pointer-events:none; }
 
 @media (max-width:760px) {
   .sound-toggle { left:10px; right:auto; top:9px; bottom:auto; }
@@ -693,12 +693,13 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 /* Editorial opening facts: one quiet axis, no mid-century collage cards. */
 .opening-role { position:relative; display:grid; grid-template-columns:1fr; width:min(28rem,40vw); margin:clamp(24px,3vh,34px) 0 0 .32em; padding:0; border:0; color:var(--plaster); text-shadow:0 2px 18px rgb(17 13 82 / 32%); }
 .opening-role p { margin:0; }
-.opening-role__edition { grid-column:1 / -1; color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.72rem,.82vw,.86rem); font-weight:700; letter-spacing:.19em; line-height:1; text-transform:uppercase; }
-.opening-role__today { margin-top:9px !important; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.35rem,1.68vw,1.72rem); font-weight:400; line-height:1; letter-spacing:-.035em; }
-.opening-role__names { display:flex; gap:10px; margin-top:14px !important; padding:0; border:0; font-family:"Josefin Sans",sans-serif; font-size:clamp(.64rem,.73vw,.77rem); font-weight:600; letter-spacing:.15em; line-height:1; text-transform:uppercase; }
+.opening-role__edition { color:var(--plaster); font-family:"Josefin Sans",sans-serif; font-size:clamp(1.03rem,1.22vw,1.28rem); font-weight:600; letter-spacing:.035em; line-height:1.12; text-transform:uppercase; }
+.opening-role__names { display:flex; gap:10px; margin-top:11px !important; padding:0; border:0; color:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.64rem,.73vw,.77rem); font-weight:600; letter-spacing:.15em; line-height:1; text-transform:uppercase; }
 .opening-role__names span { display:inline-flex; align-items:center; }
 .opening-role__names span:not(:last-child)::after { content:"/"; margin-left:8px; color:#e4bd4f; }
-.opening-role__task { margin-top:clamp(20px,2.4vh,28px) !important; max-width:20rem; font-family:"Josefin Sans",sans-serif; font-size:clamp(1.05rem,1.22vw,1.28rem); font-weight:400; line-height:1.2; letter-spacing:-.018em; }
+.opening-role__task { display:grid; gap:6px; margin-top:clamp(20px,2.4vh,28px) !important; max-width:24rem; font-family:"Della Respira",serif; font-size:clamp(1rem,1.18vw,1.22rem); font-weight:400; line-height:1.28; letter-spacing:-.018em; }
+.opening-role__task b { color:var(--rose); font-family:"Josefin Sans",sans-serif; font-size:.58rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; }
+.opening-role__task span { display:block; font-family:inherit; font-size:inherit; font-weight:inherit; letter-spacing:inherit; text-transform:none; }
 
 /* The door is the button: stronger proximity, plain-language instruction. */
 .threshold { width:154px; height:180px; }
@@ -713,11 +714,11 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 
 @media (max-width:760px) {
   .opening-role { width:min(61vw,380px); margin:18px 0 0 .22em; padding-top:0; }
-  .opening-role__edition { font-size:.59rem; }
-  .opening-role__today { margin-top:7px !important; font-size:1.2rem; }
+  .opening-role__edition { font-size:.72rem; }
   .opening-role__names { gap:6px; margin-top:9px !important; font-size:.49rem; }
   .opening-role__names span:not(:last-child)::after { margin-left:5px; }
-  .opening-role__task { margin-top:15px !important; max-width:15rem; font-size:.9rem; }
+  .opening-role__task { margin-top:14px !important; max-width:17rem; font-size:.82rem; }
+  .opening-role__task b { font-size:.47rem; }
   .door-aura { left:70.3%; top:87.5%; }
 }
 
@@ -747,6 +748,53 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .work-ledger small { font-size:.4rem; }
 }
 
+/* The model is explored first; only its actual wall opening advances the story. */
+.room-image-action { cursor:default; }
+.room-model-art { transform:translate3d(calc(var(--mx,0) * -16px),calc(var(--my,0) * -10px),0) scale(1.035); transform-origin:center; transition:transform .5s cubic-bezier(.2,.8,.2,1),filter 1.15s ease; }
+.room-opening-hotspot { position:absolute; z-index:4; left:53%; top:43%; display:grid; justify-items:center; gap:4px; min-width:150px; padding:0; border:0; color:var(--graphite); background:transparent; transform:translate(-50%,-50%); cursor:pointer; }
+.room-opening-hotspot i { width:54px; height:82px; border:2px solid var(--gold); box-shadow:0 0 0 7px rgb(241 235 221 / 52%),0 0 24px rgb(169 130 53 / 42%); clip-path:polygon(5% 1%,95% 3%,100% 98%,1% 100%); animation:openingPulse 2.4s ease-in-out infinite; }
+.room-opening-hotspot b,.room-opening-hotspot span { padding:5px 8px 4px; background:rgb(241 235 221 / 91%); }
+.room-opening-hotspot b { margin-top:3px; color:var(--oxblood); font-size:.52rem; letter-spacing:.16em; text-transform:uppercase; }
+.room-opening-hotspot span { margin-top:-4px; font-family:"Della Respira",serif; font-size:.7rem; }
+.room-opening-hotspot:hover i,.room-opening-hotspot:focus-visible i { transform:scale(1.12); box-shadow:0 0 0 8px rgb(241 235 221 / 65%),0 0 35px rgb(169 130 53 / 64%); }
+.room-control__hint { display:block; max-width:32rem; margin-top:9px; font-size:.55rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+.chapter--rooms.model-revealed .room-image-action { bottom:0; }
+.chapter--rooms.model-revealed .room-control { left:3vw; bottom:3vh; width:min(520px,62vw); height:auto; padding:0; color:var(--graphite); background:transparent; }
+.chapter--rooms .room-control .view-step { margin:0; padding:12px 14px; color:var(--graphite); background:rgb(228 189 79 / 92%); box-shadow:7px 8px 0 rgb(32 29 26 / 18%); }
+.chapter--rooms .room-control__hint { width:max-content; max-width:100%; margin:5px 0 0; padding:5px 7px 4px; color:var(--graphite); background:rgb(241 235 221 / 88%); }
+@keyframes openingPulse { 50% { transform:scale(1.06); opacity:.72; } }
+
+/* Frieze controls live around the image; learning text opens only on request. */
+.chapter--frieze { grid-template-rows:minmax(0,85vh) minmax(105px,15vh); }
+.frieze-copy { display:flex; align-items:center; gap:clamp(18px,3vw,46px); min-height:105px; padding:12px 4vw; overflow:visible; }
+.frieze-copy > p:not(.worker-cue) { flex:1 1 auto; margin:0; font-size:clamp(1.75rem,3.25vw,3.8rem); white-space:nowrap; }
+.frieze-copy .worker-cue--frieze { position:fixed; z-index:6; left:3vw; top:64px; width:auto; max-width:300px; margin:0!important; padding:9px 11px; box-shadow:5px 6px 0 rgb(32 29 26 / 20%); }
+.frieze-copy .worker-cue--frieze span { font-size:.74rem; }
+.frieze-controls { position:fixed; z-index:6; right:3vw; top:64px; width:auto; padding:8px 10px; color:var(--graphite); background:#e4bd4f; }
+.frieze-controls button { min-width:28px; margin:0!important; padding:1px 6px; color:var(--graphite); border:0; }
+.context-note--frieze { flex:0 0 auto; width:auto; max-width:250px; max-height:none; margin:0; overflow:visible; }
+.context-note--frieze[open] { position:fixed; z-index:8; right:3vw; bottom:17vh; width:min(430px,88vw); max-width:none; max-height:68vh; overflow:auto; box-shadow:9px 11px 0 rgb(32 29 26 / 24%); }
+.frieze-reveal { flex:0 0 min(320px,28vw); position:relative; inset:auto; width:auto; }
+
+@media (max-width:760px) {
+  .room-opening-hotspot { left:53%; top:43%; min-width:124px; }
+  .room-opening-hotspot i { width:38px; height:58px; }
+  .room-opening-hotspot span { font-size:.58rem; }
+  .room-control__hint { max-width:58%; font-size:.43rem; line-height:1.25; }
+  .chapter--rooms.model-revealed .room-control { left:4vw; bottom:3vh; width:82vw; min-height:0; }
+  .chapter--rooms .room-control__hint { max-width:78vw; }
+  .chapter--frieze { grid-template-rows:minmax(0,81vh) minmax(135px,19vh); }
+  .frieze-copy { display:flex; flex-direction:row; align-items:center; gap:10px; padding:10px 4vw; overflow:visible; }
+  .frieze-copy > p:not(.worker-cue) { flex:1; font-size:6.2vw; white-space:normal; }
+  .frieze-copy .worker-cue--frieze { left:3vw; top:52px; width:210px; padding:7px 8px; }
+  .frieze-copy .worker-cue--frieze span { font-size:.58rem; }
+  .frieze-controls { right:3vw; top:52px; }
+  .context-note--frieze { width:128px; max-height:none; padding:8px 9px; }
+  .context-note--frieze summary span { display:none; }
+  .context-note--frieze[open] { right:4vw; bottom:20vh; width:88vw; max-height:62vh; }
+  .frieze-reveal { flex:0 0 172px; width:172px; padding:8px 9px; }
+}
+
 /* Cinematic prologue: the illustration arrives as architecture, not a thumbnail. */
 .opening-slate { grid-template-columns:minmax(0,56%) 1fr; grid-template-rows:auto 1fr auto auto; gap:14px; align-items:end; padding:clamp(30px,5vw,82px); isolation:isolate; animation:slateAway 1.15s 5.05s cubic-bezier(.76,0,.24,1) forwards; }
 .opening-slate::after { content:""; position:absolute; z-index:0; inset:0; background:linear-gradient(90deg,var(--graphite) 0 32%,rgb(32 29 26 / 86%) 46%,rgb(32 29 26 / 7%) 76%); pointer-events:none; }
@@ -757,6 +805,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .opening-slate__modes { grid-column:1; grid-row:4; border:0; opacity:0; animation:prologueCopy .8s 1.55s ease forwards; }
 .opening-glimpse { z-index:0; right:-2vw; top:-3vh; width:61vw; height:106vh; clip-path:polygon(18% 0,100% 0,100% 100%,3% 100%,13% 71%,5% 45%); animation:prologueImage 1.3s .08s cubic-bezier(.16,1,.3,1) forwards; }
 .opening-glimpse img { width:100%; height:100%; margin:0; object-position:69% center; filter:saturate(1.05) contrast(1.04) brightness(.82); transform:scale(1.12); animation:prologueDrift 5.6s ease-out both; }
+.opening-glimpse::before { content:""; position:absolute; z-index:1; left:67%; top:4%; width:27%; aspect-ratio:1; background:linear-gradient(112deg,transparent 37%,rgb(255 243 190 / 10%) 48%,transparent 59%); clip-path:polygon(13% 19%,31% 5%,55% 1%,78% 12%,94% 31%,99% 58%,88% 80%,65% 96%,37% 93%,15% 77%,2% 52%); mix-blend-mode:soft-light; filter:blur(14px); opacity:0; animation:prologueGoldQuiet 5.8s 1s ease-out both; pointer-events:none; }
 .opening-glimpse > i { top:-1%; bottom:-1%; width:51%; border:0; }
 .opening-glimpse > i:first-of-type { animation:prologueDoorLeft 1.55s .35s cubic-bezier(.76,0,.24,1) forwards; }
 .opening-glimpse > i:last-of-type { animation:prologueDoorRight 1.55s .35s cubic-bezier(.76,0,.24,1) forwards; }
@@ -768,6 +817,11 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 @keyframes prologueDrift { to { transform:scale(1.025) translate(-1.5%,.5%); } }
 @keyframes prologueDoorLeft { to { transform:translateX(-102%); } }
 @keyframes prologueDoorRight { to { transform:translateX(102%); } }
+@keyframes prologueGoldQuiet { 0% { opacity:0; transform:translateX(-3%); } 42% { opacity:.16; } 100% { opacity:.06; transform:translateX(3%); } }
+
+/* A stronger but still irregular metallic response on the exterior dome. */
+.dome-glint { left:69%; top:9%; width:22vw; background:linear-gradient(116deg,transparent 34%,rgb(255 244 190 / 13%) 44%,rgb(255 235 151 / 22%) 49%,transparent 58%); clip-path:polygon(11% 19%,29% 5%,55% 1%,78% 12%,95% 33%,99% 58%,88% 81%,64% 97%,36% 93%,14% 77%,2% 51%); mix-blend-mode:soft-light; filter:blur(11px); animation:goldGlintNatural 8s 2.7s ease-in-out infinite; }
+@keyframes goldGlintNatural { 0%,58%,100% { opacity:0; transform:translateX(-2%) rotate(-3deg) scale(.96); } 69% { opacity:.16; } 82% { opacity:.24; transform:translateX(3%) rotate(2deg) scale(1); } 92% { opacity:.05; transform:translateX(5%) rotate(3deg) scale(1.01); } }
 
 @media (max-width:760px) {
   .opening-slate { display:grid; grid-template-columns:1fr; grid-template-rows:auto 1fr auto auto; gap:11px; padding:5vh 6vw 4vh; }
