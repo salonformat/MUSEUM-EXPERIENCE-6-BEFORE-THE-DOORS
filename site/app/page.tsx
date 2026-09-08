@@ -168,7 +168,7 @@ export default function Home() {
           <div className="passage-brief__grid">
             <div><strong>01</strong><b>Review Arnold’s letter</b><span>Confirm that the marble head was delayed — and note Klinger’s unanswered request for Beethoven’s price.</span></div>
             <div><strong>02</strong><b>Inspect the room model</b><span>Find the wall opening that connects Klimt’s painted room with the view of Klinger’s Beethoven statue.</span></div>
-            <div><strong>03</strong><b>Walk Klimt’s frieze</b><span>Follow its sequence from the search for happiness through resistance, desire and the arts to the final kiss.</span></div>
+            <div><strong>03</strong><b>Complete the frieze check</b><span>Move through all five stages — from the search for happiness to the final kiss.</span></div>
           </div>
           <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button type="button" onClick={beginRoom}>Enter the workroom <i>→</i></button></footer>
         </article>
@@ -271,7 +271,7 @@ export default function Home() {
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>Drag to move</b><span>Follow the wall from left to right.</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>Your task</b><span>Move from left to right. Reveal all five stages and reach the final kiss to complete this room check.</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Why / Learn</b><span>Why this room matters</span></summary>
@@ -285,7 +285,7 @@ export default function Home() {
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezeComplete && <div className="frieze-reveal"><span>This room was made for this exhibition.</span><small>The frieze was conceived as part of something temporary.</small><button type="button" onClick={() => setFocus('invitation')}>Final preparations →</button></div>}
+          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button type="button" onClick={() => setFocus('invitation')}>Final preparations →</button></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>

@@ -910,3 +910,42 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .passage-brief footer > span { font-size:.72rem; line-height:1.3; }
   .passage-brief footer button { padding:13px 15px 11px; font-size:.58rem; }
 }
+
+/* Exterior typography rebuilt as one deliberate editorial plane. */
+.exterior__copy { left:0; top:0; bottom:0; width:46vw; max-width:none; padding:clamp(34px,5vh,68px) clamp(28px,4vw,72px); background:rgb(37 32 232 / 96%); clip-path:polygon(0 0,100% 0,96% 23%,100% 48%,95% 73%,98% 100%,0 100%); text-shadow:none; }
+.exterior__copy .dateline { gap:1rem; margin:0 0 clamp(24px,4vh,44px); font-size:clamp(.72rem,.82vw,.9rem); }
+.exterior__copy h1 { max-width:6ch; margin:0; font-size:clamp(4.2rem,7.7vw,8.8rem); line-height:.78; letter-spacing:-.055em; }
+.opening-role { width:min(31rem,37vw); margin:clamp(22px,3.2vh,38px) 0 0; }
+.opening-role__edition { font-size:clamp(1.2rem,1.5vw,1.65rem); letter-spacing:.02em; }
+.opening-role__names { margin-top:12px!important; font-size:clamp(.76rem,.9vw,.98rem); }
+.opening-role__task { max-width:27rem; margin-top:clamp(20px,2.6vh,30px)!important; font-size:clamp(1.16rem,1.42vw,1.5rem); line-height:1.28; }
+.opening-role__task b { font-size:.72rem; }
+.entry-cue { left:4vw; top:auto; bottom:5.5vh; width:290px; }
+.entry-cue b { display:inline-block; padding:8px 11px 7px; color:var(--graphite); background:#e4bd4f; font-family:"Josefin Sans",sans-serif; font-size:clamp(.82rem,.95vw,1rem); font-weight:700; letter-spacing:.12em; line-height:1; text-transform:uppercase; box-shadow:6px 7px 0 rgb(32 29 26 / 22%); }
+.entry-cue small { max-width:none; margin-top:11px; color:var(--plaster); font-size:.62rem; }
+.entry-cue svg { left:180px; top:-20px; width:45vw; height:16vh; }
+
+/* Card numbers are watermarks, never part of the task line. */
+.passage-brief__grid strong { top:auto; right:10px; bottom:4px; font-size:2.25rem; opacity:.2; }
+.passage-brief__grid b { display:block; max-width:calc(100% - 8px); padding-right:0; font-size:.64rem; line-height:1.25; }
+.passage-brief__grid span { margin-top:12px; font-size:clamp(.92rem,1.08vw,1.08rem); }
+
+@media (max-width:760px) {
+  .exterior__copy { width:49vw; padding:5vh 6vw 4vh; clip-path:polygon(0 0,100% 0,95% 30%,100% 61%,94% 100%,0 100%); }
+  .exterior__copy .dateline { gap:.65rem; margin-bottom:20px; font-size:.62rem; }
+  .exterior__copy h1 { max-width:5.5ch; font-size:clamp(3.25rem,9.4vw,4rem); line-height:.8; }
+  .opening-role { width:36vw; margin-top:19px; }
+  .opening-role__edition { font-size:.82rem; line-height:1.12; }
+  .opening-role__names { display:grid; gap:4px; margin-top:10px!important; font-size:.6rem; }
+  .opening-role__names span:not(:last-child)::after { display:none; }
+  .opening-role__task { max-width:35vw; margin-top:15px!important; font-size:.9rem; line-height:1.24; }
+  .opening-role__task b { font-size:.58rem; }
+  .entry-cue { left:6vw; top:auto; bottom:4vh; width:230px; }
+  .entry-cue b { font-size:.7rem; }
+  .entry-cue small { max-width:150px; font-size:.54rem; }
+  .entry-cue svg { left:132px; top:-22px; width:52vw; height:15vh; }
+  .passage-brief__grid strong { right:7px; top:auto; bottom:2px; font-size:1.8rem; }
+  .passage-brief__grid b { max-width:100%; padding-right:0; font-size:.53rem; }
+  .passage-brief__grid span { margin-top:12px; font-size:.74rem; }
+}
+@keyframes slateAway { 0% { clip-path:inset(0); opacity:1; } 99% { opacity:1; } 100% { clip-path:inset(0 0 101% 0); opacity:0; visibility:hidden; } }
