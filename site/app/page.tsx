@@ -17,6 +17,7 @@ export default function Home() {
   const [letterComplete, setLetterComplete] = useState(false);
   const [roomView, setRoomView] = useState(18);
   const [roomComplete, setRoomComplete] = useState(false);
+  const [dispatchPrepared, setDispatchPrepared] = useState(false);
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
@@ -243,7 +244,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}>Prepare follow-up note ✓</button> : <p className="check-progress">Mark both open points to complete this check.</p>}
+          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Both points marked</small>Complete letter check → Return to workroom</button> : <p className="check-progress">Mark both open points to complete this check.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -265,12 +266,12 @@ export default function Home() {
             <div><p>Under Josef Hoffmann’s direction, twenty-one artists shaped one exhibition. Klinger’s statue stood in the main hall, Klimt’s frieze in the left side hall, and a wall opening connected both views.</p>
             <strong>What you learn</strong><span>Gesamtkunstwerk here is spatial: painting, sculpture and architecture shape one experience.</span></div>
           </details>
-          <button className="chapter-link model-reveal" type="button" onClick={() => setModelRevealed(true)}>Start the sightline test</button>
+          <button className="chapter-link model-reveal setup-action" type="button" onClick={() => { soundCue('room'); setModelRevealed(true); }}><small>Begin check 02</small>Start the sightline test →</button>
         </article>
         <div className="room-control">
           <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
           <label className="sightline-control"><span>Separate</span><input type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>Connected</span></label>
-          {roomView >= 72 ? <button className="sightline-confirm" type="button" onClick={() => { setRoomComplete(true); enterKlimtRoom(); }}>Confirm sightline & enter Klimt’s room →</button> : <span className="room-control__hint">Keep moving toward “connected”.</span>}
+          {roomView >= 72 ? <button className="sightline-confirm next-action" type="button" onClick={() => { setRoomComplete(true); enterKlimtRoom(); }}><small>View confirmed</small>Enter Klimt’s room →</button> : <span className="room-control__hint">Keep moving toward “connected”.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -301,12 +302,12 @@ export default function Home() {
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button type="button" onClick={() => setFocus('invitation')}>Final preparations →</button></div>}
+          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus('invitation')}><small>Room check complete</small>Continue to the final invitation →</button></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
-      <section className={`chapter chapter--invitation ${focus === 'invitation' ? 'is-open' : ''}`} aria-hidden={focus !== 'invitation'}>
+      <section className={`chapter chapter--invitation ${focus === 'invitation' ? 'is-open' : ''} ${dispatchPrepared ? 'dispatch-prepared' : ''}`} aria-hidden={focus !== 'invitation'}>
         <img className="chapter__art" src="/images/correspondence-terey-v1.png" alt="A hand-drawn reconstructed letter, invitation and addressed envelope" />
         <article className="invitation-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
@@ -315,8 +316,8 @@ export default function Home() {
           <p>Gabriel von Térey writes from Budapest’s National Gallery. He knew Klinger’s <em>Beethoven</em> from the artist’s studio and planned to attend the opening.</p>
           <p>He asks for a second invitation for Joseph Beer, a restorer at the National Gallery.</p>
           <p>Both cards are to be delivered to Hotel Kaiserhof.</p>
-          <div className="ending-cue"><b>Your final action</b><span>Make sure both visitors receive their invitations before they come to the Secession.</span></div>
-          <button className="chapter-link invitation-action" type="button" onClick={() => { soundCue('paper'); setDoorsOpen(false); setFocus('doors'); }}>Send both cards to Hotel Kaiserhof →</button>
+          <div className="ending-cue"><b>Dispatch check</b><span>Bundle Térey’s card and Beer’s additional card. Both must go to Hotel Kaiserhof.</span></div>
+          {!dispatchPrepared ? <button className="chapter-link invitation-action next-action" type="button" onClick={() => { soundCue('paper'); setDispatchPrepared(true); }}><small>Step 1 of 2</small>Prepare both cards for Hotel Kaiserhof →</button> : <div className="dispatch-confirmation"><div aria-hidden="true"><i>G. von Térey</i><i>Joseph Beer</i><b>Hotel Kaiserhof</b></div><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={() => { soundCue('paper'); setDoorsOpen(false); setFocus('doors'); }}><small>Step 2 of 2</small>Send dispatch & continue to opening →</button></div>}
         </article>
       </section>
 
