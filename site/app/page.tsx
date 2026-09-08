@@ -135,6 +135,15 @@ export default function Home() {
     setFriezeSeen((seen) => seen.includes(friezeIndex) ? seen : [...seen, friezeIndex]);
   };
 
+  const dispatchInvitations = () => {
+    soundCue('paper');
+    setDispatchSent(true);
+    window.setTimeout(() => {
+      setLetterComplete(true);
+      setFocus(null);
+    }, 3400);
+  };
+
   const toggleWalkthrough = (item: string) => {
     soundCue('room');
     setWalkthroughChecks((checks) => checks.includes(item) ? checks : [...checks, item]);
@@ -204,13 +213,6 @@ export default function Home() {
     const done = window.setTimeout(() => setFocus(null), 2200);
     return () => window.clearTimeout(done);
   }, [focus, roomView, roomComplete]);
-
-  useEffect(() => {
-    if (focus !== 'invitation' || !dispatchSent) return;
-    if (!letterComplete) { setLetterComplete(true); soundCue('paper'); }
-    const done = window.setTimeout(() => setFocus(null), 3400);
-    return () => window.clearTimeout(done);
-  }, [focus, dispatchSent, letterComplete]);
 
   useEffect(() => {
     if (focus !== 'letter' || !letterHeadFound || !letterPriceFound) return;
@@ -455,7 +457,7 @@ export default function Home() {
             </div>
             <div className={`dispatch-envelope ${tereyPacked ? 'has-terey' : ''} ${beerPacked ? 'has-beer' : ''}`} aria-hidden="true"><i /><i /><span>HOTEL<br />KAISERHOF</span></div>
           </div>
-          {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={() => { soundCue('paper'); setDispatchSent(true); }}><small>Both cards enclosed</small>Send to Hotel Kaiserhof →</button></div>}
+          {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={dispatchInvitations}><small>Both cards enclosed</small>Send to Hotel Kaiserhof →</button></div>}
         </article>
         {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport, price and invitations are recorded. Returning to the workroom…</span></p></div>}
       </section>
