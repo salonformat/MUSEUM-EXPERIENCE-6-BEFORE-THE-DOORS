@@ -106,7 +106,7 @@ export default function Home() {
     event.currentTarget.style.setProperty('--px', `${event.clientX}px`);
     event.currentTarget.style.setProperty('--py', `${event.clientY}px`);
     const doorX = window.innerWidth * (window.innerWidth <= 760 ? .703 : .685);
-    const doorY = window.innerHeight * (window.innerWidth <= 760 ? .828 : .82);
+    const doorY = window.innerHeight * (window.innerWidth <= 760 ? .875 : .855);
     const distance = Math.hypot(event.clientX - doorX, event.clientY - doorY);
     const proximity = Math.max(0, Math.min(1, 1 - distance / (window.innerWidth * .42)));
     event.currentTarget.style.setProperty('--door-proximity', proximity.toFixed(3));
@@ -149,7 +149,7 @@ export default function Home() {
         </aside>
         <button className="threshold" type="button" aria-label="Enter the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
           <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span>
-          <span className="threshold__label">Enter</span>
+          <span className="threshold__label"><b>Click the door</b>to enter</span>
         </button>
       </section>
 
