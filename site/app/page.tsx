@@ -6,6 +6,7 @@ type Stage = 'outside' | 'threshold' | 'inside';
 type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'doors' | 'epilogue';
 
 export default function Home() {
+  const asset = (file: string) => `${import.meta.env.BASE_URL}images/${file}`;
   const [stage, setStage] = useState<Stage>('outside');
   const [introSkipped, setIntroSkipped] = useState(false);
   const [focus, setFocus] = useState<Focus>(null);
@@ -137,7 +138,7 @@ export default function Home() {
       <aside className="work-ledger" aria-hidden="true"><i /><span>Final check</span><b>{systemLabel}</b><small>{systemNumber} — 05</small></aside>
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
         <span>An immersive cultural experience</span>
-        <div className="opening-glimpse"><img src="/images/secession-exterior-v10.png" alt="" /><i /><i /></div>
+        <div className="opening-glimpse"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /></div>
         <h1 className="prologue-title"><span>Before</span><em>the doors</em><strong>open.</strong></h1>
         <p><strong>The XIV Exhibition opens today.</strong> German artist Max Klinger’s monumental Beethoven sculpture stands at its centre. Klimt’s frieze and Josef Hoffmann’s spatial design were created around it. Step into the exhibition team’s final check.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
@@ -146,7 +147,7 @@ export default function Home() {
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
-          <img src="/images/secession-exterior-v10.png?v=full-ultramarine" alt="" draggable="false" />
+          <img src={`${asset('secession-exterior-v10.png')}?v=full-ultramarine`} alt="" draggable="false" />
         </div>
         <div className="dome-glint" aria-hidden="true" />
         <div className="door-aura" aria-hidden="true" />
@@ -191,7 +192,7 @@ export default function Home() {
 
       <section className="interior" aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
         <div className="interior__architecture" aria-hidden="true">
-          <img className="interior-art" src="/images/secession-interior-v4.png?v=controlled-ink" alt="" draggable="false" />
+          <img className="interior-art" src={`${asset('secession-interior-v4.png')}?v=controlled-ink`} alt="" draggable="false" />
           <div className="pastel pastel--patina" />
           <div className="pastel pastel--blue" />
           <div className="pastel pastel--rose" />
@@ -227,7 +228,7 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
-        <img className="chapter__art" src="/images/correspondence-arnold-v1.png" alt="A hand-drawn reconstructed letter with two telegram slips" />
+        <img className="chapter__art" src={asset('correspondence-arnold-v1.png')} alt="A hand-drawn reconstructed letter with two telegram slips" />
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
@@ -255,7 +256,7 @@ export default function Home() {
 
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
         <div className="room-image-action">
-          <img className="chapter__art room-model-art" src="/images/spatial-model-v1.png" alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
+          <img className="chapter__art room-model-art" src={asset('spatial-model-v1.png')} alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
           {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 72 ? 'is-aligned' : ''}`} style={{'--view-x':`${22 + roomView * .3}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
           {modelRevealed && <div className={`room-opening-hotspot ${roomView >= 72 ? 'is-aligned' : ''}`}><i aria-hidden="true" /><b>Wall opening</b><span>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</span></div>}
         </div>
@@ -288,7 +289,7 @@ export default function Home() {
           onPointerUp={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); event.currentTarget.releasePointerCapture(event.pointerId); }}
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
-          <img className="chapter__art" src="/images/beethoven-frieze-v2.png" alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
+          <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
@@ -312,7 +313,7 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--invitation ${focus === 'invitation' ? 'is-open' : ''} ${tereyPacked && beerPacked ? 'dispatch-prepared' : ''} ${dispatchSent ? 'dispatch-sent' : ''}`} aria-hidden={focus !== 'invitation'}>
-        <img className="chapter__art" src="/images/correspondence-terey-v1.png" alt="A hand-drawn reconstructed letter, invitation and addressed envelope" />
+        <img className="chapter__art" src={asset('correspondence-terey-v1.png')} alt="A hand-drawn reconstructed letter, invitation and addressed envelope" />
         <article className="invitation-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
           <p className="chapter-kicker">12 April 1902 · Budapest → Vienna</p>
@@ -334,7 +335,7 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--doors ${focus === 'doors' ? 'is-open' : ''} ${doorsOpen ? 'is-opening' : ''}`} aria-hidden={focus !== 'doors'}>
-        <img className="doors-room" src="/images/secession-interior-v4.png" alt="The prepared exhibition room" />
+        <img className="doors-room" src={asset('secession-interior-v4.png')} alt="The prepared exhibition room" />
         <div className="door-leaf door-leaf--left" aria-hidden="true" />
         <div className="door-leaf door-leaf--right" aria-hidden="true" />
         <div className="doors-copy">
@@ -347,7 +348,7 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
-        <div className="memory-echo" aria-hidden="true"><img src="/images/secession-exterior-v10.png" alt="" /><img src="/images/secession-interior-v4.png" alt="" /><img src="/images/beethoven-frieze-v2.png" alt="" /></div>
+        <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Final preparations complete</span>
           <h3>The doors<br /><em>are open.</em></h3>
