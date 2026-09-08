@@ -306,7 +306,7 @@ export default function Home() {
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus('invitation')}><small>Room check complete</small>Continue to the final invitation →</button></div>}
+          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus('invitation')}><small>One preparation remains</small>Resolve the missing invitation →</button></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
