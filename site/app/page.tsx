@@ -30,6 +30,8 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const audioMaster = useRef<GainNode | null>(null);
   const climaxPlayed = useRef(false);
+  const publicAmbience = useRef<HTMLAudioElement | null>(null);
+  const workroomAmbience = useRef<HTMLAudioElement | null>(null);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
   const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
   const friezeMarkers = [{x:28,y:43},{x:48,y:39},{x:62,y:49},{x:58,y:34},{x:75,y:42}];
@@ -83,7 +85,15 @@ export default function Home() {
   };
 
   const enterThreshold = () => { soundCue('threshold'); setStage('threshold'); };
-  const beginRoom = () => { soundCue('room'); setInteriorRevealed(false); setStage('inside'); };
+  const beginRoom = () => {
+    soundCue('room');
+    if (workroomAmbience.current && soundEnabled) {
+      workroomAmbience.current.volume = .11;
+      void workroomAmbience.current.play().catch(() => undefined);
+    }
+    setInteriorRevealed(false);
+    setStage('inside');
+  };
 
   useEffect(() => {
     if (stage !== 'inside' || interiorRevealed) return;
@@ -144,8 +154,31 @@ export default function Home() {
   const openDoors = () => {
     if (doorsOpen) return;
     soundCue('doors');
+    const ambience = publicAmbience.current;
+    if (ambience && soundEnabled) {
+      ambience.volume = 0;
+      ambience.currentTime = 3;
+      void ambience.play().catch(() => undefined);
+      const started = performance.now();
+      const fade = (now: number) => {
+        if (!publicAmbience.current) return;
+        publicAmbience.current.volume = Math.min(.28, ((now - started) / 3200) * .28);
+        if (now - started < 3200) requestAnimationFrame(fade);
+      };
+      requestAnimationFrame(fade);
+    }
     setDoorsOpen(true);
     window.setTimeout(() => setFocus('epilogue'), 1700);
+  };
+
+  const downloadInspectionRecord = () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600"><rect width="1200" height="1600" fill="#F1EBDD"/><path d="M0 0H1200V185L0 315Z" fill="#2520E8"/><text x="80" y="120" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="25" letter-spacing="7">SALON FORMAT · IMMERSIVE CULTURAL EXPERIENCE</text><text x="80" y="430" fill="#201D1A" font-family="Georgia,serif" font-size="88">FINAL</text><text x="80" y="520" fill="#201D1A" font-family="Georgia,serif" font-size="88">INSPECTION RECORD</text><text x="82" y="600" fill="#A98235" font-family="Arial,sans-serif" font-size="26" letter-spacing="5">VIENNA SECESSION · 15 APRIL 1902</text><line x1="80" y1="665" x2="1120" y2="665" stroke="#201D1A" stroke-width="3"/><g font-family="Arial,sans-serif" font-size="30" letter-spacing="3"><rect x="80" y="735" width="1040" height="145" fill="#201D1A"/><text x="125" y="825" fill="#F1EBDD">01  CORRESPONDENCE CLEARED</text><rect x="80" y="910" width="1040" height="145" fill="#47716D"/><text x="125" y="1000" fill="#F1EBDD">02  SIGHTLINE CONFIRMED</text><rect x="80" y="1085" width="1040" height="145" fill="#A98235"/><text x="125" y="1175" fill="#201D1A">03  FRIEZE ROUTE COMPLETE</text></g><text x="80" y="1335" fill="#201D1A" font-family="Georgia,serif" font-size="42">The exhibition is ready.</text><text x="80" y="1400" fill="#6B2F2B" font-family="Arial,sans-serif" font-size="24" letter-spacing="4">THE PUBLIC CAN ENTER NOW.</text><text x="80" y="1510" fill="#201D1A" font-family="Arial,sans-serif" font-size="20" letter-spacing="4">A SALON FORMAT RECONSTRUCTION · SALONFORMAT.COM</text></svg>`;
+    const url = URL.createObjectURL(new Blob([svg], { type:'image/svg+xml' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'before-the-doors-open-final-inspection-record.svg';
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const replay = () => {
@@ -156,12 +189,49 @@ export default function Home() {
     if (audioMaster.current && audioContext.current) {
       audioMaster.current.gain.setTargetAtTime(soundEnabled ? .16 : 0, audioContext.current.currentTime, .08);
     }
-  }, [soundEnabled]);
+    if (publicAmbience.current) publicAmbience.current.volume = soundEnabled && doorsOpen ? .28 : 0;
+    if (workroomAmbience.current) workroomAmbience.current.volume = soundEnabled && stage === 'inside' && !doorsOpen ? .11 : 0;
+  }, [soundEnabled, doorsOpen, stage]);
 
   useEffect(() => {
     if (focus !== 'frieze') return;
     if (friezeComplete && !climaxPlayed.current) { climaxPlayed.current = true; soundCue('climax'); }
   }, [focus, friezeComplete]);
+
+  useEffect(() => {
+    if (focus !== 'rooms' || roomView < 72 || roomComplete) return;
+    setRoomComplete(true);
+    soundCue('room');
+    const done = window.setTimeout(() => setFocus(null), 2200);
+    return () => window.clearTimeout(done);
+  }, [focus, roomView, roomComplete]);
+
+  useEffect(() => {
+    if (focus !== 'invitation' || !dispatchSent || letterComplete) return;
+    setLetterComplete(true);
+    soundCue('paper');
+    const done = window.setTimeout(() => setFocus(null), 3400);
+    return () => window.clearTimeout(done);
+  }, [focus, dispatchSent, letterComplete]);
+
+  useEffect(() => {
+    if (focus !== 'letter' || !letterHeadFound || !letterPriceFound) return;
+    soundCue('paper');
+    const advance = window.setTimeout(() => setFocus('invitation'), 1650);
+    return () => window.clearTimeout(advance);
+  }, [focus, letterHeadFound, letterPriceFound]);
+
+  useEffect(() => {
+    if (focus !== 'frieze' || !friezeComplete) return;
+    const done = window.setTimeout(() => setFocus(null), 4800);
+    return () => window.clearTimeout(done);
+  }, [focus, friezeComplete]);
+
+  useEffect(() => {
+    if (focus !== 'frieze' || !friezeSeen.includes(friezeIndex) || friezeIndex >= 4) return;
+    const advance = window.setTimeout(() => setFriezePosition(friezeIndex + 1), 1150);
+    return () => window.clearTimeout(advance);
+  }, [focus, friezeIndex, friezeSeen]);
 
   const moveScene = (event: React.PointerEvent<HTMLElement>) => {
     const x = event.clientX / window.innerWidth - 0.5;
@@ -179,6 +249,8 @@ export default function Home() {
 
   return (
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
+      <audio ref={publicAmbience} src={`${import.meta.env.BASE_URL}audio/museum-gallery-ambience-cc0.mp3`} loop preload="auto" />
+      <audio ref={workroomAmbience} src={`${import.meta.env.BASE_URL}audio/empty-museum-footsteps-cc0.mp3`} loop preload="auto" />
       <div className="cursor-mark" aria-hidden="true" />
       <nav className="global-navigation" aria-label="Experience navigation">
         {(introSkipped || stage !== 'outside' || focus) && <button type="button" onClick={goBack}><i>←</i><span>Back</span></button>}
@@ -235,7 +307,7 @@ export default function Home() {
             <div><strong>02</strong><b>Inspect the room model</b><span>Find the wall opening that connects Klimt’s painted room with the view of Klinger’s Beethoven statue.</span></div>
             <div><strong>03</strong><b>Complete the frieze check</b><span>Move through all five stages — from the search for happiness to the final kiss.</span></div>
           </div>
-          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b>Enter the workroom</b><i>→</i></button></footer>
+          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b><em>Enter</em><span>the workroom</span></b><i>→</i></button></footer>
         </article>
       </section>
 
@@ -304,7 +376,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => setFocus('invitation')}><small>Both issues logged — this check continues</small>Open the invitation dispatch →</button> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
+          {letterHeadFound && letterPriceFound ? <div className="auto-complete auto-complete--letter"><i>✓</i><b>2 / 2 open points found</b><span>Opening the invitation dispatch…</span></div> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -331,7 +403,7 @@ export default function Home() {
         <div className="room-control">
           <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
           <label className="sightline-control"><span>Outside the view</span><input aria-label="Adjust viewpoint" type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>In one view</span></label>
-          {roomView >= 72 ? <button className="sightline-confirm next-action" type="button" onClick={() => { setRoomComplete(true); soundCue('room'); setFocus(null); }}><small>Sightline confirmed</small>Stamp this check and return →</button> : <span className="room-control__hint">Drag across the room—or use the control—until the statue is framed.</span>}
+          {roomView >= 72 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag across the room—or use the control—until the statue is framed.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -346,11 +418,10 @@ export default function Home() {
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
           <button className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); markFriezeStage(); }} aria-label={`${friezeSeen.includes(friezeIndex) ? 'Marked' : 'Inspect'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Marked ✓' : 'Move here · click to mark'}</b></button>
-          {friezeSeen.includes(friezeIndex) && friezeIndex < 4 && <button className="frieze-stage-next" style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); setFriezePosition(friezeIndex + 1); }}><small>Stage {friezeIndex + 1} marked</small>Next stage <b>→</b></button>}
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Stage ${friezeIndex + 1} marked` : `Stage ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Choose NEXT STAGE beside the marked motif.' : 'The complete route can now be confirmed below.') : 'Find the softly glowing mark in the drawing and click it.'}</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Stage ${friezeIndex + 1} marked ✓` : `Stage ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'The wall is moving to the next stage…' : 'The complete route is now revealing its conclusion.') : 'Find the softly glowing mark in the drawing and click it.'}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Why / Learn</b><span>Why this room matters</span></summary>
@@ -364,7 +435,7 @@ export default function Home() {
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
           </div>
-          {friezeComplete && <div className="frieze-reveal"><span>Frieze route cleared.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus(null)}><small>All five stages marked</small>Stamp this check and return →</button></div>}
+          {friezeComplete && <div className="frieze-reveal auto-complete"><i>✓</i><span>Frieze route cleared.</span><small>All five stages are marked. Returning to the workroom…</small></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -388,7 +459,7 @@ export default function Home() {
           </div>
           {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={() => { soundCue('paper'); setDispatchSent(true); }}><small>Both cards enclosed</small>Send to Hotel Kaiserhof →</button></div>}
         </article>
-        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED.</strong><span>The exhibition can open even though practical arrangements continued until its final days.</span></p><button className="next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Transport, price and invitations recorded</small>Stamp this check and return →</button></div>}
+        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport, price and invitations are recorded. Returning to the workroom…</span></p></div>}
       </section>
 
       <section className={`chapter chapter--walkthrough ${focus === 'walkthrough' ? 'is-open' : ''}`} aria-hidden={focus !== 'walkthrough'}>
@@ -418,16 +489,23 @@ export default function Home() {
       </section>
 
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
+        <div className="public-arrival" aria-hidden="true">
+          <img src={asset('secession-interior-v4.png')} alt="" />
+          <svg className="ink-visitors" viewBox="0 0 1200 700" preserveAspectRatio="none"><g>
+            <path d="M95 690 Q103 575 115 468 Q126 405 151 389 Q176 374 191 401 Q204 437 197 486 Q190 558 211 690 M129 389 Q117 357 131 327 Q151 304 174 326 Q190 347 177 381"/><path d="M252 690 Q247 582 270 493 Q286 432 319 423 Q350 421 365 458 Q374 511 356 690 M287 416 Q280 380 296 356 Q319 338 341 361 Q351 388 335 416"/><path d="M445 690 Q432 592 450 470 Q463 410 491 397 Q524 390 541 432 Q550 501 536 690 M468 390 Q457 357 476 333 Q500 316 520 342 Q531 370 515 395"/><path d="M624 690 Q615 562 637 450 Q652 391 684 382 Q716 386 728 425 Q739 501 721 690 M660 377 Q651 343 670 318 Q695 304 713 331 Q720 360 704 383"/><path d="M801 690 Q793 594 814 486 Q827 426 858 412 Q889 406 906 446 Q918 515 901 690 M835 406 Q827 371 845 349 Q869 332 889 358 Q897 384 882 412"/><path d="M985 690 Q979 579 1001 466 Q1014 403 1047 395 Q1079 396 1093 436 Q1101 512 1082 690 M1024 388 Q1017 354 1034 329 Q1059 315 1078 342 Q1086 370 1070 397"/>
+          </g></svg>
+          <div className="arrival-stamps"><span>Correspondence cleared</span><span>Sightline confirmed</span><span>Frieze route complete</span></div>
+        </div>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
         <div className="gold-afterline" aria-hidden="true" />
         <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
         <article className="afterlife-copy">
-          <span className="completion-stamp">Final preparations complete</span>
-          <h3>The doors<br /><em>are open.</em></h3>
-          <p>The exhibition ended. The rooms changed. <em>The Beethoven Frieze survived.</em></p>
+          <span className="completion-stamp">Final inspection passed · 3 / 3</span>
+          <h3>The exhibition<br /><em>is ready.</em></h3>
+          <p>The doors are open. The public can enter now. <em>Your final checks made the complete spatial experience visible.</em></p>
           <div className="today-note"><b>Vienna, today</b><span>You can still walk into that room.</span></div>
-          <div className="takeaway"><b>What you carry out</b><span>Exhibitions are built through people and practical decisions.</span><span>Meaning emerges between art, architecture and movement.</span><span>Something conceived as temporary can survive.</span></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
+          <div className="takeaway inspection-record"><b>Final inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Take the record with you ↓</button></div>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Enter Vienna today →</a><details><summary>Sources / method</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Public-arrival ambience: “Museum Gallery ambience soft walla calm steps” by visionear, CC0, via Freesound.</p></details><button type="button" onClick={replay}>Experience again</button></nav>
         </article>
       </section>
     </main>
