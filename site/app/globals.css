@@ -1820,3 +1820,26 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .exterior__copy h1 em { margin-left:0; }
   .exterior__copy .opening-role { width:52vw; }
 }
+
+/* Arrival motion starts only when the epilogue is actually visible. */
+.ink-person,.public-shadows i,.public-fragments i,.public-graphite i,.arrival-stamps span { animation:none; }
+.chapter--epilogue.is-open .ink-person { animation:inkPersonArrive 3.9s cubic-bezier(.16,1,.3,1) forwards; }
+.chapter--epilogue.is-open .ink-person--one { animation-delay:.18s; }
+.chapter--epilogue.is-open .ink-person--two { animation-delay:.65s; }
+.chapter--epilogue.is-open .ink-person--three { animation-delay:1.05s; }
+.chapter--epilogue.is-open .public-shadows i { animation:shadowPass 4.2s cubic-bezier(.22,.7,.25,1) forwards; }
+.chapter--epilogue.is-open .public-shadows i:nth-child(1) { animation-delay:.05s; }
+.chapter--epilogue.is-open .public-shadows i:nth-child(2) { animation-delay:.48s; }
+.chapter--epilogue.is-open .public-shadows i:nth-child(3) { animation-delay:.9s; }
+.chapter--epilogue.is-open .public-shadows i:nth-child(4) { animation-delay:1.25s; }
+.chapter--epilogue.is-open .public-shadows i:nth-child(5) { animation-delay:1.62s; }
+.chapter--epilogue.is-open .public-fragments i { animation:fragmentCross 3.7s cubic-bezier(.2,.65,.3,1) forwards; }
+.chapter--epilogue.is-open .public-fragments i:nth-child(1) { animation-delay:.3s; }
+.chapter--epilogue.is-open .public-fragments i:nth-child(2) { animation-name:fragmentCrossBack; animation-delay:1.05s; }
+.chapter--epilogue.is-open .public-fragments i:nth-child(3) { animation-delay:1.75s; }
+.chapter--epilogue.is-open .public-graphite i { animation:graphiteSweep 2.1s 1.1s ease-out forwards; }
+.chapter--epilogue.is-open .public-graphite i:nth-child(2) { animation-delay:1.55s; }
+.chapter--epilogue.is-open .public-graphite i:nth-child(3) { animation-delay:2s; }
+.chapter--epilogue.is-open .arrival-stamps span:nth-child(1) { animation:arrivalStamp .5s 1.1s cubic-bezier(.16,1,.3,1) forwards; }
+.chapter--epilogue.is-open .arrival-stamps span:nth-child(2) { animation:arrivalStamp .5s 1.8s cubic-bezier(.16,1,.3,1) forwards; }
+.chapter--epilogue.is-open .arrival-stamps span:nth-child(3) { animation:arrivalStamp .5s 2.5s cubic-bezier(.16,1,.3,1) forwards; }
