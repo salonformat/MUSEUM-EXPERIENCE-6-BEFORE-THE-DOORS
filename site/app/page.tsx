@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 type Stage = 'outside' | 'threshold' | 'inside';
-type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'doors' | 'epilogue';
+type Focus = null | 'letter' | 'rooms' | 'frieze' | 'invitation' | 'walkthrough' | 'doors' | 'epilogue';
 
 export default function Home() {
   const asset = (file: string) => `${import.meta.env.BASE_URL}images/${file}`;
@@ -22,6 +22,8 @@ export default function Home() {
   const [tereyPacked, setTereyPacked] = useState(false);
   const [beerPacked, setBeerPacked] = useState(false);
   const [dispatchSent, setDispatchSent] = useState(false);
+  const [friezeSeen, setFriezeSeen] = useState<number[]>([]);
+  const [walkthroughChecks, setWalkthroughChecks] = useState<string[]>([]);
   const [doorsOpen, setDoorsOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
@@ -29,8 +31,10 @@ export default function Home() {
   const audioMaster = useRef<GainNode | null>(null);
   const climaxPlayed = useRef(false);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
-  const friezeComplete = friezePosition >= 3.94;
-  const systemLabel = focus === 'letter' ? 'correspondence' : focus === 'rooms' ? 'the rooms' : focus === 'frieze' ? 'the frieze' : focus === 'invitation' ? 'invitation' : focus === 'doors' ? 'opening' : focus === 'epilogue' ? 'afterlife' : stage === 'threshold' ? 'briefing' : 'workroom';
+  const friezeComplete = friezePosition >= 3.94 && friezeSeen.length === 5;
+  const completedCount = Number(letterComplete) + Number(roomComplete) + Number(friezeComplete);
+  const inspectionComplete = completedCount === 3;
+  const systemLabel = focus === 'letter' ? 'correspondence' : focus === 'rooms' ? 'the rooms' : focus === 'frieze' ? 'the frieze' : focus === 'invitation' ? 'invitation' : focus === 'walkthrough' ? 'final walk-through' : focus === 'doors' ? 'opening' : focus === 'epilogue' ? 'afterlife' : stage === 'threshold' ? 'briefing' : 'workroom';
   const systemNumber = focus === 'letter' ? '01' : focus === 'rooms' ? '02' : focus === 'frieze' ? '03' : focus === 'invitation' ? '04' : focus === 'doors' || focus === 'epilogue' ? '05' : '00';
 
   const ensureSound = () => {
@@ -95,6 +99,22 @@ export default function Home() {
     }, 1250);
   };
 
+  const moveViewpoint = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!modelRevealed) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    setRoomView(Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)));
+  };
+
+  const markFriezeStage = () => {
+    soundCue(friezeIndex === 4 ? 'climax' : 'frieze');
+    setFriezeSeen((seen) => seen.includes(friezeIndex) ? seen : [...seen, friezeIndex]);
+  };
+
+  const toggleWalkthrough = (item: string) => {
+    soundCue('room');
+    setWalkthroughChecks((checks) => checks.includes(item) ? checks : [...checks, item]);
+  };
+
   const openDoors = () => {
     if (doorsOpen) return;
     soundCue('doors');
@@ -135,7 +155,7 @@ export default function Home() {
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <div className="cursor-mark" aria-hidden="true" />
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
-      <aside className="work-ledger" aria-hidden="true"><i /><span>Final check</span><b>{systemLabel}</b><small>{systemNumber} — 05</small></aside>
+      <aside className="work-ledger" aria-live="polite"><i /><span>Opening day · final inspection</span><b>{systemLabel}</b><small>{completedCount} / 3 ready</small></aside>
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /></div>
@@ -190,7 +210,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="interior" aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
+      <section className={`interior ${letterComplete ? 'has-correspondence' : ''} ${roomComplete ? 'has-sightline' : ''} ${friezeComplete ? 'has-frieze' : ''}`} aria-label="Inside the Vienna Secession" aria-hidden={stage !== 'inside'}>
         <div className="interior__architecture" aria-hidden="true">
           <img className="interior-art" src={`${asset('secession-interior-v4.png')}?v=controlled-ink`} alt="" draggable="false" />
           <div className="pastel pastel--patina" />
@@ -210,29 +230,34 @@ export default function Home() {
           <span className="room-number">15 April 1902 / Before opening</span>
           <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">There are still a few things to sort out.</p>
-          <p className="helper-role">The public arrives later. Your three checks are waiting in the room — begin wherever you like.</p>
+          <p className="helper-role">Opening day. Three preparations must be cleared before the public enters. Begin wherever you like.</p>
           <span className="room-arrival-cue"><i />The room is coming into view</span>
         </div>
         <nav className="attention" aria-label="Areas in the room">
-          <p className="attention__prompt"><b>You’re in the workroom.</b><span>Complete the three checks from your briefing. Begin wherever you like.</span></p>
+          <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move through the room. Every completed check will visibly change it.'}</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
             <i /><span><b>The Dresden letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
           </button>
           <button className="attention__item attention__item--rooms" type="button" onClick={() => { setModelRevealed(false); setFocus('rooms'); }}>
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
           </button>
-          <button className="attention__item attention__item--frieze" type="button" onClick={() => setFocus('frieze')}>
-            <i /><span><b>The frieze</b><small>Open the Beethoven Frieze check</small></span>
+          <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => setFocus('frieze')}>
+            <i /><span><b>The frieze {friezeComplete && '✓'}</b><small>Follow and verify its five stages</small></span>
           </button>
+          {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => setFocus('walkthrough')}><small>3 / 3 preparations ready</small><b>Begin final walk-through</b><i>→</i></button>}
         </nav>
       </section>
 
       <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
         <img className="chapter__art" src={asset('correspondence-arnold-v1.png')} alt="A hand-drawn reconstructed letter with two telegram slips" />
+        <div className="document-hotspots" aria-label="Inspect the archival reconstruction">
+          <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><span>Transport</span><b>{letterHeadFound ? 'Delayed marble head marked ✓' : 'Find the delayed dispatch'}</b></button>
+          <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><span>Price</span><b>{letterPriceFound ? 'Unanswered price marked ✓' : 'Find the unanswered request'}</b></button>
+        </div>
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
-          <p className="worker-cue"><b>Your task</b><span>Read the message from Dresden art dealer Ernst Arnold. Then click the two task cards below to mark what still needs follow-up.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Open the reconstructed document and locate two unresolved points: the delayed transport and the unanswered price request.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
           <h3>The marble head is delayed.</h3>
           <p>Max Klinger meant to send the marble head with his monumental Beethoven sculpture, but the dispatch was delayed.</p>
@@ -249,20 +274,20 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Both points marked</small>Complete letter check → Return to workroom</button> : <p className="check-progress">Next: click both open-point cards below.</p>}
+          {letterHeadFound && letterPriceFound ? <button className="chapter-link check-complete-action next-action" type="button" onClick={() => setFocus('invitation')}><small>Checklist created · transport / price</small>Complete the correspondence dispatch →</button> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
 
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
-        <div className="room-image-action">
+        <div className="room-image-action" onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); moveViewpoint(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) moveViewpoint(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)}>
           <img className="chapter__art room-model-art" src={asset('spatial-model-v1.png')} alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
           {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 72 ? 'is-aligned' : ''}`} style={{'--view-x':`${22 + roomView * .3}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
           {modelRevealed && <div className={`room-opening-hotspot ${roomView >= 72 ? 'is-aligned' : ''}`}><i aria-hidden="true" /><b>Wall opening</b><span>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</span></div>}
         </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
-          <p className="worker-cue"><b>Your task</b><span>Adjust the viewpoint until Klinger’s statue is clearly visible through the wall opening. Then confirm the sightline.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Drag directly across the drawn room to change your position. Stop when Klinger’s statue sits clearly inside the wall opening.</span></p>
           <h3>Make the room make sense.</h3>
           <p>Painting. Sculpture. Architecture.</p>
           <p>Designed to be experienced together.</p>
@@ -275,8 +300,8 @@ export default function Home() {
         </article>
         <div className="room-control">
           <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
-          <label className="sightline-control"><span>Separate</span><input type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>Connected</span></label>
-          {roomView >= 72 ? <button className="sightline-confirm next-action" type="button" onClick={() => { setRoomComplete(true); enterKlimtRoom(); }}><small>Sightline confirmed</small>Continue to the Beethoven Frieze →</button> : <span className="room-control__hint">Keep moving toward “connected”.</span>}
+          <label className="sightline-control"><span>Outside the view</span><input aria-label="Adjust viewpoint" type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>In one view</span></label>
+          {roomView >= 72 ? <button className="sightline-confirm next-action" type="button" onClick={() => { setRoomComplete(true); soundCue('room'); setFocus(null); }}><small>Sightline confirmed</small>Stamp this check and return →</button> : <span className="room-control__hint">Drag across the room—or use the control—until the statue is framed.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -293,7 +318,7 @@ export default function Home() {
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>Your task</b><span>Move from left to right. Reveal all five stages and reach the final kiss to complete this room check.</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>Your task</b><span>Drag through the work. At each of its five stages, stop and mark what you have seen. The final kiss only completes the route after all five stages are checked.</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Why / Learn</b><span>Why this room matters</span></summary>
@@ -306,8 +331,9 @@ export default function Home() {
             <span>0{friezeIndex + 1} / 05</span>
             {friezePosition > .2 && <button type="button" onClick={() => setFriezePosition(Math.max(0, friezeIndex - 1))}>←</button>}
             {friezePosition < 3.8 && <button type="button" onClick={() => setFriezePosition(Math.min(4, friezeIndex + 1))}>→</button>}
+            <button className={friezeSeen.includes(friezeIndex) ? 'is-seen' : ''} type="button" onClick={markFriezeStage}>{friezeSeen.includes(friezeIndex) ? 'Stage marked ✓' : 'Mark this stage'}</button>
           </div>
-          {friezeComplete && <div className="frieze-reveal"><span>Frieze check complete.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus('invitation')}><small>One preparation remains</small>Resolve the missing invitation →</button></div>}
+          {friezeComplete && <div className="frieze-reveal"><span>Frieze route cleared.</span><small>You followed the work as its first visitors would: through this room, from struggle to fulfilment.</small><button className="next-action" type="button" onClick={() => setFocus(null)}><small>All five stages marked</small>Stamp this check and return →</button></div>}
         </div>
         <button className="chapter-close chapter-close--light" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -331,7 +357,22 @@ export default function Home() {
           </div>
           {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={() => { soundCue('paper'); setDispatchSent(true); }}><small>Both cards enclosed</small>Send to Hotel Kaiserhof →</button></div>}
         </article>
-        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>15 April 1902 · Vienna</small><strong>DISPATCHED.</strong><span>Both invitation cards are on their way to Hotel Kaiserhof.</span></p><button className="next-action" type="button" onClick={() => { setDoorsOpen(false); setFocus('doors'); }}><small>Final correspondence complete</small>Continue to the opening →</button></div>}
+        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED.</strong><span>The exhibition can open even though practical arrangements continued until its final days.</span></p><button className="next-action" type="button" onClick={() => { setLetterComplete(true); setFocus(null); }}><small>Transport, price and invitations recorded</small>Stamp this check and return →</button></div>}
+      </section>
+
+      <section className={`chapter chapter--walkthrough ${focus === 'walkthrough' ? 'is-open' : ''}`} aria-hidden={focus !== 'walkthrough'}>
+        <img className="walkthrough-room" src={asset('secession-interior-v4.png')} alt="The exhibition room prepared for its final inspection" />
+        <div className="walkthrough-light" aria-hidden="true" />
+        <article className="walkthrough-copy">
+          <span>Final walk-through</span><h3>One room.<br />Three systems.</h3>
+          <p>Confirm the traces of your work directly in the completed room. Only then can the doors open.</p>
+        </article>
+        <div className="walkthrough-checks">
+          <button className={walkthroughChecks.includes('correspondence') ? 'is-checked' : ''} onClick={() => toggleWalkthrough('correspondence')}><i /><b>Correspondence</b><span>{walkthroughChecks.includes('correspondence') ? 'Resolved ✓' : 'Confirm documents and dispatch'}</span></button>
+          <button className={walkthroughChecks.includes('sightline') ? 'is-checked' : ''} onClick={() => toggleWalkthrough('sightline')}><i /><b>Sightline</b><span>{walkthroughChecks.includes('sightline') ? 'Confirmed ✓' : 'Confirm the view to Beethoven'}</span></button>
+          <button className={walkthroughChecks.includes('frieze') ? 'is-checked' : ''} onClick={() => toggleWalkthrough('frieze')}><i /><b>Frieze route</b><span>{walkthroughChecks.includes('frieze') ? 'Complete ✓' : 'Confirm all five stages'}</span></button>
+        </div>
+        {walkthroughChecks.length === 3 && <button className="release-opening" type="button" onClick={() => { setDoorsOpen(false); setFocus('doors'); }}><small>Final inspection passed</small><b>Release the exhibition to the public</b><i>→</i></button>}
       </section>
 
       <section className={`chapter chapter--doors ${focus === 'doors' ? 'is-open' : ''} ${doorsOpen ? 'is-opening' : ''}`} aria-hidden={focus !== 'doors'}>
