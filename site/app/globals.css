@@ -346,6 +346,68 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .frieze-reveal { position:static; width:100%; margin-top:10px; }
 }
 
+/* The briefing ends in a threshold, not a quiet footer link. */
+.passage-brief footer .workroom-entry { position:relative; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; gap:5px 26px; align-items:center; width:min(430px,38vw); min-height:92px; margin:0; padding:16px 18px 14px; border:2px solid var(--graphite); color:var(--plaster); background:var(--ultramarine); box-shadow:10px 11px 0 #e4bd4f,17px 18px 0 rgb(32 29 26 / 20%); text-align:left; overflow:hidden; animation:workroomThreshold 2.7s ease-in-out infinite; }
+.passage-brief footer .workroom-entry::before { content:""; position:absolute; inset:0; background:linear-gradient(108deg,transparent 0 41%,rgb(241 235 221 / 35%) 50%,transparent 59%); transform:translateX(-130%); animation:nextActionSweep 3.1s .8s ease-in-out infinite; }
+.passage-brief footer .workroom-entry small { grid-column:1; position:relative; z-index:1; color:#e4bd4f; font-size:.52rem; font-weight:700; letter-spacing:.17em; text-transform:uppercase; }
+.passage-brief footer .workroom-entry b { grid-column:1; position:relative; z-index:1; font-family:"Della Respira",serif; font-size:clamp(1.35rem,2vw,2.25rem); font-weight:400; letter-spacing:-.025em; line-height:.95; text-transform:none; }
+.passage-brief footer .workroom-entry i { grid-column:2; grid-row:1 / span 2; position:relative; z-index:1; margin:0; color:#e4bd4f; font-size:2.4rem; transition:transform .3s ease; }
+.passage-brief footer .workroom-entry:hover,.passage-brief footer .workroom-entry:focus-visible { transform:translate(-4px,-5px); box-shadow:15px 17px 0 #e4bd4f,23px 25px 0 rgb(32 29 26 / 24%); }
+.passage-brief footer .workroom-entry:hover i,.passage-brief footer .workroom-entry:focus-visible i { transform:translateX(8px); }
+@keyframes workroomThreshold { 50% { box-shadow:10px 11px 0 #e4bd4f,17px 18px 34px rgb(37 32 232 / 28%); } }
+
+/* Keep the post-dispatch continuation undeniably visible. */
+.dispatch-flight > .next-action { position:relative!important; z-index:3!important; display:grid!important; width:min(430px,82vw)!important; opacity:1!important; visibility:visible!important; pointer-events:auto!important; }
+
+@media (max-width:760px) {
+  .passage-brief footer .workroom-entry { width:100%; min-height:70px; padding:11px 13px 10px; }
+  .passage-brief footer .workroom-entry b { font-size:1.15rem; }
+  .passage-brief footer .workroom-entry i { font-size:1.8rem; }
+}
+
+/* Hands-on invitation dispatch: two cards, one envelope, one confirmed destination. */
+.dispatch-workbench { display:grid; grid-template-columns:1fr 112px; gap:12px; align-items:stretch; margin-top:15px; }
+.dispatch-cards { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.dispatch-cards button { display:grid; align-content:center; gap:4px; min-height:92px; padding:9px 10px; border:1px solid rgb(241 235 221 / 58%); color:var(--plaster); background:transparent; text-align:left; cursor:pointer; transition:color .25s ease,background .25s ease,transform .55s cubic-bezier(.16,1,.3,1),opacity .35s ease; }
+.dispatch-cards button:hover { color:var(--graphite); background:#e4bd4f; transform:translateY(-4px) rotate(-1deg); }
+.dispatch-cards button small { color:#e4bd4f; font-size:.46rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+.dispatch-cards button:hover small { color:var(--oxblood); }
+.dispatch-cards button b { font-family:"Della Respira",serif; font-size:.76rem; font-weight:400; }
+.dispatch-cards button span { font-size:.48rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+.dispatch-cards button.is-packed { color:var(--graphite); border-color:#e4bd4f; background:var(--plaster); opacity:.34; transform:translate(68%,12%) scale(.52) rotate(4deg); }
+.dispatch-envelope { position:relative; min-height:92px; border:1.5px solid #e4bd4f; background:var(--graphite); overflow:hidden; transform:rotate(1deg); }
+.dispatch-envelope::before,.dispatch-envelope::after { content:""; position:absolute; left:-8%; right:-8%; height:72%; border:1px solid #e4bd4f; background:var(--graphite); }
+.dispatch-envelope::before { top:-37%; transform:rotate(28deg); }
+.dispatch-envelope::after { top:-37%; transform:rotate(-28deg); }
+.dispatch-envelope > i { position:absolute; z-index:0; left:15%; right:15%; top:8%; height:55%; background:var(--plaster); opacity:0; transform:translateY(-85%) rotate(-2deg); transition:transform .65s cubic-bezier(.16,1,.3,1),opacity .25s ease; }
+.dispatch-envelope > i:nth-child(2) { left:22%; right:9%; transform:translateY(-90%) rotate(3deg); }
+.dispatch-envelope.has-terey > i:first-child,.dispatch-envelope.has-beer > i:nth-child(2) { opacity:1; transform:translateY(22%) rotate(-1deg); }
+.dispatch-envelope.has-beer > i:nth-child(2) { transform:translateY(29%) rotate(2deg); }
+.dispatch-envelope span { position:absolute; z-index:2; left:10px; bottom:8px; color:#e4bd4f; font-size:.47rem; font-weight:700; letter-spacing:.12em; line-height:1.2; }
+.dispatch-flight { position:absolute; z-index:20; inset:0; display:grid; place-content:center; justify-items:center; gap:22px; padding:6vw; color:var(--plaster); background:var(--graphite); text-align:center; animation:dispatchBlackout .7s ease both; }
+.flying-envelope { position:relative; width:min(320px,58vw); aspect-ratio:1.65; border:2px solid #e4bd4f; background:var(--graphite); box-shadow:18px 20px 0 rgb(228 189 79 / 14%); overflow:hidden; animation:envelopeFlight 1.45s cubic-bezier(.2,.85,.2,1) both; }
+.flying-envelope::before,.flying-envelope::after { content:""; position:absolute; left:-5%; right:-5%; height:80%; border:2px solid #e4bd4f; transform:rotate(29deg) translateY(-56%); }
+.flying-envelope::after { transform:rotate(-29deg) translateY(-56%); }
+.flying-envelope span { position:absolute; left:50%; bottom:15%; transform:translateX(-50%) rotate(-1deg); color:#e4bd4f; font-size:.62rem; font-weight:700; letter-spacing:.18em; white-space:nowrap; }
+.dispatch-flight p { display:grid; justify-items:center; gap:7px; margin:0; }
+.dispatch-flight p small { color:#e4bd4f; font-size:.54rem; letter-spacing:.18em; text-transform:uppercase; }
+.dispatch-flight p strong { font-family:"Della Respira",serif; font-size:clamp(3.4rem,8vw,8.5rem); font-weight:400; line-height:.78; letter-spacing:-.045em; animation:dispatchStamp .55s 1.15s cubic-bezier(.16,1,.3,1) both; }
+.dispatch-flight p span { max-width:30rem; font-family:"Della Respira",serif; font-size:clamp(.9rem,1.2vw,1.2rem); }
+.dispatch-flight .next-action { margin-top:8px; opacity:0; animation:nextActionArrives .7s 1.55s cubic-bezier(.16,1,.3,1) forwards,nextActionPulse 2.8s 2.2s ease-in-out infinite!important; }
+@keyframes dispatchBlackout { from { opacity:0; clip-path:circle(0 at 76% 66%); } to { opacity:1; clip-path:circle(145% at 76% 66%); } }
+@keyframes envelopeFlight { 0% { opacity:0; transform:translate(-45vw,30vh) rotate(-12deg) scale(.45); } 62% { opacity:1; transform:translate(4vw,-2vh) rotate(3deg) scale(1.08); } 100% { transform:none; } }
+@keyframes dispatchStamp { from { opacity:0; transform:scale(1.8) rotate(-5deg); filter:blur(3px); } to { opacity:1; transform:rotate(-1deg); filter:none; } }
+
+@media (max-width:760px) {
+  .dispatch-workbench { grid-template-columns:1fr 82px; gap:7px; margin-top:8px; }
+  .dispatch-cards { gap:5px; }
+  .dispatch-cards button { min-height:68px; padding:6px; }
+  .dispatch-cards button b { font-size:.58rem; }
+  .dispatch-cards button small,.dispatch-cards button span { font-size:.39rem; }
+  .dispatch-envelope { min-height:68px; }
+  .dispatch-flight { gap:15px; }
+}
+
 .chapter--rooms .setup-action { position:relative; display:grid; gap:6px; width:min(390px,100%); min-height:70px; margin-top:24px; padding:14px 55px 12px 16px; border:2px solid var(--graphite); color:var(--plaster); background:var(--ultramarine); box-shadow:8px 9px 0 #e4bd4f,14px 15px 0 rgb(32 29 26 / 20%); font-size:clamp(.7rem,.86vw,.9rem); font-weight:700; letter-spacing:.11em; line-height:1.2; text-align:left; text-transform:uppercase; overflow:hidden; animation:setupSignal 2.6s ease-in-out infinite; }
 .chapter--rooms .setup-action::before { content:""; position:absolute; inset:0; margin:0; background:linear-gradient(108deg,transparent 0 42%,rgb(241 235 221 / 34%) 50%,transparent 58%); transform:translateX(-130%); animation:nextActionSweep 2.8s .5s ease-in-out infinite; }
 .chapter--rooms .setup-action::after { content:"→"; position:absolute; right:17px; top:50%; color:#e4bd4f; font-family:"Della Respira",serif; font-size:1.8rem; transform:translateY(-54%); }
@@ -1163,6 +1225,17 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .frieze-copy:has(.frieze-reveal) .frieze-reveal span { max-width:none; font-size:1.35rem; }
   .frieze-copy:has(.frieze-reveal) .frieze-reveal small { display:block; font-size:.58rem; }
   .frieze-copy:has(.frieze-reveal) .frieze-reveal button { grid-column:1; grid-row:3; width:100%; min-width:0; margin-top:5px; padding:14px; font-size:.64rem; }
+}
+
+/* Keep the invitation cards physically present in the viewport. */
+.chapter--invitation .dispatch-workbench { position:fixed; z-index:8; right:3vw; bottom:3vh; width:min(620px,52vw); padding:13px; color:var(--plaster); background:rgb(32 29 26 / 95%); border:1px solid rgb(241 235 221 / 48%); box-shadow:12px 14px 0 rgb(228 189 79 / 28%); backdrop-filter:blur(7px); }
+.chapter--invitation .dispatch-confirmation { position:fixed; z-index:9; right:3vw; bottom:calc(3vh + 128px); width:min(620px,52vw); padding:10px 12px; color:var(--plaster); background:var(--graphite); }
+.chapter--invitation.dispatch-prepared .dispatch-workbench { border-color:#e4bd4f; }
+
+@media (max-width:760px) {
+  .chapter--invitation .invitation-copy { padding-bottom:150px; }
+  .chapter--invitation .dispatch-workbench { right:3vw; bottom:2vh; width:94vw; padding:8px; }
+  .chapter--invitation .dispatch-confirmation { right:3vw; bottom:calc(2vh + 100px); width:94vw; padding:7px; }
 }
 
 /* Final cascade: preserve the severe correspondence palette and unmistakable exits. */
