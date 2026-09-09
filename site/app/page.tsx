@@ -33,6 +33,7 @@ export default function Home() {
   const publicAmbience = useRef<HTMLAudioElement | null>(null);
   const workroomAmbience = useRef<HTMLAudioElement | null>(null);
   const invitationDrag = useRef<{ x:number; y:number; card:'terey' | 'beer' } | null>(null);
+  const recordStep = () => window.history.pushState({ museumExperience:true }, '', window.location.href);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
   const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
   // Screen-space positions calibrated to the motif currently revealed by the moving 175vw artwork.
@@ -48,7 +49,7 @@ export default function Home() {
       return { step:`01 · Letter from Dresden · ${found}/2 found`, instruction:found === 0 ? 'Move across the document. Hold over the passages about the marble head and Beethoven’s price.' : found === 1 ? 'One matter is noted. Keep searching the document for the second responsive passage.' : 'Both matters are noted. They are now being passed to the exhibition office.' };
     }
     if (focus === 'invitation') return { step:'01 · Correspondence', instruction:tereyPacked && beerPacked ? 'Both cards are enclosed; the envelope is being dispatched to Hotel Kaiserhof.' : 'Place both cards in the envelope — guest access was part of the exhibition’s practical work.' };
-    if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 50 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag the beam onto the statue until the three art forms become one view.' };
+    if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 38 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag the beam onto the statue until the three art forms become one view.' };
     if (focus === 'frieze') return { step:`03 · Frieze · ${friezeSeen.length}/5 found`, instruction:friezeSeen.includes(friezeIndex) ? 'Confirmed. The frieze is moving to the next stage.' : 'Select the glowing circle. Each confirmed motif advances the frieze automatically.' };
     if (focus === 'walkthrough') return { step:'Final walk-through', instruction:walkthroughChecks.length === 3 ? 'Logistics, space and narrative now work together; the exhibition can be released.' : 'Watch the completed room register the three systems you have already checked.' };
     if (focus === 'doors') return { step:'Opening', instruction:'Open the doors: your private inspection now becomes a public cultural experience.' };
@@ -98,8 +99,9 @@ export default function Home() {
     oscillator.start(now); oscillator.stop(now + settings[2] + .05);
   };
 
-  const enterThreshold = () => { soundCue('threshold'); setStage('threshold'); };
+  const enterThreshold = () => { recordStep(); soundCue('threshold'); setStage('threshold'); };
   const beginRoom = () => {
+    recordStep();
     soundCue('room');
     if (workroomAmbience.current && soundEnabled) {
       workroomAmbience.current.volume = .16;
@@ -202,6 +204,16 @@ export default function Home() {
     if (introSkipped) setIntroSkipped(false);
   };
 
+  useEffect(() => {
+    window.history.replaceState({ museumExperience:true }, '', window.location.href);
+  }, []);
+
+  useEffect(() => {
+    const handleBrowserBack = () => goBack();
+    window.addEventListener('popstate', handleBrowserBack);
+    return () => window.removeEventListener('popstate', handleBrowserBack);
+  }, [focus, stage, introSkipped]);
+
   const openDoors = () => {
     if (doorsOpen) return;
     soundCue('doors');
@@ -252,7 +264,7 @@ export default function Home() {
   }, [focus, friezeComplete]);
 
   useEffect(() => {
-    if (focus !== 'rooms' || roomView < 50) return;
+    if (focus !== 'rooms' || roomView < 38) return;
     if (!roomComplete) { setRoomComplete(true); soundCue('room'); }
     const done = window.setTimeout(() => setFocus(null), 2200);
     return () => window.clearTimeout(done);
@@ -334,7 +346,7 @@ export default function Home() {
         <h1 className="prologue-title"><span>Before</span><em>the doors</em><strong>open.</strong></h1>
         <p><strong>Enter the Vienna Secession before the public—</strong>and help prepare its landmark XIV Exhibition, created around Max Klinger’s monumental Beethoven.</p>
         <div className="opening-slate__modes"><i>Letters</i><i>Architecture</i><i>Klimt’s Beethoven Frieze</i></div>
-        <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Vienna · 15 April 1902</small><b>Begin</b><i>→</i></button>
+        <button className="skip-prologue" type="button" onClick={() => { recordStep(); setIntroSkipped(true); }}><small>Vienna · 15 April 1902</small><b>Begin</b><i>→</i></button>
       </div>
       <section className="exterior" aria-label="Vienna Secession, 15 April 1902" aria-hidden={stage === 'inside'}>
         <div className="exterior__art" aria-hidden="true">
@@ -395,16 +407,16 @@ export default function Home() {
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move your pointer through the drawing. Choose any glowing work point; every completed check changes this room.'}</span></p>
-          <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
+          <button className="attention__item attention__item--letters" type="button" onClick={() => { recordStep(); setFocus('letter'); }}>
             <i /><span><b>Two letters {letterComplete && '✓'}</b><small>Check Klinger’s shipment, then answer Térey</small></span>
           </button>
-          <button className="attention__item attention__item--rooms" type="button" onClick={() => { soundCue('room'); setModelRevealed(true); setFocus('rooms'); }}>
+          <button className="attention__item attention__item--rooms" type="button" onClick={() => { recordStep(); soundCue('room'); setModelRevealed(true); setFocus('rooms'); }}>
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
           </button>
-          <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => setFocus('frieze')}>
+          <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => { recordStep(); setFocus('frieze'); }}>
             <i /><span><b>The frieze {friezeComplete && '✓'}</b><small>Drag the wall and confirm five glowing details</small></span>
           </button>
-          {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => setFocus('walkthrough')}><small>3 / 3 preparations ready</small><b>Walk through the finished exhibition</b><i>→</i></button>}
+          {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => { recordStep(); setFocus('walkthrough'); }}><small>3 / 3 preparations ready</small><b>Walk through the finished exhibition</b><i>→</i></button>}
         </nav>
       </section>
 
@@ -439,8 +451,8 @@ export default function Home() {
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
         <div className="room-image-action" onPointerDown={(event) => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); moveViewpoint(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId) || event.buttons === 1) moveViewpoint(event); }} onPointerUp={(event) => { moveViewpoint(event); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}>
           <img className="chapter__art room-model-art" src={asset('spatial-model-v1.png')} alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
-          {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 50 ? 'is-aligned' : ''}`} style={{'--view-x':`${roomView}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
-          {modelRevealed && <button className={`room-opening-hotspot ${roomView >= 50 ? 'is-aligned' : ''}`} type="button" onClick={() => setRoomView(54)}><i aria-hidden="true" /><b>{roomView >= 50 ? 'Sightline confirmed' : 'Bring the light here'}</b><span>{roomView >= 50 ? 'Architecture, sculpture and painting connect' : 'Drag onto or tap the statue'}</span></button>}
+          {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 38 ? 'is-aligned' : ''}`} style={{'--view-x':`${roomView}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
+          {modelRevealed && <button className={`room-opening-hotspot ${roomView >= 38 ? 'is-aligned' : ''}`} type="button" onClick={() => setRoomView(42)}><i aria-hidden="true" /><b>{roomView >= 38 ? 'Sightline confirmed' : 'Bring the light here'}</b><span>{roomView >= 38 ? 'Architecture, sculpture and painting connect' : 'Drag onto or tap the statue'}</span></button>}
         </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
@@ -455,8 +467,8 @@ export default function Home() {
           </details>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>{roomView >= 50 ? 'Sightline confirmed' : 'Move the light to Beethoven'}</b><span>{roomView >= 50 ? 'Painting, sculpture and architecture now connect in one view.' : 'Drag directly across the drawing—or tap the statue—to complete the sightline.'}</span></div>
-          {roomView >= 50 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag the light onto the statue.</span>}
+          <div className="view-step"><b>{roomView >= 38 ? 'Sightline confirmed' : 'Move the light to Beethoven'}</b><span>{roomView >= 38 ? 'Painting, sculpture and architecture now connect in one view.' : 'Drag directly across the drawing—or tap the statue—to complete the sightline.'}</span></div>
+          {roomView >= 38 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag the light onto the statue.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -526,7 +538,7 @@ export default function Home() {
           <button className={walkthroughChecks.includes('sightline') ? 'is-checked' : ''} onClick={() => toggleWalkthrough('sightline')}><i /><b>Sightline</b><span>{walkthroughChecks.includes('sightline') ? 'Confirmed ✓' : 'Confirm the view to Beethoven'}</span></button>
           <button className={walkthroughChecks.includes('frieze') ? 'is-checked' : ''} onClick={() => toggleWalkthrough('frieze')}><i /><b>Frieze route</b><span>{walkthroughChecks.includes('frieze') ? 'Complete ✓' : 'Confirm all five stages'}</span></button>
         </div>
-        {walkthroughChecks.length === 3 && <button className="release-opening" type="button" onClick={() => { setDoorsOpen(false); setFocus('doors'); }}><small>Final inspection passed</small><b>Release the exhibition to the public</b><i>→</i></button>}
+        {walkthroughChecks.length === 3 && <button className="release-opening" type="button" onClick={() => { recordStep(); setDoorsOpen(false); setFocus('doors'); }}><small>Final inspection passed</small><b>Release the exhibition to the public</b><i>→</i></button>}
       </section>
 
       <section className={`chapter chapter--doors ${focus === 'doors' ? 'is-open' : ''} ${doorsOpen ? 'is-opening' : ''}`} aria-hidden={focus !== 'doors'}>
