@@ -346,6 +346,63 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .frieze-reveal { position:static; width:100%; margin-top:10px; }
 }
 
+/* Final entrance calibration: the interaction is the physical doorway, not a nearby label. */
+@media (min-width:761px) {
+  .threshold { left:69.35%; top:87.1%; width:74px; height:116px; }
+  .door-aura { left:69.35%; top:87.1%; }
+  .threshold__portal { left:50%; top:50%; width:58px; height:106px; }
+  .threshold__label {
+    left:50%;
+    top:50%;
+    width:auto;
+    min-width:82px;
+    padding:10px 12px 8px;
+    color:#e4bd4f;
+    background:var(--graphite);
+    box-shadow:5px 6px 0 #e4bd4f;
+    font-size:.78rem;
+    letter-spacing:.18em;
+    text-align:center;
+    transform:translate(-50%,-50%) rotate(-2deg);
+  }
+  .threshold:hover .threshold__label,.threshold:focus-visible .threshold__label { transform:translate(-50%,-55%) rotate(1deg) scale(1.08); }
+  .stage-threshold .exterior__art { transform-origin:69.35% 87.1%; }
+}
+
+/* Flöge-inspired principle, translated rather than copied: one atmospheric image layer behind the editorial prologue. */
+.opening-slate .opening-glimpse {
+  display:block;
+  z-index:0;
+  right:-5vw;
+  top:-4vh;
+  width:62vw;
+  height:108vh;
+  opacity:.2;
+  clip-path:none;
+  mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.12) 16%,#000 48%);
+  animation:prologueImage 1.35s .08s cubic-bezier(.16,1,.3,1) forwards;
+}
+.opening-slate .opening-glimpse img {
+  width:100%;
+  height:100%;
+  margin:0;
+  object-fit:cover;
+  object-position:69% center;
+  filter:grayscale(.72) contrast(1.08) brightness(1.03);
+  transform:scale(1.08);
+}
+.opening-slate .opening-glimpse > i { display:none; }
+.opening-slate::before { opacity:.9; mix-blend-mode:multiply; }
+
+@media (max-width:760px) {
+  .threshold { left:70.6%; top:83.4%; width:58px; height:94px; }
+  .door-aura { left:70.6%; top:83.4%; }
+  .threshold__portal { left:50%; top:50%; width:42px; height:78px; }
+  .threshold__label { left:50%; top:50%; width:auto; min-width:66px; padding:8px 9px 6px; color:#e4bd4f; background:var(--graphite); box-shadow:4px 5px 0 #e4bd4f; font-size:.64rem; text-align:center; transform:translate(-50%,-50%) rotate(-2deg); }
+  .opening-slate .opening-glimpse { right:-28vw; top:-6vh; width:118vw; height:61vh; opacity:.16; mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.72) 54%,transparent 100%); }
+  .opening-slate .opening-glimpse img { object-position:67% 30%; }
+}
+
 /* Collision-free interface system: text belongs to a layout zone, never another text card. */
 .stage-inside .action-compass { display:none!important; }
 .chapter { padding-top:64px; }
@@ -2639,4 +2696,245 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--letter .document-copy .context-note { display:none; }
   .chapter--letter .check-progress,
   .chapter--letter .auto-complete--letter { position:fixed!important; left:4vw!important; right:auto!important; bottom:3vh!important; width:92vw!important; }
+}
+
+/* Final overrides: explicit document targets and a door-bound entrance. */
+.chapter--letter .document-hotspots button { opacity:1!important; border-width:2px; box-shadow:8px 9px 0 var(--graphite),0 0 30px rgb(228 189 79 / 34%); }
+.chapter--letter .document-hotspots button:not(.is-found) { color:var(--graphite)!important; background:#e4bd4f!important; }
+.chapter--letter .document-hotspots button.is-found { color:var(--plaster)!important; background:var(--graphite)!important; box-shadow:8px 9px 0 var(--oxblood)!important; }
+.chapter--letter .document-hotspots button span,
+.chapter--letter .document-hotspots button b { opacity:1!important; visibility:visible!important; }
+.chapter--letter .document-hotspots button:not(.is-found)::before { content:"SELECT"; position:absolute; right:10px; top:-10px; padding:4px 6px 3px; color:var(--plaster); background:var(--oxblood); font:700 .44rem/1 "Josefin Sans",sans-serif; letter-spacing:.14em; }
+.chapter--letter .document-hotspots button.is-found::after { content:"NOTED"; }
+
+@media (min-width:761px) {
+  .threshold { left:69.35%; top:87.1%; width:74px; height:116px; }
+  .door-aura { left:69.35%; top:87.1%; }
+  .threshold__portal { left:50%; top:50%; width:58px; height:106px; }
+  .threshold__label { left:50%; top:50%; width:auto; min-width:82px; padding:10px 12px 8px; color:#e4bd4f; background:var(--graphite); box-shadow:5px 6px 0 #e4bd4f; font-size:.78rem; letter-spacing:.18em; text-align:center; transform:translate(-50%,-50%) rotate(-2deg); }
+  .threshold:hover .threshold__label,.threshold:focus-visible .threshold__label { transform:translate(-50%,-55%) rotate(1deg) scale(1.08); }
+  .stage-threshold .exterior__art { transform-origin:69.35% 87.1%; }
+}
+
+/* The Flöge experience contributes depth, not a copied layout: a restrained architectural ghost behind the prologue. */
+.opening-slate .opening-glimpse { display:block; z-index:0; right:-5vw; top:-4vh; width:62vw; height:108vh; opacity:.2; clip-path:none; mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.12) 16%,#000 48%); animation:prologueImage 1.35s .08s cubic-bezier(.16,1,.3,1) forwards; }
+.opening-slate .opening-glimpse img { width:100%; height:100%; margin:0; object-fit:cover; object-position:69% center; filter:grayscale(.72) contrast(1.08) brightness(1.03); transform:scale(1.08); }
+.opening-slate .opening-glimpse > i { display:none; }
+.opening-slate::before { opacity:.9; mix-blend-mode:multiply; }
+
+@media (max-width:760px) {
+  .threshold { left:70.6%; top:83.4%; width:58px; height:94px; }
+  .door-aura { left:70.6%; top:83.4%; }
+  .threshold__portal { left:50%; top:50%; width:42px; height:78px; }
+  .threshold__label { left:50%; top:50%; width:auto; min-width:66px; padding:8px 9px 6px; color:#e4bd4f; background:var(--graphite); box-shadow:4px 5px 0 #e4bd4f; font-size:.64rem; text-align:center; transform:translate(-50%,-50%) rotate(-2deg); }
+  .opening-slate .opening-glimpse { right:-28vw; top:-6vh; width:118vw; height:61vh; opacity:.16; mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.72) 54%,transparent 100%); }
+  .opening-slate .opening-glimpse img { object-position:67% 30%; }
+  .chapter--letter .document-hotspots button { width:118px!important; padding:9px 9px 7px!important; }
+  .chapter--letter .document-hotspots button span { font-size:.46rem!important; }
+  .chapter--letter .document-hotspots button b { font-size:.68rem!important; }
+}
+
+/* The frieze remains visible: guidance floats lightly and the work itself is never covered by a black transition. */
+.chapter--frieze .frieze-threshold { display:none!important; }
+.chapter--frieze .frieze-copy .worker-cue--frieze {
+  display:block!important;
+  left:3vw;
+  top:76px;
+  width:min(390px,46vw);
+  padding:11px 13px 10px;
+  color:var(--graphite);
+  background:rgb(241 235 221 / 94%);
+  border-left:4px solid #e4bd4f;
+  box-shadow:7px 8px 0 rgb(32 29 26 / 15%);
+}
+.chapter--frieze .frieze-copy .worker-cue--frieze b { color:var(--oxblood); }
+.chapter--frieze .frieze-copy .worker-cue--frieze span { display:block; color:var(--graphite); }
+.chapter--frieze .frieze-reveal.auto-complete { color:var(--graphite); background:#e4bd4f; }
+.chapter--frieze .frieze-reveal.auto-complete span,
+.chapter--frieze .frieze-reveal.auto-complete small { color:var(--graphite); }
+
+@media (max-width:760px) {
+  .chapter--frieze .frieze-copy .worker-cue--frieze { left:4vw; top:96px; width:72vw; padding:8px 9px 7px; }
+  .chapter--frieze .frieze-copy .worker-cue--frieze b { font-size:.5rem; }
+  .chapter--frieze .frieze-copy .worker-cue--frieze span { font-size:.58rem; line-height:1.25; }
+}
+
+/* Finale mirrors the prologue: the same building returns, but the doors are now open. */
+.chapter--epilogue { background:var(--ultramarine); }
+.chapter--epilogue .finale-portal {
+  z-index:1;
+  left:auto;
+  right:0;
+  top:0;
+  width:48vw;
+  height:100%;
+  border:0;
+  box-shadow:-18px 0 0 rgb(32 29 26 / 10%);
+  clip-path:polygon(14% 0,100% 0,100% 100%,3% 100%,10% 72%,2% 43%);
+  transform:none;
+}
+.chapter--epilogue .finale-portal img { object-position:68% center; filter:saturate(.95) contrast(1.04); }
+.chapter--epilogue.is-open .finale-portal { animation:finalBuildingReturn 1.25s 6.2s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes finalBuildingReturn { from { opacity:0; translate:18% 0; } to { opacity:1; translate:0 0; } }
+
+.chapter--epilogue .afterlife-copy {
+  z-index:3;
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(310px,.9fr);
+  grid-template-rows:auto minmax(0,1fr) auto;
+  gap:18px 6vw;
+  padding:8vh 6vw 4vh;
+  color:var(--plaster);
+  background:linear-gradient(90deg,var(--ultramarine) 0 54%,rgb(37 32 232 / 94%) 61%,transparent 77%);
+  overflow:hidden;
+}
+.chapter--epilogue .completion-stamp { grid-column:1; grid-row:1; align-self:start; width:max-content; padding:6px 8px 4px; color:var(--graphite); background:#e4bd4f; font-size:.6rem; }
+.chapter--epilogue .afterlife-copy h3 { grid-column:1; grid-row:2; align-self:center; max-width:8ch; color:var(--plaster); font-size:clamp(4.8rem,8.8vw,10.5rem); line-height:.76; letter-spacing:-.06em; text-shadow:none; }
+.chapter--epilogue .afterlife-copy h3 span { margin:0 0 1rem .2rem; color:#e4bd4f; font-size:clamp(.66rem,.9vw,.9rem); letter-spacing:.2em; }
+.chapter--epilogue .afterlife-copy h3 em { display:block; max-width:none; color:var(--plaster); font-size:inherit; }
+.chapter--epilogue .afterlife-copy > p { grid-column:1; grid-row:3; align-self:end; max-width:39rem; color:var(--plaster); font-family:"Della Respira",serif; font-size:clamp(1rem,1.35vw,1.35rem); line-height:1.3; }
+.chapter--epilogue .today-note { display:none; }
+.chapter--epilogue .inspection-record { grid-column:2; grid-row:2; align-self:center; width:min(380px,100%); margin-left:auto; padding:24px 22px 20px; color:var(--graphite); background:var(--plaster); border:2px solid var(--graphite); box-shadow:12px 14px 0 #e4bd4f; transform:rotate(-1deg); }
+.chapter--epilogue .inspection-record b { display:block; margin:0 0 18px; font-family:"Della Respira",serif; font-size:clamp(1.8rem,2.5vw,2.7rem); line-height:.95; }
+.chapter--epilogue .inspection-record span { display:block; padding:9px 0 7px; border-top:1px solid rgb(32 29 26 / 28%); font:700 .62rem/1.2 "Josefin Sans",sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+.chapter--epilogue .inspection-record button { width:100%; margin-top:18px; padding:15px 16px 13px; color:var(--plaster); background:var(--graphite); font-size:.65rem; text-align:center; }
+.chapter--epilogue .afterlife-copy nav { grid-column:2; grid-row:3; justify-content:flex-end; align-items:center; gap:18px; padding:12px 0 0; border-top:1px solid rgb(241 235 221 / 48%); }
+.chapter--epilogue .afterlife-copy nav a,.chapter--epilogue .afterlife-copy nav button,.chapter--epilogue .afterlife-copy nav summary { color:var(--plaster); }
+
+@media (max-width:760px) {
+  .chapter--epilogue .finale-portal { left:auto; right:-14vw; top:0; width:96vw; height:36vh; clip-path:polygon(11% 0,100% 0,100% 100%,0 94%,7% 48%); box-shadow:none; }
+  .chapter--epilogue .afterlife-copy { display:flex; flex-direction:column; gap:14px; padding:37vh 5vw 26px; background:linear-gradient(180deg,transparent 0 31vh,var(--ultramarine) 36vh 100%); overflow-y:auto; }
+  .chapter--epilogue .completion-stamp { flex:none; font-size:.48rem; }
+  .chapter--epilogue .afterlife-copy h3 { flex:none; align-self:flex-start; max-width:8ch; font-size:13vw; line-height:.76; }
+  .chapter--epilogue .afterlife-copy h3 span { margin-bottom:8px; font-size:.52rem; }
+  .chapter--epilogue .afterlife-copy > p { flex:none; max-width:90vw; font-size:.87rem; }
+  .chapter--epilogue .inspection-record { flex:none; width:100%; margin:4px 0 0; padding:15px 14px 13px; box-shadow:7px 8px 0 #e4bd4f; }
+  .chapter--epilogue .inspection-record b { margin-bottom:12px; font-size:1.6rem; }
+  .chapter--epilogue .inspection-record span { padding:7px 0 6px; font-size:.52rem; }
+  .chapter--epilogue .inspection-record button { margin-top:12px; padding:13px 12px 11px; font-size:.58rem; }
+  .chapter--epilogue .afterlife-copy nav { flex:none; justify-content:flex-start; flex-wrap:wrap; padding-bottom:15px; }
+}
+
+/* Exterior role and threshold: concise meaning on the left, unmistakable action on the actual door. */
+.opening-role__purpose { max-width:27rem; margin-top:15px!important; padding-top:13px; border-top:1px solid rgb(241 235 221 / 42%); color:rgb(241 235 221 / 82%); font:600 clamp(.68rem,.8vw,.82rem)/1.4 "Josefin Sans",sans-serif; letter-spacing:.045em; }
+.threshold__label { min-width:138px!important; padding:12px 14px 10px!important; font-size:.82rem!important; white-space:nowrap; box-shadow:6px 7px 0 #e4bd4f!important; }
+.threshold__portal i { border-width:3px; box-shadow:0 0 18px 5px rgb(228 189 79 / 48%),0 0 48px 12px rgb(228 189 79 / 27%); }
+
+@media (max-width:760px) {
+  .opening-role__task span { font-size:.92rem!important; line-height:1.18!important; }
+  .opening-role__purpose { max-width:37vw; margin-top:10px!important; padding-top:9px; font-size:.57rem; line-height:1.28; }
+  .threshold__label { min-width:104px!important; padding:9px 10px 7px!important; font-size:.62rem!important; }
+}
+
+@media (min-width:761px) {
+  .exterior__copy { padding-top:max(92px,11vh); }
+}
+@media (max-width:760px) {
+  .exterior__copy { padding-top:88px; }
+  .exterior__copy .dateline { margin-bottom:16px; }
+}
+
+/* 58,000 is the public climax—not a caption. */
+.chapter--epilogue .visitors-number {
+  isolation:isolate;
+  z-index:6;
+  overflow:hidden;
+  padding:6vw;
+  color:var(--plaster);
+  background:var(--graphite);
+}
+.chapter--epilogue .visitors-number::before {
+  content:"XIV EXHIBITION  ·  VIENNA  ·  1902";
+  position:absolute;
+  z-index:-1;
+  left:-3vw;
+  top:8vh;
+  width:106vw;
+  padding:12px 0 9px;
+  color:var(--graphite);
+  background:#e4bd4f;
+  font:700 clamp(.7rem,1.2vw,1.2rem)/1 "Josefin Sans",sans-serif;
+  letter-spacing:.34em;
+  text-align:center;
+  transform:rotate(-2deg);
+}
+.chapter--epilogue .visitors-number::after {
+  content:"A PUBLIC EVENT";
+  position:absolute;
+  z-index:-1;
+  right:-2vw;
+  bottom:8vh;
+  padding:12px 5vw 9px;
+  color:var(--plaster);
+  border:2px solid var(--plaster);
+  font:700 clamp(.65rem,1vw,1rem)/1 "Josefin Sans",sans-serif;
+  letter-spacing:.3em;
+  transform:rotate(2deg);
+}
+.chapter--epilogue .visitors-number strong { color:#e4bd4f; font-size:clamp(10rem,29vw,34rem); font-weight:600; text-shadow:9px 11px 0 var(--ultramarine); transform:rotate(-1deg); }
+.chapter--epilogue .visitors-number span { max-width:34rem; margin-top:42px; color:var(--plaster); font-size:clamp(1.7rem,3vw,3.4rem); line-height:.95; }
+.chapter--epilogue .visitors-number small { color:#e4bd4f; font-size:.7rem; }
+.chapter--epilogue.is-open .visitors-number { animation:visitorEvent 3.8s 4.45s cubic-bezier(.16,1,.3,1) both; }
+.chapter--epilogue.is-open .afterlife-copy { animation:afterlifeArrive 1.2s 8.1s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes visitorEvent {
+  0% { opacity:0; clip-path:inset(48% 0 48%); }
+  14%,78% { opacity:1; clip-path:inset(0); }
+  100% { opacity:0; clip-path:inset(0 0 0 100%); }
+}
+
+@media (max-width:760px) {
+  .chapter--epilogue .visitors-number { padding:5vw; }
+  .chapter--epilogue .visitors-number::before { top:10vh; font-size:.5rem; letter-spacing:.2em; }
+  .chapter--epilogue .visitors-number::after { bottom:10vh; font-size:.47rem; }
+  .chapter--epilogue .visitors-number strong { font-size:31vw; text-shadow:5px 6px 0 var(--ultramarine); }
+  .chapter--epilogue .visitors-number span { margin-top:28px; font-size:7vw; }
+  .chapter--epilogue .visitors-number small { max-width:76vw; font-size:.52rem; line-height:1.3; }
+  .chapter--epilogue.is-open .afterlife-copy { animation:afterlifeMobile 1s 8.1s cubic-bezier(.16,1,.3,1) forwards; }
+}
+
+/* Readability floor: no meaningful instruction or label is set as decorative micro-type. */
+.experience small,
+.experience .chapter-kicker,
+.experience .reconstruction,
+.experience .work-ledger span,
+.experience .work-ledger small,
+.experience .action-compass > span,
+.experience .worker-cue b,
+.experience .context-note summary,
+.experience .check-progress,
+.experience .frieze-controls,
+.experience .arrival-stamps span { font-size:.7rem!important; line-height:1.28!important; }
+.experience .work-ledger b,
+.experience .attention__item b,
+.experience .passage-brief__grid b,
+.experience .opening-role__task b { font-size:.74rem!important; line-height:1.2!important; }
+.experience .attention__item small,
+.experience .passage-brief__grid span,
+.experience .context-note p,
+.experience .context-note span { font-size:.78rem!important; line-height:1.4!important; }
+.experience button,
+.experience a { text-underline-offset:3px; }
+
+@media (max-width:760px) {
+  .experience small,
+  .experience .chapter-kicker,
+  .experience .reconstruction,
+  .experience .work-ledger span,
+  .experience .work-ledger small,
+  .experience .worker-cue b,
+  .experience .context-note summary,
+  .experience .check-progress,
+  .experience .frieze-controls { font-size:.64rem!important; line-height:1.3!important; }
+  .experience .attention__item small { display:none!important; }
+  .experience .context-note p,
+  .experience .context-note span { font-size:.7rem!important; }
+}
+
+@media (max-width:760px) {
+  .exterior__copy { left:0; width:61vw; max-width:61vw; padding-right:7vw; overflow:visible; clip-path:polygon(0 0,100% 0,94% 31%,100% 62%,93% 100%,0 100%); }
+  .exterior__copy h1 { width:52vw; max-width:52vw; font-size:12.2vw; }
+  .exterior__copy .opening-role { width:50vw; max-width:50vw; }
+  .opening-role__edition { max-width:49vw; font-size:.78rem; line-height:1.18; }
+  .opening-role__task { max-width:49vw; }
+  .opening-role__purpose { max-width:49vw; }
 }

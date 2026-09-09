@@ -227,8 +227,10 @@ export default function Home() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'before-the-doors-open-final-inspection-record.svg';
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(url);
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   const replay = () => {
@@ -267,6 +269,15 @@ export default function Home() {
     const send = window.setTimeout(dispatchInvitations, 900);
     return () => window.clearTimeout(send);
   }, [focus, tereyPacked, beerPacked, dispatchSent]);
+
+  useEffect(() => {
+    if (focus !== 'invitation' || !dispatchSent) return;
+    const returnToRoom = window.setTimeout(() => {
+      setLetterComplete(true);
+      setFocus(null);
+    }, 3000);
+    return () => window.clearTimeout(returnToRoom);
+  }, [focus, dispatchSent]);
 
   useEffect(() => {
     if (focus !== 'walkthrough') return;
@@ -336,11 +347,12 @@ export default function Home() {
           <h1><span>Ah, there</span><em>You are.</em></h1>
           <div className="opening-role">
             <p className="opening-role__edition">The XIV Exhibition opens today.</p>
-            <p className="opening-role__task"><span>You’re here for the final inspection.</span></p>
+            <p className="opening-role__task"><b>Your role</b><span>You are part of the exhibition team. Complete the three final checks before the public enters.</span></p>
+            <p className="opening-role__purpose">Discover how practical preparations, Hoffmann’s spatial design and Klimt’s frieze came together around Klinger’s Beethoven.</p>
           </div>
         </div>
         <button className="threshold" type="button" aria-label="Open the entrance door of the Vienna Secession" onClick={enterThreshold} disabled={stage !== 'outside'}>
-          <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span><span className="threshold__label">Open</span>
+          <span className="threshold__portal" aria-hidden="true"><i /><i /><i /></span><span className="threshold__label">Open the door</span>
         </button>
       </section>
 
@@ -351,8 +363,8 @@ export default function Home() {
           <h2><small>Before the public arrives</small>Three things still need your attention.</h2>
           <p className="passage-brief__lead">Inspect two letters, test Hoffmann’s sightline and follow Klimt’s frieze before the doors open.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Correspondence</b><span>A Dresden art dealer reports problems with Klinger’s shipment. Find both, then dispatch Térey’s invitations.</span></div>
-            <div><strong>02</strong><b>The sightline</b><span>Find the view that connects architecture, sculpture and painting.</span></div>
+            <div><strong>01</strong><b>Correspondence</b><span>Find two unresolved matters in art dealer Ernst Arnold’s letter. Then send the invitation requested by Gabriel von Térey, director of Budapest’s National Gallery.</span></div>
+            <div><strong>02</strong><b>The sightline</b><span>Architect Josef Hoffmann used a wall opening to connect Klimt’s frieze room with Klinger’s Beethoven statue. Find that intended view.</span></div>
             <div><strong>03</strong><b>The frieze</b><span>Follow its five-part journey along the wall.</span></div>
           </div>
           <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Start the final inspection</small><b>Enter the workroom</b><i>→</i></button></footer>
@@ -399,8 +411,8 @@ export default function Home() {
       <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
         <img className="chapter__art" src={asset('correspondence-arnold-v1.png')} alt="A hand-drawn reconstructed letter with two telegram slips" />
         <div className="document-hotspots" aria-label="Inspect the archival reconstruction">
-          <button className={letterHeadFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onFocus={() => setLetterHeadFound(true)} onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><span>01 · Arrival</span><b>{letterHeadFound ? 'Noted ✓' : 'Click or tap'}</b></button>
-          <button className={letterPriceFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onFocus={() => setLetterPriceFound(true)} onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><span>02 · Price</span><b>{letterPriceFound ? 'Noted ✓' : 'Click or tap'}</b></button>
+          <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><span>01 · Arrival</span><b>{letterHeadFound ? 'Noted ✓' : 'Tap to report'}</b></button>
+          <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><span>02 · Price</span><b>{letterPriceFound ? 'Noted ✓' : 'Tap to report'}</b></button>
         </div>
         <div className="chapter__veil" />
         <article className="document-copy">
@@ -408,7 +420,7 @@ export default function Home() {
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
           <h3>Has the marble head arrived?</h3>
           <p className="letter-context"><b>Who is writing?</b> Dresden art dealer Ernst Arnold writes to the Secession about German artist Max Klinger’s shipment. Klinger’s monumental <em>Beethoven</em> is the centrepiece of the exhibition.</p>
-          <p className="worker-cue"><b>What to do</b><span>Move across the document. Hold over the passages concerning the marble head and Beethoven’s price; each one will respond when found.</span></p>
+          <p className="worker-cue"><b>What to do</b><span>Report the two unresolved matters: select 01 for the marble head’s arrival and 02 for the unanswered price request.</span></p>
           <p>Max Klinger meant to send the marble head with his monumental Beethoven sculpture, but its dispatch was delayed. The letter does not confirm whether it arrived in time.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what sale price is being asked for Klinger’s Beethoven sculpture?</p>
@@ -419,7 +431,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <div className="auto-complete auto-complete--letter"><i>✓</i><b>Passed to the exhibition office</b><span>Marble head — arrival unconfirmed<br />Beethoven — price reply outstanding</span></div> : <p className="check-progress">Find both matters in the letter. Your notes will be passed to the exhibition office.</p>}
+          {letterHeadFound && letterPriceFound ? <div className="auto-complete auto-complete--letter"><i>✓</i><b>Passed to the exhibition office</b><span>Marble head — arrival unconfirmed<br />Beethoven — price reply outstanding</span></div> : <p className="check-progress">Select the visible markers 01 and 02. Both reports will then be passed to the exhibition office.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -462,7 +474,7 @@ export default function Home() {
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Stage ${friezeIndex + 1} confirmed ✓` : `Stage ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Keep dragging the wall to find the next glowing detail.' : 'The complete journey is now revealing its conclusion.') : 'Hold this view until the glowing detail is confirmed. Then drag the wall to continue.'}</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Your task · Station ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Drag the painted wall left to inspect the next glowing station.' : 'All five stations form one complete route.') : 'Hold on the glowing detail to confirm that this part of the visitor route is visible. Then drag left.'}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Context</b><span>About the Beethoven Frieze</span></summary>
@@ -492,8 +504,8 @@ export default function Home() {
           <div className="ending-cue"><b>Dispatch check</b><span>Bundle Térey’s card and Beer’s additional card. Both must go to Hotel Kaiserhof.</span></div>
           <div className="dispatch-workbench" aria-label="Place both invitation cards in the envelope">
             <div className="dispatch-cards">
-              <button className={tereyPacked ? 'is-packed' : ''} type="button" disabled={tereyPacked} onPointerDown={(event) => dragInvitation(event,'terey')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={(event) => { if (event.detail === 0) { soundCue('paper'); setTereyPacked(true); } }}><small>Invitation</small><b>Gabriel von Térey</b><span>{tereyPacked ? 'Inside envelope ✓' : 'Drag into envelope'}</span></button>
-              <button className={beerPacked ? 'is-packed' : ''} type="button" disabled={beerPacked} onPointerDown={(event) => dragInvitation(event,'beer')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={(event) => { if (event.detail === 0) { soundCue('paper'); setBeerPacked(true); } }}><small>Additional invitation</small><b>Joseph Beer</b><span>{beerPacked ? 'Inside envelope ✓' : 'Drag into envelope'}</span></button>
+              <button className={tereyPacked ? 'is-packed' : ''} type="button" disabled={tereyPacked} onPointerDown={(event) => dragInvitation(event,'terey')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={() => { if (!tereyPacked) { soundCue('paper'); setTereyPacked(true); } }}><small>Invitation</small><b>Gabriel von Térey</b><span>{tereyPacked ? 'Inside envelope ✓' : 'Drag or tap into envelope'}</span></button>
+              <button className={beerPacked ? 'is-packed' : ''} type="button" disabled={beerPacked} onPointerDown={(event) => dragInvitation(event,'beer')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={() => { if (!beerPacked) { soundCue('paper'); setBeerPacked(true); } }}><small>Additional invitation</small><b>Joseph Beer</b><span>{beerPacked ? 'Inside envelope ✓' : 'Drag or tap into envelope'}</span></button>
             </div>
             <div className={`dispatch-envelope ${tereyPacked ? 'has-terey' : ''} ${beerPacked ? 'has-beer' : ''}`} aria-hidden="true"><i /><i /><span>DROP BOTH HERE<br />HOTEL KAISERHOF</span></div>
           </div>
@@ -541,12 +553,12 @@ export default function Home() {
         <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
         <div className="finale-portal" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /><i /></div>
         <article className="afterlife-copy">
-          <span className="completion-stamp">Final inspection · 3 / 3</span>
-          <h3><span>Final inspection complete</span><em>The exhibition is ready.</em></h3>
-          <p>You passed on the correspondence, confirmed the spatial composition and followed the frieze from longing to fulfilment.</p>
-          <div className="today-note"><b>Vienna · 15 April 1902</b><span>The public enters.</span></div>
-          <div className="takeaway inspection-record"><b>58,000 people came.</b><span>The exhibition ended.</span><span>The rooms changed.</span><span>The Beethoven Frieze survived.</span><button type="button" onClick={downloadInspectionRecord}>Take the inspection record ↓</button></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Visit the frieze today →</a><button type="button" onClick={replay}>Experience again</button><details><summary>Sources</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details></nav>
+          <span className="completion-stamp">Vienna · 15 April 1902 · 3 / 3 complete</span>
+          <h3><span>Your final inspection is complete</span><em>The doors are open.</em></h3>
+          <p>You resolved the correspondence, confirmed Hoffmann’s sightline and checked Klimt’s five-part frieze route. The XIV Exhibition can now receive its public.</p>
+          <div className="today-note"><b>Result</b><span>The exhibition is ready.</span></div>
+          <div className="takeaway inspection-record"><b>Your inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Download your record ↓</button></div>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">See the surviving frieze today →</a><button type="button" onClick={replay}>Restart the experience</button><details><summary>Sources</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details></nav>
         </article>
       </section>
     </main>
