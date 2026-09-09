@@ -360,7 +360,7 @@ export default function Home() {
           <h2>Three things stand between you and opening.</h2>
           <p className="passage-brief__lead">You are joining the exhibition team’s final inspection of the XIV Exhibition, created around Max Klinger’s <em>Beethoven</em>. These three checks reveal how logistics, architecture and Klimt’s frieze became one experience.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Open the letter.</b><span>Scan it and record the unresolved transport and price.</span></div>
+            <div><strong>01</strong><b>Resolve the correspondence.</b><span>Record transport and price, then dispatch the two invitation cards.</span></div>
             <div><strong>02</strong><b>Move through the model.</b><span>Drag until the statue appears inside the wall opening.</span></div>
             <div><strong>03</strong><b>Trace the frieze.</b><span>Move along the wall and pause at all five stages.</span></div>
           </div>
