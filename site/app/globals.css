@@ -1796,6 +1796,33 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .ink-crowd { inset:14% -36% 0 -25%; width:165%; height:86%; }
   .ink-person { stroke-width:4; }
 }
+
+/* Frieze targets must read immediately on blue, gold, graphite and paper alike. */
+.frieze-object-marker { width:220px; }
+.frieze-object-marker i {
+  width:58px;
+  height:52px;
+  border:4px solid #e4bd4f;
+  background:var(--oxblood);
+  box-shadow:0 0 0 4px var(--plaster),0 0 0 8px var(--ultramarine),0 0 34px 13px rgb(241 235 221 / 72%);
+  transform:rotate(-5deg);
+  animation:friezeTargetSignal 1.45s ease-in-out infinite;
+}
+.frieze-object-marker span,
+.frieze-object-marker b { opacity:1; transform:none; }
+.frieze-object-marker span { color:var(--plaster); background:var(--graphite); }
+.frieze-object-marker b { color:var(--graphite); background:#e4bd4f; box-shadow:4px 5px 0 var(--ultramarine); }
+.frieze-object-marker.is-marked i { border-color:var(--graphite); background:#e4bd4f; box-shadow:0 0 0 4px var(--plaster),0 0 0 8px var(--oxblood); }
+@keyframes friezeTargetSignal {
+  0%,100% { transform:rotate(-5deg) scale(.92); box-shadow:0 0 0 4px var(--plaster),0 0 0 8px var(--ultramarine),0 0 20px 8px rgb(241 235 221 / 48%); }
+  50% { transform:rotate(2deg) scale(1.08); box-shadow:0 0 0 4px var(--plaster),0 0 0 10px var(--ultramarine),0 0 42px 17px rgb(241 235 221 / 82%); }
+}
+@media (max-width:760px) {
+  .frieze-object-marker { width:158px; }
+  .frieze-object-marker i { width:48px; height:43px; border-width:3px; }
+  .frieze-object-marker span { font-size:.55rem!important; }
+  .frieze-object-marker b { font-size:.5rem!important; }
+}
 .frieze-stage-next {
   position:absolute;
   z-index:9;
