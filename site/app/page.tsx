@@ -357,14 +357,14 @@ export default function Home() {
         <span /><span /><span />
         <article className="passage-brief">
           <p>Your briefing / XIV Exhibition</p>
-          <h2>The public arrives later today.</h2>
-          <p className="passage-brief__lead">Before the doors open, the exhibition team needs three final checks from you. Each one connects to Max Klinger’s monumental Beethoven sculpture at the centre of the exhibition.</p>
+          <h2>Three things stand between you and opening.</h2>
+          <p className="passage-brief__lead">You are joining the exhibition team’s final inspection of the XIV Exhibition, created around Max Klinger’s <em>Beethoven</em>. These three checks reveal how logistics, architecture and Klimt’s frieze became one experience.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Review the Dresden letter</b><span>Art dealer Ernst Arnold writes about Klinger’s dispatch. Mark the delayed marble head and an unanswered price request.</span></div>
-            <div><strong>02</strong><b>Inspect the room model</b><span>Find the wall opening that connects Klimt’s painted room with the view of Klinger’s Beethoven statue.</span></div>
-            <div><strong>03</strong><b>Complete the frieze check</b><span>Move through all five stages — from the search for happiness to the final kiss.</span></div>
+            <div><strong>01</strong><b>Find.</b><span>Record two unresolved points in the Dresden letter.</span></div>
+            <div><strong>02</strong><b>Align.</b><span>Bring the statue and wall opening into one view.</span></div>
+            <div><strong>03</strong><b>Follow.</b><span>Move through the frieze from longing to fulfilment.</span></div>
           </div>
-          <footer><span>By opening time, you will understand how logistics, architecture and art became one experience — and why something temporary survived.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b>Enter the workroom</b><i>→</i></button></footer>
+          <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
       </section>
 
