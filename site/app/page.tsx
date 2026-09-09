@@ -543,6 +543,11 @@ export default function Home() {
       <section className={`chapter chapter--epilogue ${focus === 'epilogue' ? 'is-open' : ''}`} aria-hidden={focus !== 'epilogue'}>
         <div className="public-arrival" aria-hidden="true">
           <img src={asset('secession-interior-v4.png')} alt="" />
+          <svg className="ink-crowd" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax meet">
+            <g className="ink-person ink-person--one"><path d="M92 648c7-89 17-175 31-258 5-31 17-68 43-76 27-8 47 28 52 62 13 89 17 181 22 272M131 313c-4-31 8-58 30-61 23-3 42 21 42 53 0 31-16 56-39 57-22 1-39-20-33-49M111 404c-28 47-50 100-63 158m158-153c31 41 58 87 76 137"/><path d="M281 651c2-78 8-153 19-227 6-43 14-91 45-104 34-14 62 31 68 77 11 82 12 168 10 254M320 314c-3-35 13-63 39-63 25 1 42 29 38 64-4 34-24 58-49 54-24-4-36-25-28-55"/></g>
+            <g className="ink-person ink-person--two"><path d="M486 650c9-106 17-206 37-300 7-34 21-71 49-76 31-5 53 35 55 75 5 99 5 199 10 301M531 271c-2-37 16-65 43-63 28 2 45 34 38 69-6 35-29 57-54 50-23-7-34-27-27-56M510 378c-35 50-62 107-80 168m181-160c38 42 70 94 94 151"/><path d="M701 651c4-81 11-160 24-236 7-42 18-86 48-96 31-11 56 27 61 71 10 87 12 174 13 261M742 313c0-32 15-57 38-56 24 1 39 28 34 60-5 31-24 51-46 45-21-5-31-24-26-49"/></g>
+            <g className="ink-person ink-person--three"><path d="M892 650c4-92 12-181 27-265 7-39 20-81 51-89 33-8 57 34 61 78 8 91 7 184 10 276M934 291c-1-35 16-62 42-60 26 2 42 31 36 65-6 34-27 55-51 49-23-6-34-26-27-54M916 405c-34 43-61 94-80 150m180-151c34 39 63 85 84 137"/><path d="M1081 651c6-72 11-141 21-208 6-40 17-80 44-89 28-9 50 26 54 67 8 76 7 153 6 230M1117 349c-1-30 13-54 35-54s36 25 32 55c-4 30-21 49-42 45-20-5-29-23-25-46"/></g>
+          </svg>
           <div className="public-shadows"><i /><i /><i /><i /><i /></div>
           <div className="public-type"><span>The public</span><b>enters.</b></div>
           <div className="public-graphite"><i /><i /><i /></div>
