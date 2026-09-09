@@ -2875,9 +2875,51 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .chapter--epilogue .visitors-number span { max-width:34rem; margin-top:42px; color:var(--plaster); font-size:clamp(1.7rem,3vw,3.4rem); line-height:.95; }
 .chapter--epilogue .visitors-number small { color:#e4bd4f; font-size:.7rem; }
 .chapter--epilogue.is-open .visitors-number { animation:visitorEvent 3.8s 4.45s cubic-bezier(.16,1,.3,1) both; }
-.chapter--epilogue.is-open .afterlife-copy { animation:afterlifeArrive 1.2s 8.1s cubic-bezier(.16,1,.3,1) forwards; }
+.chapter--epilogue.is-open .afterlife-copy { animation:afterlifeArrive 1.2s 11.7s cubic-bezier(.16,1,.3,1) forwards; }
 @keyframes visitorEvent {
   0% { opacity:0; clip-path:inset(48% 0 48%); }
+  14%,78% { opacity:1; clip-path:inset(0); }
+  100% { opacity:0; clip-path:inset(0 0 0 100%); }
+}
+
+/* The public doors opened in 1902; institutional membership did not open equally. */
+.membership-afterword {
+  position:absolute;
+  inset:0;
+  z-index:7;
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+  grid-template-rows:auto 1fr auto;
+  gap:2rem 6vw;
+  padding:7vh 7vw;
+  overflow:hidden;
+  color:var(--graphite);
+  background:var(--plaster);
+  opacity:0;
+  pointer-events:none;
+}
+.membership-afterword::after {
+  content:"";
+  position:absolute;
+  right:-9vw;
+  top:-13vh;
+  width:43vw;
+  height:126vh;
+  background:var(--ultramarine);
+  transform:rotate(8deg);
+  transform-origin:center;
+}
+.membership-afterword > span { position:relative; z-index:1; font:700 .78rem/1 "Josefin Sans",sans-serif; letter-spacing:.3em; }
+.membership-afterword h3 { position:relative; z-index:1; grid-column:1/-1; align-self:center; margin:0; font-family:"Della Respira",serif; font-size:clamp(4rem,8.5vw,10rem); font-weight:400; line-height:.76; letter-spacing:-.055em; }
+.membership-afterword h3 b,.membership-afterword h3 em { display:inline-block; font-weight:400; font-style:normal; }
+.membership-afterword h3 em { margin-left:.18em; color:var(--plaster); transform:translateY(.45em); }
+.membership-afterword p { position:relative; z-index:1; grid-column:1; align-self:end; max-width:40rem; margin:0; font-family:"Della Respira",serif; font-size:clamp(1.05rem,1.65vw,1.65rem); line-height:1.3; }
+.membership-afterword p strong { color:var(--oxblood); font-size:1.2em; }
+.membership-afterword > i { position:relative; z-index:1; grid-column:2; align-self:end; color:var(--plaster); font:700 clamp(1rem,1.5vw,1.5rem)/1 "Josefin Sans",sans-serif; letter-spacing:.14em; text-align:right; }
+.membership-afterword > i b { color:#e4bd4f; font-size:1.5em; }
+.chapter--epilogue.is-open .membership-afterword { animation:membershipMoment 3.8s 7.85s cubic-bezier(.16,1,.3,1) both; }
+@keyframes membershipMoment {
+  0% { opacity:0; clip-path:inset(0 100% 0 0); }
   14%,78% { opacity:1; clip-path:inset(0); }
   100% { opacity:0; clip-path:inset(0 0 0 100%); }
 }
@@ -2889,7 +2931,66 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--epilogue .visitors-number strong { font-size:31vw; text-shadow:5px 6px 0 var(--ultramarine); }
   .chapter--epilogue .visitors-number span { margin-top:28px; font-size:7vw; }
   .chapter--epilogue .visitors-number small { max-width:76vw; font-size:.52rem; line-height:1.3; }
-  .chapter--epilogue.is-open .afterlife-copy { animation:afterlifeMobile 1s 8.1s cubic-bezier(.16,1,.3,1) forwards; }
+  .chapter--epilogue.is-open .afterlife-copy { animation:afterlifeMobile 1s 11.7s cubic-bezier(.16,1,.3,1) forwards; }
+  .membership-afterword { display:flex; flex-direction:column; gap:18px; padding:10vh 6vw 7vh; }
+  .membership-afterword::after { right:-39vw; top:44%; width:115vw; height:70vh; transform:rotate(-7deg); }
+  .membership-afterword h3 { margin:auto 0; font-size:16vw; line-height:.78; }
+  .membership-afterword h3 b,.membership-afterword h3 em { display:block; }
+  .membership-afterword h3 em { margin:.32em 0 0 16vw; }
+  .membership-afterword p { max-width:82vw; font-size:1rem; }
+  .membership-afterword > i { align-self:flex-end; font-size:.8rem; }
+}
+
+/* The frieze stays full-frame. Instructions float above it instead of forming a black footer. */
+.chapter--frieze { display:block!important; padding-top:0!important; }
+.chapter--frieze .frieze-pan { position:absolute!important; inset:0!important; }
+.chapter--frieze .frieze-copy { position:absolute!important; inset:0!important; display:block!important; height:auto!important; padding:0!important; background:transparent!important; overflow:visible!important; pointer-events:none; }
+.chapter--frieze .frieze-copy .worker-cue--frieze { position:absolute!important; left:3vw!important; top:76px!important; width:min(430px,48vw)!important; pointer-events:auto; }
+.chapter--frieze .frieze-copy > p:not(.worker-cue) { position:absolute!important; left:3vw!important; bottom:4vh!important; max-width:15ch!important; margin:0!important; padding:9px 12px 7px!important; color:var(--plaster)!important; background:var(--oxblood)!important; box-shadow:7px 8px 0 #e4bd4f!important; font-size:clamp(1.4rem,2.3vw,2.8rem)!important; }
+.chapter--frieze .frieze-controls { position:absolute!important; right:3vw!important; top:76px!important; pointer-events:auto; }
+.chapter--frieze .context-note--frieze { position:absolute!important; right:3vw!important; bottom:4vh!important; pointer-events:auto; }
+.chapter--frieze .frieze-reveal.auto-complete { position:absolute!important; left:50%!important; bottom:5vh!important; width:min(440px,84vw)!important; transform:translateX(-50%)!important; pointer-events:auto; }
+
+@media (max-width:760px) {
+  .chapter--frieze .frieze-copy .worker-cue--frieze { left:4vw!important; top:82px!important; width:74vw!important; }
+  .chapter--frieze .frieze-copy > p:not(.worker-cue) { left:4vw!important; bottom:5vh!important; font-size:1.45rem!important; }
+  .chapter--frieze .frieze-controls { right:4vw!important; top:auto!important; bottom:5vh!important; }
+  .chapter--frieze .context-note--frieze { display:none!important; }
+  .chapter--frieze .frieze-reveal.auto-complete { bottom:4vh!important; }
+  .dispatch-flight { padding:8vh 5vw!important; }
+  .dispatch-flight p { width:90vw; }
+  .dispatch-flight p strong { max-width:90vw; font-size:clamp(2.1rem,12vw,3.6rem)!important; line-height:.84; overflow-wrap:anywhere; }
+  .dispatch-flight p span { max-width:86vw; font-size:.82rem; }
+}
+
+/* Final walk-through: an unmistakable action, not another editorial headline. */
+.final-walkthrough-entry {
+  width:min(600px,86vw)!important;
+  min-height:112px!important;
+  padding:22px 76px 18px 25px!important;
+  text-align:left!important;
+  transform:translate(-50%,-50%) rotate(.65deg)!important;
+}
+.final-walkthrough-entry small { margin-bottom:11px!important; color:var(--oxblood)!important; font-size:.68rem!important; letter-spacing:.2em!important; }
+.final-walkthrough-entry b { max-width:21ch; font-family:"Josefin Sans",sans-serif!important; font-size:clamp(1.05rem,1.65vw,1.65rem)!important; font-weight:700!important; letter-spacing:.08em!important; line-height:1.08!important; text-transform:uppercase!important; }
+.final-walkthrough-entry > i { right:27px!important; color:var(--ultramarine); font-size:2.8rem!important; }
+@media (max-width:760px) {
+  .final-walkthrough-entry { width:90vw!important; min-height:92px!important; padding:16px 58px 14px 17px!important; }
+  .final-walkthrough-entry small { margin-bottom:7px!important; font-size:.52rem!important; }
+  .final-walkthrough-entry b { font-size:.86rem!important; letter-spacing:.065em!important; }
+  .final-walkthrough-entry > i { right:18px!important; font-size:2rem!important; }
+}
+
+/* The subject is unmistakable before the poetic title begins. */
+.opening-slate .opening-identity { display:flex; flex-direction:column; align-items:flex-start; gap:7px; width:max-content; padding:11px 14px 9px; color:var(--plaster); background:var(--graphite); border-left:6px solid #e4bd4f; transform:rotate(-.5deg); }
+.opening-slate .opening-identity b { font:700 clamp(.9rem,1.35vw,1.35rem)/1 "Josefin Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; }
+.opening-slate .opening-identity em { color:#e4bd4f; font:700 clamp(.58rem,.72vw,.74rem)/1 "Josefin Sans",sans-serif; font-style:normal; letter-spacing:.19em; text-transform:uppercase; }
+.exterior .opening-role__purpose { max-width:34rem; color:var(--plaster); font-family:"Della Respira",serif; font-size:clamp(1rem,1.35vw,1.4rem); font-weight:400; letter-spacing:0; line-height:1.28; }
+@media (max-width:760px) {
+  .opening-slate .opening-identity { gap:5px; max-width:62vw; padding:9px 10px 7px; border-left-width:4px; }
+  .opening-slate .opening-identity b { font-size:.69rem; line-height:1.08; }
+  .opening-slate .opening-identity em { font-size:.48rem; line-height:1.15; }
+  .exterior .opening-role__purpose { max-width:49vw; font-size:.76rem; line-height:1.25; }
 }
 
 /* Readability floor: no meaningful instruction or label is set as decorative micro-type. */
@@ -2928,6 +3029,60 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .experience .attention__item small { display:none!important; }
   .experience .context-note p,
   .experience .context-note span { font-size:.7rem!important; }
+}
+
+/* Accessibility pass: supporting copy must remain reading text, never micro-decoration. */
+.experience small,
+.experience .chapter-kicker,
+.experience .reconstruction,
+.experience .work-ledger span,
+.experience .work-ledger small,
+.experience .action-compass > span,
+.experience .worker-cue b,
+.experience .context-note summary,
+.experience .check-progress,
+.experience .frieze-controls,
+.experience .arrival-stamps span,
+.experience .room-number,
+.experience .attention__item small,
+.experience .opening-role__task b,
+.experience .opening-role__edition { font-size:clamp(.78rem,.9vw,.92rem)!important; line-height:1.32!important; }
+.experience .attention__item b,
+.experience .passage-brief__grid b,
+.experience .work-ledger b { font-size:clamp(.85rem,1vw,1rem)!important; }
+.experience .attention__item small,
+.experience .passage-brief__grid span,
+.experience .context-note p,
+.experience .context-note span,
+.experience .worker-cue span,
+.experience .view-step span,
+.experience .ending-cue span { font-size:clamp(.86rem,1.05vw,1.05rem)!important; line-height:1.42!important; }
+.experience .passage-brief__grid > div,
+.experience .attention__prompt,
+.experience .worker-cue { overflow:visible; }
+
+@media (max-width:760px) {
+  .experience small,
+  .experience .chapter-kicker,
+  .experience .reconstruction,
+  .experience .work-ledger span,
+  .experience .work-ledger small,
+  .experience .action-compass > span,
+  .experience .worker-cue b,
+  .experience .context-note summary,
+  .experience .check-progress,
+  .experience .frieze-controls,
+  .experience .room-number,
+  .experience .opening-role__edition { font-size:.68rem!important; line-height:1.3!important; }
+  .experience .attention__item b,
+  .experience .passage-brief__grid b { font-size:.74rem!important; }
+  .experience .attention__item small { display:block!important; font-size:.68rem!important; line-height:1.28!important; }
+  .experience .passage-brief__grid span,
+  .experience .context-note p,
+  .experience .context-note span,
+  .experience .worker-cue span,
+  .experience .view-step span,
+  .experience .ending-cue span { font-size:.74rem!important; line-height:1.36!important; }
 }
 
 @media (max-width:760px) {

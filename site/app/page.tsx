@@ -35,8 +35,9 @@ export default function Home() {
   const invitationDrag = useRef<{ x:number; y:number; card:'terey' | 'beer' } | null>(null);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
   const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
-  const friezeMarkers = [{x:28,y:43},{x:48,y:39},{x:62,y:49},{x:58,y:34},{x:75,y:42}];
-  const friezeComplete = friezePosition >= 3.94 && friezeSeen.length === 5;
+  // Screen-space positions calibrated to the motif currently revealed by the moving 175vw artwork.
+  const friezeMarkers = [{x:25,y:45},{x:48,y:43},{x:69,y:48},{x:77,y:46},{x:86,y:43}];
+  const friezeComplete = friezeSeen.length === 5;
   const completedCount = Number(letterComplete) + Number(roomComplete) + Number(friezeComplete);
   const inspectionComplete = completedCount === 3;
   const systemLabel = focus === 'letter' ? 'correspondence' : focus === 'rooms' ? 'the rooms' : focus === 'frieze' ? 'the frieze' : focus === 'invitation' ? 'invitation' : focus === 'walkthrough' ? 'final walk-through' : focus === 'doors' ? 'opening' : focus === 'epilogue' ? 'afterlife' : stage === 'threshold' ? 'briefing' : 'workroom';
@@ -222,11 +223,11 @@ export default function Home() {
   };
 
   const downloadInspectionRecord = () => {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600"><rect width="1200" height="1600" fill="#F1EBDD"/><path d="M0 0H1200V185L0 315Z" fill="#2520E8"/><text x="80" y="120" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="25" letter-spacing="7">SALON FORMAT · IMMERSIVE CULTURAL EXPERIENCE</text><text x="80" y="430" fill="#201D1A" font-family="Georgia,serif" font-size="88">FINAL</text><text x="80" y="520" fill="#201D1A" font-family="Georgia,serif" font-size="88">INSPECTION RECORD</text><text x="82" y="600" fill="#A98235" font-family="Arial,sans-serif" font-size="26" letter-spacing="5">VIENNA SECESSION · 15 APRIL 1902</text><line x1="80" y1="665" x2="1120" y2="665" stroke="#201D1A" stroke-width="3"/><g font-family="Arial,sans-serif" font-size="30" letter-spacing="3"><rect x="80" y="735" width="1040" height="145" fill="#201D1A"/><text x="125" y="825" fill="#F1EBDD">01  CORRESPONDENCE CLEARED</text><rect x="80" y="910" width="1040" height="145" fill="#47716D"/><text x="125" y="1000" fill="#F1EBDD">02  SIGHTLINE CONFIRMED</text><rect x="80" y="1085" width="1040" height="145" fill="#A98235"/><text x="125" y="1175" fill="#201D1A">03  FRIEZE ROUTE COMPLETE</text></g><text x="80" y="1335" fill="#201D1A" font-family="Georgia,serif" font-size="42">The exhibition is ready.</text><text x="80" y="1400" fill="#6B2F2B" font-family="Arial,sans-serif" font-size="24" letter-spacing="4">THE PUBLIC CAN ENTER NOW.</text><text x="80" y="1510" fill="#201D1A" font-family="Arial,sans-serif" font-size="20" letter-spacing="4">A SALON FORMAT RECONSTRUCTION · SALONFORMAT.COM</text></svg>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600"><rect width="1200" height="1600" fill="#F1EBDD"/><path d="M0 0H1200V530L1060 490 1110 760 1000 940 1050 1600H0Z" fill="#2520E8"/><circle cx="965" cy="245" r="164" fill="#A98235"/><g fill="#F1EBDD" stroke="#201D1A" stroke-width="7"><path d="M760 190h410v430H760z"/><path d="M815 112h300v165H815z"/><path d="M862 42h206v147H862z"/><path d="M900 300h130v320H900z"/></g><path d="M900 300h130v320H900z" fill="#201D1A"/><text x="70" y="92" fill="#201D1A" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="7">SALON FORMAT · VIENNA · 15 APRIL 1902</text><text x="70" y="235" fill="#201D1A" font-family="Georgia,serif" font-size="94">BEFORE THE</text><text x="70" y="330" fill="#201D1A" font-family="Georgia,serif" font-size="94">DOORS OPEN</text><text x="70" y="430" fill="#6B2F2B" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5">OPENING-DAY KEEPSAKE</text><g transform="translate(70 650) rotate(-1)"><rect width="940" height="118" fill="#F1EBDD" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#201D1A" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">01 · CORRESPONDENCE CLEARED  ✓</text></g><g transform="translate(120 795) rotate(1)"><rect width="940" height="118" fill="#47716D" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">02 · SIGHTLINE CONFIRMED  ✓</text></g><g transform="translate(72 940) rotate(-.6)"><rect width="940" height="118" fill="#A98235" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#201D1A" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">03 · FRIEZE ROUTE COMPLETE  ✓</text></g><text x="70" y="1215" fill="#F1EBDD" font-family="Georgia,serif" font-size="76">You made the</text><text x="70" y="1295" fill="#F1EBDD" font-family="Georgia,serif" font-size="76">opening possible.</text><text x="70" y="1390" fill="#E4BD4F" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="5">58,000 PEOPLE VISITED THE XIV EXHIBITION.</text><text x="70" y="1460" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="21">Letters, architecture and art were experienced as one spatial composition.</text><text x="70" y="1530" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">YOUR FINAL INSPECTION · SALONFORMAT.COM</text></svg>`;
     const url = URL.createObjectURL(new Blob([svg], { type:'image/svg+xml' }));
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'before-the-doors-open-final-inspection-record.svg';
+    link.download = 'before-the-doors-open-opening-day-keepsake.svg';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -318,7 +319,7 @@ export default function Home() {
   return (
     <main className={`experience stage-${stage} ${interiorRevealed ? 'interior-revealed' : ''}`} onPointerMove={moveScene}>
       <audio ref={publicAmbience} src={`${import.meta.env.BASE_URL}audio/museum-gallery-ambience-cc0.mp3`} loop preload="auto" />
-      <audio ref={workroomAmbience} src={`${import.meta.env.BASE_URL}audio/empty-museum-footsteps-cc0.mp3`} loop preload="auto" />
+      <audio ref={workroomAmbience} src={`${import.meta.env.BASE_URL}audio/museum-gallery-ambience-cc0.mp3`} loop preload="auto" />
       <div className="cursor-mark" aria-hidden="true" />
       <nav className="global-navigation" aria-label="Experience navigation">
         {(introSkipped || stage !== 'outside' || focus) && <button type="button" onClick={goBack}><i>←</i><span>Back</span></button>}
@@ -328,10 +329,10 @@ export default function Home() {
       <aside className="work-ledger" aria-live="polite"><i /><span>Opening day · final inspection</span><b>{systemLabel}</b><small>{completedCount} / 3 ready</small></aside>
       {stage === 'inside' && focus !== 'epilogue' && <aside className={`action-compass action-compass--${focus ?? 'workroom'}`} aria-live="polite"><span>{guidance.step}</span><p>{guidance.instruction}</p></aside>}
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
-        <span>Vienna · 1902 · An immersive cultural experience</span>
+        <span className="opening-identity"><b>The XIV Exhibition</b><em>Vienna Secession · 1902</em></span>
         <div className="opening-glimpse"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /></div>
         <h1 className="prologue-title"><span>Before</span><em>the doors</em><strong>open.</strong></h1>
-        <p><strong>Enter the Vienna Secession before the public—</strong>and take part in the final preparations for the XIV Exhibition.</p>
+        <p><strong>Enter the Vienna Secession before the public—</strong>and help prepare its landmark XIV Exhibition, created around Max Klinger’s monumental Beethoven.</p>
         <div className="opening-slate__modes"><i>Letters</i><i>Architecture</i><i>Klimt’s Beethoven Frieze</i></div>
         <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Vienna · 15 April 1902</small><b>Begin</b><i>→</i></button>
       </div>
@@ -365,7 +366,7 @@ export default function Home() {
           <div className="passage-brief__grid">
             <div><strong>01</strong><b>Correspondence</b><span>Find two unresolved matters in art dealer Ernst Arnold’s letter. Then send the invitation requested by Gabriel von Térey, director of Budapest’s National Gallery.</span></div>
             <div><strong>02</strong><b>The sightline</b><span>Architect Josef Hoffmann used a wall opening to connect Klimt’s frieze room with Klinger’s Beethoven statue. Find that intended view.</span></div>
-            <div><strong>03</strong><b>The frieze</b><span>Follow its five-part journey along the wall.</span></div>
+            <div><strong>03</strong><b>The frieze</b><span>Move along the painted wall and hold each of five glowing details in view. Confirming all five proves the complete visitor route can be followed.</span></div>
           </div>
           <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Start the final inspection</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
@@ -390,7 +391,6 @@ export default function Home() {
         <div className="workroom-lens" aria-hidden="true" />
         <div className="interior__copy">
           <span className="room-number">15 April 1902 / Before opening</span>
-          <h2>You’re here.<em>Good.</em></h2>
           <p className="interior__line">Three preparations remain. Begin wherever you like.</p>
         </div>
         <nav className="attention" aria-label="Areas in the room">
@@ -404,7 +404,7 @@ export default function Home() {
           <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => setFocus('frieze')}>
             <i /><span><b>The frieze {friezeComplete && '✓'}</b><small>Drag the wall and confirm five glowing details</small></span>
           </button>
-          {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => setFocus('walkthrough')}><small>3 / 3 preparations ready</small><b>Begin final walk-through</b><i>→</i></button>}
+          {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => setFocus('walkthrough')}><small>3 / 3 preparations ready</small><b>Walk through the finished exhibition</b><i>→</i></button>}
         </nav>
       </section>
 
@@ -474,7 +474,7 @@ export default function Home() {
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Your task · Station ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Drag the painted wall left to inspect the next glowing station.' : 'All five stations form one complete route.') : 'Hold on the glowing detail to confirm that this part of the visitor route is visible. Then drag left.'}</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Find and confirm 5 stages · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Now drag the painted wall to the left. Stop at the next glowing detail.' : 'All five stages form one complete route.') : 'Move along the painted wall. When you reach the glowing detail, hold it in view until the check appears.'}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Context</b><span>About the Beethoven Frieze</span></summary>
@@ -549,16 +549,22 @@ export default function Home() {
           <div className="arrival-stamps"><span>Correspondence cleared</span><span>Sightline confirmed</span><span>Frieze route complete</span></div>
         </div>
         <div className="visitors-number"><strong>58,000</strong><span>people visited the XIV Exhibition.</span><small>It became one of the Secession’s greatest public successes.</small></div>
+        <div className="membership-afterword">
+          <span>1902</span>
+          <h3><b>The doors<br />were open.</b><em>But not<br />to everyone.</em></h3>
+          <p>Women artists appeared in early Secession exhibitions. Yet women were not admitted as members of the association until <strong>1949.</strong></p>
+          <i aria-hidden="true">1902 <b>→</b> 1949</i>
+        </div>
         <div className="gold-afterline" aria-hidden="true" />
         <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
         <div className="finale-portal" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /><i /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Vienna · 15 April 1902 · 3 / 3 complete</span>
-          <h3><span>Your final inspection is complete</span><em>The doors are open.</em></h3>
+          <h3><span>Your final inspection is complete</span><em>You made the opening possible.</em></h3>
           <p>You resolved the correspondence, confirmed Hoffmann’s sightline and checked Klimt’s five-part frieze route. The XIV Exhibition can now receive its public.</p>
           <div className="today-note"><b>Result</b><span>The exhibition is ready.</span></div>
-          <div className="takeaway inspection-record"><b>Your inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Download your record ↓</button></div>
-          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">See the surviving frieze today →</a><button type="button" onClick={replay}>Restart the experience</button><details><summary>Sources</summary><p>This experience is based on archival material relating to the XIV Exhibition of the Vienna Secession in 1902. Historical events, dates and correspondence have been adapted for an interactive format. Reconstructed documents, visual environments and narrative transitions are original interpretations by Salon Format. Sound: “footsteps in museum” by Anya_Media and “Museum Gallery ambience soft walla calm steps” by visionear, both CC0 via Freesound.</p></details></nav>
+          <div className="takeaway inspection-record"><b>Your opening-day keepsake</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Download the poster ↓</button></div>
+          <nav><a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Visit Klimt’s Beethoven Frieze today →</a><button type="button" onClick={replay}>Restart the experience</button><details><summary>Sources & credits</summary><p>Historical sources: <a href="https://secession.at/digital_archive_exhibition/56" target="_blank" rel="noreferrer">XIV Exhibition</a>, <a href="https://secession.at/digital_archive/406" target="_blank" rel="noreferrer">Ernst Arnold letter</a>, <a href="https://secession.at/digital_archive/1526" target="_blank" rel="noreferrer">Gabriel von Térey letter</a>, <a href="https://secession.at/beethovenfrieze" target="_blank" rel="noreferrer">Beethoven Frieze</a> and <a href="https://secession.at/association_of_visual_artists_vienna_secession" target="_blank" rel="noreferrer">Association history</a>, all Vienna Secession. Facts are paraphrased; archival scans and museum photographs are not reproduced. Illustrations are original reconstructions for this experience. Ambience: <a href="https://freesound.org/people/visionear/sounds/563379/" target="_blank" rel="noreferrer">visionear via Freesound</a>, CC0. Della Respira and Josefin Sans are distributed under OFL-1.1. Full usage notes: SOURCES.md in the project repository.</p></details></nav>
         </article>
       </section>
     </main>
