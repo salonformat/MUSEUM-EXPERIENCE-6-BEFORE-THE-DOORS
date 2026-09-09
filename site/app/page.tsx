@@ -32,6 +32,7 @@ export default function Home() {
   const climaxPlayed = useRef(false);
   const publicAmbience = useRef<HTMLAudioElement | null>(null);
   const workroomAmbience = useRef<HTMLAudioElement | null>(null);
+  const invitationDrag = useRef<{ x:number; y:number; card:'terey' | 'beer' } | null>(null);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
   const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
   const friezeMarkers = [{x:28,y:43},{x:48,y:39},{x:62,y:49},{x:58,y:34},{x:75,y:42}];
@@ -40,6 +41,18 @@ export default function Home() {
   const inspectionComplete = completedCount === 3;
   const systemLabel = focus === 'letter' ? 'correspondence' : focus === 'rooms' ? 'the rooms' : focus === 'frieze' ? 'the frieze' : focus === 'invitation' ? 'invitation' : focus === 'walkthrough' ? 'final walk-through' : focus === 'doors' ? 'opening' : focus === 'epilogue' ? 'afterlife' : stage === 'threshold' ? 'briefing' : 'workroom';
   const systemNumber = focus === 'letter' ? '01' : focus === 'rooms' ? '02' : focus === 'frieze' ? '03' : focus === 'invitation' ? '04' : focus === 'doors' || focus === 'epilogue' ? '05' : '00';
+  const guidance = (() => {
+    if (focus === 'letter') {
+      const found = Number(letterHeadFound) + Number(letterPriceFound);
+      return { step:`01 · Correspondence · ${found}/2 found`, instruction:found === 0 ? 'Move across the letter and pause where the paper responds; two passages show what remained unresolved before opening.' : found === 1 ? 'One issue has lifted from the page. Continue scanning the letter for the second.' : 'Transport and price are now recorded; the unfinished invitation dispatch opens next.' };
+    }
+    if (focus === 'invitation') return { step:'01 · Correspondence', instruction:tereyPacked && beerPacked ? 'Both cards are enclosed; the envelope is being dispatched to Hotel Kaiserhof.' : 'Place both cards in the envelope — guest access was part of the exhibition’s practical work.' };
+    if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 72 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag until the statue sits inside the wall opening and the three art forms become one view.' };
+    if (focus === 'frieze') return { step:'03 · Frieze route', instruction:friezeSeen.includes(friezeIndex) ? 'This stage is recorded; move along the wall to continue Klimt’s journey.' : `Pause at stage ${friezeIndex + 1} — its image carries the journey from longing toward fulfilment forward.` };
+    if (focus === 'walkthrough') return { step:'Final walk-through', instruction:walkthroughChecks.length === 3 ? 'Logistics, space and narrative now work together; the exhibition can be released.' : 'Watch the completed room register the three systems you have already checked.' };
+    if (focus === 'doors') return { step:'Opening', instruction:'Open the doors: your private inspection now becomes a public cultural experience.' };
+    return { step:'Final inspection', instruction:'Choose any glowing work point and discover how letters, architecture and art made one exhibition possible.' };
+  })();
 
   const ensureSound = () => {
     if (audioContext.current) return audioContext.current;
@@ -144,6 +157,33 @@ export default function Home() {
     }, 3400);
   };
 
+  const dragInvitation = (event:React.PointerEvent<HTMLButtonElement>, card:'terey' | 'beer') => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    invitationDrag.current = { x:event.clientX, y:event.clientY, card };
+  };
+
+  const moveInvitation = (event:React.PointerEvent<HTMLButtonElement>) => {
+    const drag = invitationDrag.current;
+    if (!drag || !event.currentTarget.hasPointerCapture(event.pointerId)) return;
+    event.currentTarget.style.setProperty('--card-x', `${event.clientX - drag.x}px`);
+    event.currentTarget.style.setProperty('--card-y', `${event.clientY - drag.y}px`);
+  };
+
+  const dropInvitation = (event:React.PointerEvent<HTMLButtonElement>) => {
+    const drag = invitationDrag.current;
+    if (!drag) return;
+    const envelope = event.currentTarget.closest('.dispatch-workbench')?.querySelector('.dispatch-envelope');
+    const rect = envelope?.getBoundingClientRect();
+    const inside = Boolean(rect && event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom);
+    event.currentTarget.style.setProperty('--card-x','0px');
+    event.currentTarget.style.setProperty('--card-y','0px');
+    invitationDrag.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    if (!inside) return;
+    soundCue('paper');
+    if (drag.card === 'terey') setTereyPacked(true); else setBeerPacked(true);
+  };
+
   const toggleWalkthrough = (item: string) => {
     soundCue('room');
     setWalkthroughChecks((checks) => checks.includes(item) ? checks : [...checks, item]);
@@ -222,16 +262,32 @@ export default function Home() {
   }, [focus, letterHeadFound, letterPriceFound]);
 
   useEffect(() => {
+    if (focus !== 'invitation' || !tereyPacked || !beerPacked || dispatchSent) return;
+    const send = window.setTimeout(dispatchInvitations, 900);
+    return () => window.clearTimeout(send);
+  }, [focus, tereyPacked, beerPacked, dispatchSent]);
+
+  useEffect(() => {
+    if (focus !== 'walkthrough') return;
+    const items = ['correspondence','sightline','frieze'];
+    const timers = items.map((item,index) => window.setTimeout(() => {
+      setWalkthroughChecks((checks) => checks.includes(item) ? checks : [...checks,item]);
+      soundCue('room');
+    }, 550 + index * 520));
+    return () => timers.forEach(window.clearTimeout);
+  }, [focus]);
+
+  useEffect(() => {
+    if (focus !== 'frieze' || friezeSeen.includes(friezeIndex)) return;
+    const inspect = window.setTimeout(markFriezeStage, 700);
+    return () => window.clearTimeout(inspect);
+  }, [focus, friezeIndex, friezeSeen]);
+
+  useEffect(() => {
     if (focus !== 'frieze' || !friezeComplete) return;
     const done = window.setTimeout(() => setFocus(null), 2200);
     return () => window.clearTimeout(done);
   }, [focus, friezeComplete]);
-
-  useEffect(() => {
-    if (focus !== 'frieze' || !friezeSeen.includes(friezeIndex) || friezeIndex >= 4) return;
-    const advance = window.setTimeout(() => setFriezePosition(friezeIndex + 1), 480);
-    return () => window.clearTimeout(advance);
-  }, [focus, friezeIndex, friezeSeen]);
 
   const moveScene = (event: React.PointerEvent<HTMLElement>) => {
     const x = event.clientX / window.innerWidth - 0.5;
@@ -258,11 +314,12 @@ export default function Home() {
       </nav>
       <button className="sound-toggle" type="button" onClick={() => setSoundEnabled((enabled) => !enabled)} aria-label={soundEnabled ? 'Mute sound' : 'Enable sound'}><i aria-hidden="true" />{soundEnabled ? 'Sound on' : 'Sound off'}</button>
       <aside className="work-ledger" aria-live="polite"><i /><span>Opening day · final inspection</span><b>{systemLabel}</b><small>{completedCount} / 3 ready</small></aside>
+      {stage === 'inside' && focus !== 'epilogue' && <aside className={`action-compass action-compass--${focus ?? 'workroom'}`} aria-live="polite"><span>{guidance.step}</span><p>{guidance.instruction}</p></aside>}
       <div className={`opening-slate ${introSkipped ? 'is-skipped' : ''}`}>
         <span>An immersive cultural experience</span>
         <div className="opening-glimpse"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /></div>
         <h1 className="prologue-title"><span>Before</span><em>the doors</em><strong>open.</strong></h1>
-        <p><strong>The XIV Exhibition opens today.</strong> German artist Max Klinger’s monumental Beethoven sculpture stands at its centre. Klimt’s frieze and Josef Hoffmann’s spatial design were created around it. Step into the exhibition team’s final check.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
+        <p><strong>Enter before the public — and discover how an exhibition becomes an experience.</strong> The XIV Exhibition opens today. Take responsibility for its final check: follow the letters, test the architecture and experience Klimt’s frieze as part of one complete work.<br /><em>Vienna, 15 April 1902 — before the public arrives.</em></p>
         <div className="opening-slate__modes"><i>Sound</i><i>Movement</i><i>Archival reconstruction</i></div>
         <button className="skip-prologue" type="button" onClick={() => setIntroSkipped(true)}><small>Begin in Vienna · 15 April 1902</small><b>Enter the experience</b><i>→</i></button>
       </div>
@@ -353,8 +410,8 @@ export default function Home() {
       <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
         <img className="chapter__art" src={asset('correspondence-arnold-v1.png')} alt="A hand-drawn reconstructed letter with two telegram slips" />
         <div className="document-hotspots" aria-label="Inspect the archival reconstruction">
-          <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><span>Transport</span><b>{letterHeadFound ? 'Delayed marble head marked ✓' : 'Find the delayed dispatch'}</b></button>
-          <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><span>Price</span><b>{letterPriceFound ? 'Unanswered price marked ✓' : 'Find the unanswered request'}</b></button>
+          <button className={letterHeadFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onPointerMove={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onFocus={() => setLetterHeadFound(true)} onClick={() => setLetterHeadFound(true)}><span>Transport</span><b>{letterHeadFound ? 'Delay recorded ✓' : 'Pause to inspect'}</b></button>
+          <button className={letterPriceFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onPointerMove={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onFocus={() => setLetterPriceFound(true)} onClick={() => setLetterPriceFound(true)}><span>Price</span><b>{letterPriceFound ? 'Request recorded ✓' : 'Pause to inspect'}</b></button>
         </div>
         <div className="chapter__veil" />
         <article className="document-copy">
@@ -400,9 +457,8 @@ export default function Home() {
           </details>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Adjust the viewpoint'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Move the control until the statue sits clearly inside the wall opening.'}</span></div>
-          <label className="sightline-control"><span>Outside the view</span><input aria-label="Adjust viewpoint" type="range" min="0" max="100" value={roomView} onInput={(event) => setRoomView(Number(event.currentTarget.value))} /><span>In one view</span></label>
-          {roomView >= 72 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag across the room—or use the control—until the statue is framed.</span>}
+          <div className="view-step"><b>{roomView >= 72 ? 'Sightline confirmed' : 'Move through the room'}</b><span>{roomView >= 72 ? 'Painting, sculpture and architecture now connect in one view.' : 'Drag across the drawing until the statue sits clearly inside the wall opening.'}</span></div>
+          {roomView >= 72 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag directly across the drawing until the statue is framed.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -416,7 +472,7 @@ export default function Home() {
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
-          <button className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); markFriezeStage(); }} aria-label={`${friezeSeen.includes(friezeIndex) ? 'Marked' : 'Inspect'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Marked ✓' : 'Move here · click to mark'}</b></button>
+          <div className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} role="status" aria-label={`${friezeSeen.includes(friezeIndex) ? 'Recorded' : 'Inspecting'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Recorded ✓' : 'Hold this view'}</b></div>
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
@@ -451,12 +507,12 @@ export default function Home() {
           <div className="ending-cue"><b>Dispatch check</b><span>Bundle Térey’s card and Beer’s additional card. Both must go to Hotel Kaiserhof.</span></div>
           <div className="dispatch-workbench" aria-label="Place both invitation cards in the envelope">
             <div className="dispatch-cards">
-              <button className={tereyPacked ? 'is-packed' : ''} type="button" disabled={tereyPacked} onClick={() => { soundCue('paper'); setTereyPacked(true); }}><small>Invitation</small><b>Gabriel von Térey</b><span>{tereyPacked ? 'Inside envelope ✓' : 'Place in envelope →'}</span></button>
-              <button className={beerPacked ? 'is-packed' : ''} type="button" disabled={beerPacked} onClick={() => { soundCue('paper'); setBeerPacked(true); }}><small>Additional invitation</small><b>Joseph Beer</b><span>{beerPacked ? 'Inside envelope ✓' : 'Place in envelope →'}</span></button>
+              <button className={tereyPacked ? 'is-packed' : ''} type="button" disabled={tereyPacked} onPointerDown={(event) => dragInvitation(event,'terey')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={(event) => { if (event.detail === 0) { soundCue('paper'); setTereyPacked(true); } }}><small>Invitation</small><b>Gabriel von Térey</b><span>{tereyPacked ? 'Inside envelope ✓' : 'Drag into envelope'}</span></button>
+              <button className={beerPacked ? 'is-packed' : ''} type="button" disabled={beerPacked} onPointerDown={(event) => dragInvitation(event,'beer')} onPointerMove={moveInvitation} onPointerUp={dropInvitation} onPointerCancel={dropInvitation} onClick={(event) => { if (event.detail === 0) { soundCue('paper'); setBeerPacked(true); } }}><small>Additional invitation</small><b>Joseph Beer</b><span>{beerPacked ? 'Inside envelope ✓' : 'Drag into envelope'}</span></button>
             </div>
-            <div className={`dispatch-envelope ${tereyPacked ? 'has-terey' : ''} ${beerPacked ? 'has-beer' : ''}`} aria-hidden="true"><i /><i /><span>HOTEL<br />KAISERHOF</span></div>
+            <div className={`dispatch-envelope ${tereyPacked ? 'has-terey' : ''} ${beerPacked ? 'has-beer' : ''}`} aria-hidden="true"><i /><i /><span>DROP BOTH HERE<br />HOTEL KAISERHOF</span></div>
           </div>
-          {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>Two invitation cards. One destination.</span></p><button className="chapter-link next-action" type="button" onClick={dispatchInvitations}><small>Both cards enclosed</small>Send to Hotel Kaiserhof →</button></div>}
+          {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>The envelope is sealing automatically…</span></p></div>}
         </article>
         {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport, price and invitations are recorded. Returning to the workroom…</span></p></div>}
       </section>
@@ -501,7 +557,7 @@ export default function Home() {
         <div className="finale-portal" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /><i /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Final inspection · 3 / 3</span>
-          <h3><em>Ready.</em></h3>
+          <h3><span>You made it</span><em>Ready.</em></h3>
           <p>The doors are open. <em>You connected the work behind the exhibition with the way its art is experienced.</em></p>
           <div className="today-note"><b>Vienna · 15 April 1902</b><span>The public enters.</span></div>
           <div className="takeaway inspection-record"><b>Final inspection record</b><span>01 · Correspondence cleared</span><span>02 · Sightline confirmed</span><span>03 · Frieze route complete</span><button type="button" onClick={downloadInspectionRecord}>Take the record with you ↓</button></div>

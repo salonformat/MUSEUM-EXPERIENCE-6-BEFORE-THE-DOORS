@@ -2224,3 +2224,135 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   18%,82% { opacity:1; transform:none; }
   100% { opacity:0; transform:translateY(-10px); }
 }
+
+/* One consistent orientation system replaces competing chapter instructions. */
+.action-compass {
+  position:fixed;
+  z-index:75;
+  left:22px;
+  top:72px;
+  display:grid;
+  grid-template-columns:minmax(190px,.82fr) minmax(250px,1.18fr);
+  width:min(670px,56vw);
+  border:2px solid var(--graphite);
+  color:var(--graphite);
+  background:var(--plaster);
+  box-shadow:10px 11px 0 rgb(32 29 26 / 23%);
+  transform:rotate(-.25deg);
+  animation:compassArrive .55s cubic-bezier(.16,1,.3,1) both;
+}
+.action-compass > span {
+  position:absolute;
+  left:12px;
+  top:-12px;
+  padding:5px 8px 3px;
+  color:var(--graphite);
+  background:#e4bd4f;
+  font:700 .5rem/1 "Josefin Sans",sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  transform:rotate(-1deg);
+}
+.action-compass p { display:grid; align-content:start; gap:5px; min-height:78px; margin:0; padding:18px 14px 11px; font:400 .8rem/1.25 "Della Respira",serif; }
+.action-compass p + p { color:var(--plaster); background:var(--graphite); }
+.action-compass p b { color:var(--oxblood); font:700 .48rem/1 "Josefin Sans",sans-serif; letter-spacing:.16em; text-transform:uppercase; }
+.action-compass p + p b { color:#e4bd4f; }
+.action-compass--doors { left:50%; width:min(620px,70vw); transform:translateX(-50%) rotate(-.25deg); }
+@keyframes compassArrive { from { opacity:0; translate:0 -12px; } to { opacity:1; translate:0 0; } }
+
+/* Remove duplicate instructional furniture; the compass now carries the task and reason. */
+.stage-inside .attention__prompt,
+.chapter--letter .worker-cue,
+.chapter--rooms .worker-cue,
+.chapter--frieze .worker-cue--frieze,
+.chapter--invitation .ending-cue,
+.chapter--walkthrough .walkthrough-copy p { display:none!important; }
+
+/* The earned ending names the visitor's achievement and stamps it into the record. */
+.chapter--epilogue .afterlife-copy h3 span { display:block; margin:0 0 .22em .18em; font:700 clamp(.7rem,1.2vw,1.15rem)/1 "Josefin Sans",sans-serif; letter-spacing:.22em; text-transform:uppercase; text-shadow:none; }
+.chapter--epilogue.is-open .inspection-record > span { opacity:0; transform:translateX(-14px); animation:recordLine .42s cubic-bezier(.16,1,.3,1) forwards; }
+.chapter--epilogue.is-open .inspection-record > span:nth-of-type(1) { animation-delay:8.35s; }
+.chapter--epilogue.is-open .inspection-record > span:nth-of-type(2) { animation-delay:8.58s; }
+.chapter--epilogue.is-open .inspection-record > span:nth-of-type(3) { animation-delay:8.81s; }
+@keyframes recordLine { to { opacity:1; transform:none; } }
+
+@media (max-width:760px) {
+  .action-compass {
+    left:4vw;
+    top:94px;
+    grid-template-columns:1fr;
+    width:92vw;
+    box-shadow:6px 7px 0 rgb(32 29 26 / 22%);
+  }
+  .action-compass p { min-height:0; padding:14px 11px 8px; font-size:.7rem; }
+  .action-compass p + p { padding-top:9px; }
+  .action-compass--workroom { width:78vw; }
+  .action-compass--doors { left:4vw; transform:rotate(-.25deg); }
+  .chapter--letter .document-copy,
+  .chapter--invitation .invitation-copy { padding-top:242px; }
+  .chapter--rooms .room-image-action { top:0; height:100%; }
+  .chapter--frieze .frieze-copy > p:not(.worker-cue) { bottom:2vh; }
+  .walkthrough-copy { top:230px; }
+  .chapter--epilogue .afterlife-copy h3 span { font-size:.58rem; }
+}
+
+/* The guide is one natural sentence, never a labelled instruction grid. */
+.action-compass { grid-template-columns:1fr; width:min(520px,44vw); }
+.action-compass p { min-height:0; padding:20px 16px 13px; font-size:.9rem; line-height:1.28; }
+.action-compass p + p { display:none; }
+
+/* Scan the archival page: responsive ink traces replace obvious yellow answer buttons. */
+.chapter--letter .document-hotspots button {
+  min-height:76px;
+  border:0;
+  color:var(--graphite);
+  background:linear-gradient(180deg,transparent 0 73%,rgb(228 189 79 / 48%) 74% 84%,transparent 85%);
+  box-shadow:none;
+  opacity:.42;
+  transform:rotate(-1deg);
+  animation:letterClueBreathe 2.8s ease-in-out infinite;
+  transition:opacity .25s ease,background .35s ease,transform .35s ease;
+}
+.chapter--letter .document-hotspots button:last-child { animation-delay:-1.4s; }
+.chapter--letter .document-hotspots button span,
+.chapter--letter .document-hotspots button b { opacity:0; transition:opacity .25s ease; }
+.chapter--letter .document-hotspots button:hover,
+.chapter--letter .document-hotspots button:focus-visible,
+.chapter--letter .document-hotspots button.is-found {
+  opacity:1;
+  color:var(--graphite);
+  background:linear-gradient(180deg,rgb(241 235 221 / 82%),rgb(241 235 221 / 92%) 70%,#e4bd4f 71% 87%,rgb(241 235 221 / 92%) 88%);
+  box-shadow:6px 7px 0 rgb(32 29 26 / 18%);
+  animation:none;
+  transform:translateY(-3px) rotate(-1deg);
+}
+.chapter--letter .document-hotspots button:hover span,
+.chapter--letter .document-hotspots button:hover b,
+.chapter--letter .document-hotspots button:focus-visible span,
+.chapter--letter .document-hotspots button:focus-visible b,
+.chapter--letter .document-hotspots button.is-found span,
+.chapter--letter .document-hotspots button.is-found b { opacity:1; }
+.chapter--letter .document-hotspots button.is-found::after { content:"RECORDED"; }
+@keyframes letterClueBreathe { 50% { opacity:.7; transform:translateY(-2px) rotate(.4deg); } }
+
+/* Cards behave as loose paper and travel with the pointer into the envelope. */
+.dispatch-cards button {
+  touch-action:none;
+  transform:translate3d(var(--card-x,0),var(--card-y,0),0) rotate(-.5deg);
+  cursor:grab;
+}
+.dispatch-cards button:nth-child(2) { transform:translate3d(var(--card-x,0),var(--card-y,0),0) rotate(1deg); }
+.dispatch-cards button:active { z-index:4; cursor:grabbing; transition:none; box-shadow:10px 12px 0 rgb(228 189 79 / 26%); }
+.dispatch-cards button.is-packed { transform:translate(68%,12%) scale(.52) rotate(4deg); }
+.dispatch-envelope { box-shadow:inset 0 0 0 0 #e4bd4f; transition:box-shadow .3s ease; }
+.dispatch-workbench:has(.dispatch-cards button:active) .dispatch-envelope { box-shadow:inset 0 0 0 4px #e4bd4f,0 0 28px rgb(228 189 79 / 34%); }
+
+/* The last walk-through acknowledges completed work automatically. */
+.walkthrough-checks button { pointer-events:none; cursor:default; }
+
+@media (max-width:760px) {
+  .action-compass { width:92vw; }
+  .action-compass p { padding:15px 11px 9px; font-size:.74rem; }
+  .chapter--letter .document-hotspots button { min-height:62px; opacity:.62; }
+  .chapter--letter .document-hotspots button span { opacity:.7; }
+}
