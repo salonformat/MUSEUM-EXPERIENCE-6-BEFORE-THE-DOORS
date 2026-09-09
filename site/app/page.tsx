@@ -49,7 +49,7 @@ export default function Home() {
     }
     if (focus === 'invitation') return { step:'01 · Correspondence', instruction:tereyPacked && beerPacked ? 'Both cards are enclosed; the envelope is being dispatched to Hotel Kaiserhof.' : 'Place both cards in the envelope — guest access was part of the exhibition’s practical work.' };
     if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 50 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag the beam onto the statue until the three art forms become one view.' };
-    if (focus === 'frieze') return { step:`03 · Frieze · ${friezeSeen.length}/5 found`, instruction:friezeSeen.includes(friezeIndex) ? 'This stage is confirmed. Keep dragging the wall to find the next glowing detail.' : 'Drag across the frieze. When a glowing detail appears, hold the view until it is confirmed.' };
+    if (focus === 'frieze') return { step:`03 · Frieze · ${friezeSeen.length}/5 found`, instruction:friezeSeen.includes(friezeIndex) ? 'Confirmed. The frieze is moving to the next stage.' : 'Select the glowing circle. Each confirmed motif advances the frieze automatically.' };
     if (focus === 'walkthrough') return { step:'Final walk-through', instruction:walkthroughChecks.length === 3 ? 'Logistics, space and narrative now work together; the exhibition can be released.' : 'Watch the completed room register the three systems you have already checked.' };
     if (focus === 'doors') return { step:'Opening', instruction:'Open the doors: your private inspection now becomes a public cultural experience.' };
     return { step:'Final inspection', instruction:'Choose any glowing work point and discover how letters, architecture and art made one exhibition possible.' };
@@ -291,14 +291,14 @@ export default function Home() {
   }, [focus]);
 
   useEffect(() => {
-    if (focus !== 'frieze' || friezeSeen.includes(friezeIndex)) return;
-    const inspect = window.setTimeout(markFriezeStage, 700);
-    return () => window.clearTimeout(inspect);
+    if (focus !== 'frieze' || !friezeSeen.includes(friezeIndex) || friezeIndex >= 4) return;
+    const advance = window.setTimeout(() => setFriezePosition(friezeIndex + 1), 720);
+    return () => window.clearTimeout(advance);
   }, [focus, friezeIndex, friezeSeen]);
 
   useEffect(() => {
     if (focus !== 'frieze' || !friezeComplete) return;
-    const done = window.setTimeout(() => setFocus(null), 2200);
+    const done = window.setTimeout(() => setFocus(null), 1450);
     return () => window.clearTimeout(done);
   }, [focus, friezeComplete]);
 
@@ -470,11 +470,11 @@ export default function Home() {
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
-          <div className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} role="status" aria-label={`${friezeSeen.includes(friezeIndex) ? 'Complete' : 'Inspecting'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Complete ✓' : 'Hold this view'}</b></div>
+          <button className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" disabled={friezeSeen.includes(friezeIndex)} onClick={markFriezeStage} aria-label={`${friezeSeen.includes(friezeIndex) ? 'Confirmed' : 'Confirm'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Complete ✓' : 'Select to confirm'}</b></button>
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Find and confirm 5 stages · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Now drag the painted wall to the left. Stop at the next glowing detail.' : 'All five stages form one complete route.') : 'Move along the painted wall. When you reach the glowing detail, hold it in view until the check appears.'}</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Select the glowing circle · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Confirmed. Moving automatically to the next motif…' : 'All five stages form one complete route.') : 'Click or tap the circle placed on the motif. The frieze will then move to the next stage automatically.'}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Context</b><span>About the Beethoven Frieze</span></summary>
