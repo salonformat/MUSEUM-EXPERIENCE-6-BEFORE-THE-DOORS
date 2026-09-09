@@ -2402,3 +2402,12 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .passage-brief__grid strong { position:static; grid-column:2; grid-row:1 / span 2; align-self:center; font-size:1.8rem; opacity:.25; }
   .passage-brief footer > span { font-size:.76rem; }
 }
+
+/* Briefing cards state the exact physical action without losing their poster scale. */
+@media (min-width:761px) {
+  .passage-brief__grid b { max-width:12ch; font-size:clamp(2rem,2.65vw,3.25rem); line-height:.88; }
+  .passage-brief__grid span { margin-top:15px; }
+}
+@media (max-width:760px) {
+  .passage-brief__grid b { max-width:15ch; font-size:1.52rem; line-height:.92; }
+}

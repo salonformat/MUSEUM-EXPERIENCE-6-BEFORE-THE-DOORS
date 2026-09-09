@@ -360,9 +360,9 @@ export default function Home() {
           <h2>Three things stand between you and opening.</h2>
           <p className="passage-brief__lead">You are joining the exhibition team’s final inspection of the XIV Exhibition, created around Max Klinger’s <em>Beethoven</em>. These three checks reveal how logistics, architecture and Klimt’s frieze became one experience.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Find.</b><span>Record two unresolved points in the Dresden letter.</span></div>
-            <div><strong>02</strong><b>Align.</b><span>Bring the statue and wall opening into one view.</span></div>
-            <div><strong>03</strong><b>Follow.</b><span>Move through the frieze from longing to fulfilment.</span></div>
+            <div><strong>01</strong><b>Open the letter.</b><span>Scan it and record the unresolved transport and price.</span></div>
+            <div><strong>02</strong><b>Move through the model.</b><span>Drag until the statue appears inside the wall opening.</span></div>
+            <div><strong>03</strong><b>Trace the frieze.</b><span>Move along the wall and pause at all five stages.</span></div>
           </div>
           <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Briefing received</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
