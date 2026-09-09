@@ -29,6 +29,7 @@ export default function Home() {
   const friezeDrag = useRef<{ x: number; position: number } | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const audioMaster = useRef<GainNode | null>(null);
+  const audioReverb = useRef<ConvolverNode | null>(null);
   const climaxPlayed = useRef(false);
   const publicAmbience = useRef<HTMLAudioElement | null>(null);
   const workroomAmbience = useRef<HTMLAudioElement | null>(null);
@@ -61,8 +62,19 @@ export default function Home() {
     const AudioCtor = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     const context = new AudioCtor();
     const master = context.createGain();
+    const compressor = context.createDynamicsCompressor();
+    const reverb = context.createConvolver();
+    const impulse = context.createBuffer(2, context.sampleRate * 1.8, context.sampleRate);
+    for (let channel = 0; channel < impulse.numberOfChannels; channel += 1) {
+      const data = impulse.getChannelData(channel);
+      for (let sample = 0; sample < data.length; sample += 1) data[sample] = (Math.random() * 2 - 1) * Math.pow(1 - sample / data.length, 2.7);
+    }
+    reverb.buffer = impulse;
     master.gain.value = soundEnabled ? .16 : 0;
-    master.connect(context.destination);
+    compressor.threshold.value = -22;
+    compressor.ratio.value = 4;
+    master.connect(compressor).connect(context.destination);
+    reverb.connect(master);
     const roomTone = context.createOscillator();
     const roomGain = context.createGain();
     roomTone.type = 'sine';
@@ -72,6 +84,7 @@ export default function Home() {
     roomTone.start();
     audioContext.current = context;
     audioMaster.current = master;
+    audioReverb.current = reverb;
     return context;
   };
 
@@ -83,6 +96,8 @@ export default function Home() {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
     const filter = context.createBiquadFilter();
+    const panner = context.createStereoPanner();
+    const wet = context.createGain();
     const settings = {
       threshold:[72,42,.85,'sine'], room:[110,165,1.1,'sine'], paper:[620,410,.18,'triangle'],
       passage:[86,260,1.35,'sine'], frieze:[190,235,.32,'triangle'], climax:[146,438,2.4,'sine'], doors:[55,82,1.8,'sine']
@@ -95,8 +110,29 @@ export default function Home() {
     gain.gain.setValueAtTime(.0001, now);
     gain.gain.exponentialRampToValueAtTime(kind === 'climax' ? .24 : .11, now + .035);
     gain.gain.exponentialRampToValueAtTime(.0001, now + settings[2]);
-    oscillator.connect(filter).connect(gain).connect(master);
+    panner.pan.value = { threshold:-.45, room:-.2, paper:.38, passage:.15, frieze:.55, climax:0, doors:0 }[kind];
+    wet.gain.value = kind === 'paper' ? .08 : .24;
+    oscillator.connect(filter).connect(gain).connect(panner).connect(master);
+    if (audioReverb.current) panner.connect(wet).connect(audioReverb.current);
     oscillator.start(now); oscillator.stop(now + settings[2] + .05);
+
+    if (kind === 'paper' || kind === 'room' || kind === 'doors') {
+      const duration = kind === 'paper' ? .22 : .48;
+      const buffer = context.createBuffer(1, Math.floor(context.sampleRate * duration), context.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let index = 0; index < data.length; index += 1) data[index] = (Math.random() * 2 - 1) * Math.pow(1 - index / data.length, kind === 'paper' ? 1.4 : 3.2);
+      const texture = context.createBufferSource();
+      const textureFilter = context.createBiquadFilter();
+      const textureGain = context.createGain();
+      const texturePan = context.createStereoPanner();
+      texture.buffer = buffer;
+      textureFilter.type = kind === 'paper' ? 'highpass' : 'bandpass';
+      textureFilter.frequency.value = kind === 'paper' ? 1100 : 180;
+      textureGain.gain.value = kind === 'paper' ? .08 : .12;
+      texturePan.pan.value = kind === 'paper' ? .42 : -.28;
+      texture.connect(textureFilter).connect(textureGain).connect(texturePan).connect(master);
+      texture.start(now + .02);
+    }
   };
 
   const enterThreshold = () => { recordStep(); soundCue('threshold'); setStage('threshold'); };
