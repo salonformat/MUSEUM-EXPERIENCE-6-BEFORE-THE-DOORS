@@ -75,13 +75,6 @@ export default function Home() {
     compressor.ratio.value = 4;
     master.connect(compressor).connect(context.destination);
     reverb.connect(master);
-    const roomTone = context.createOscillator();
-    const roomGain = context.createGain();
-    roomTone.type = 'sine';
-    roomTone.frequency.value = 48;
-    roomGain.gain.value = .035;
-    roomTone.connect(roomGain).connect(master);
-    roomTone.start();
     audioContext.current = context;
     audioMaster.current = master;
     audioReverb.current = reverb;
@@ -267,7 +260,7 @@ export default function Home() {
       requestAnimationFrame(fade);
     }
     setDoorsOpen(true);
-    window.setTimeout(() => setFocus('epilogue'), 1700);
+    window.setTimeout(() => setFocus('epilogue'), 2600);
   };
 
   const downloadInspectionRecord = () => {
