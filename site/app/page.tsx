@@ -44,11 +44,11 @@ export default function Home() {
   const guidance = (() => {
     if (focus === 'letter') {
       const found = Number(letterHeadFound) + Number(letterPriceFound);
-      return { step:`01 · Correspondence · ${found}/2 found`, instruction:found === 0 ? 'Move across the letter and pause where the paper responds; two passages show what remained unresolved before opening.' : found === 1 ? 'One issue has lifted from the page. Continue scanning the letter for the second.' : 'Transport and price are now recorded; the unfinished invitation dispatch opens next.' };
+      return { step:`01 · Correspondence · ${found}/2 found`, instruction:found === 0 ? 'Read Arnold’s Dresden letter. Find the two matters the exhibition office still needs to follow up.' : found === 1 ? 'One matter is noted. Find the other before the letter is passed to the exhibition office.' : 'Both matters are noted. They are now being passed to the exhibition office.' };
     }
     if (focus === 'invitation') return { step:'01 · Correspondence', instruction:tereyPacked && beerPacked ? 'Both cards are enclosed; the envelope is being dispatched to Hotel Kaiserhof.' : 'Place both cards in the envelope — guest access was part of the exhibition’s practical work.' };
     if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 72 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag until the statue sits inside the wall opening and the three art forms become one view.' };
-    if (focus === 'frieze') return { step:'03 · Frieze route', instruction:friezeSeen.includes(friezeIndex) ? 'This stage is recorded; move along the wall to continue Klimt’s journey.' : `Pause at stage ${friezeIndex + 1} — its image carries the journey from longing toward fulfilment forward.` };
+    if (focus === 'frieze') return { step:'03 · Frieze route', instruction:friezeSeen.includes(friezeIndex) ? 'This stage is complete; move along the wall to continue Klimt’s journey.' : `Pause at stage ${friezeIndex + 1} — its image carries the journey from longing toward fulfilment forward.` };
     if (focus === 'walkthrough') return { step:'Final walk-through', instruction:walkthroughChecks.length === 3 ? 'Logistics, space and narrative now work together; the exhibition can be released.' : 'Watch the completed room register the three systems you have already checked.' };
     if (focus === 'doors') return { step:'Opening', instruction:'Open the doors: your private inspection now becomes a public cultural experience.' };
     return { step:'Final inspection', instruction:'Choose any glowing work point and discover how letters, architecture and art made one exhibition possible.' };
@@ -257,7 +257,7 @@ export default function Home() {
   useEffect(() => {
     if (focus !== 'letter' || !letterHeadFound || !letterPriceFound) return;
     soundCue('paper');
-    const advance = window.setTimeout(() => setFocus('invitation'), 1650);
+    const advance = window.setTimeout(() => setFocus('invitation'), 2600);
     return () => window.clearTimeout(advance);
   }, [focus, letterHeadFound, letterPriceFound]);
 
@@ -360,7 +360,7 @@ export default function Home() {
           <h2>Three things stand between you and opening.</h2>
           <p className="passage-brief__lead">You are joining the exhibition team’s final inspection of the XIV Exhibition, created around Max Klinger’s <em>Beethoven</em>. These three checks reveal how logistics, architecture and Klimt’s frieze became one experience.</p>
           <div className="passage-brief__grid">
-            <div><strong>01</strong><b>Resolve the correspondence.</b><span>Record transport and price, then dispatch the two invitation cards.</span></div>
+            <div><strong>01</strong><b>Resolve two letters.</b><span>Pass Arnold’s two open matters to the exhibition office. Then answer Térey’s separate request by dispatching two invitations.</span></div>
             <div><strong>02</strong><b>Move through the model.</b><span>Drag until the statue appears inside the wall opening.</span></div>
             <div><strong>03</strong><b>Trace the frieze.</b><span>Move along the wall and pause at all five stages.</span></div>
           </div>
@@ -395,7 +395,7 @@ export default function Home() {
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move your pointer through the drawing. Choose any glowing work point; every completed check changes this room.'}</span></p>
           <button className="attention__item attention__item--letters" type="button" onClick={() => setFocus('letter')}>
-            <i /><span><b>The Dresden letter {letterComplete && '✓'}</b><small>Resolve two open follow-ups</small></span>
+            <i /><span><b>Two letters {letterComplete && '✓'}</b><small>Report Arnold’s open matters, then answer Térey</small></span>
           </button>
           <button className="attention__item attention__item--rooms" type="button" onClick={() => { soundCue('room'); setModelRevealed(true); setFocus('rooms'); }}>
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
@@ -410,21 +410,21 @@ export default function Home() {
       <section className={`chapter chapter--letter ${focus === 'letter' ? 'is-open' : ''}`} aria-hidden={focus !== 'letter'}>
         <img className="chapter__art" src={asset('correspondence-arnold-v1.png')} alt="A hand-drawn reconstructed letter with two telegram slips" />
         <div className="document-hotspots" aria-label="Inspect the archival reconstruction">
-          <button className={letterHeadFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onPointerMove={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onFocus={() => setLetterHeadFound(true)} onClick={() => setLetterHeadFound(true)}><span>Transport</span><b>{letterHeadFound ? 'Delay recorded ✓' : 'Pause to inspect'}</b></button>
-          <button className={letterPriceFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onPointerMove={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onFocus={() => setLetterPriceFound(true)} onClick={() => setLetterPriceFound(true)}><span>Price</span><b>{letterPriceFound ? 'Request recorded ✓' : 'Pause to inspect'}</b></button>
+          <button className={letterHeadFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onPointerMove={() => { if (!letterHeadFound) { soundCue('paper'); setLetterHeadFound(true); } }} onFocus={() => setLetterHeadFound(true)} onClick={() => setLetterHeadFound(true)}><span>Transport</span><b>{letterHeadFound ? 'Delay marked ✓' : 'Pause to inspect'}</b></button>
+          <button className={letterPriceFound ? 'is-found' : ''} type="button" onPointerEnter={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onPointerMove={() => { if (!letterPriceFound) { soundCue('paper'); setLetterPriceFound(true); } }} onFocus={() => setLetterPriceFound(true)} onClick={() => setLetterPriceFound(true)}><span>Price</span><b>{letterPriceFound ? 'Request marked ✓' : 'Pause to inspect'}</b></button>
         </div>
         <div className="chapter__veil" />
         <article className="document-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
-          <p className="worker-cue"><b>Your task</b><span>Open the reconstructed document and locate two unresolved points: the delayed transport and the unanswered price request.</span></p>
+          <p className="worker-cue"><b>Your task</b><span>Find the two matters that must be passed to the exhibition office: the unconfirmed arrival and the unanswered price request.</span></p>
           <p className="chapter-kicker">10 April 1902 · Dresden → Vienna</p>
-          <h3>The marble head is delayed.</h3>
-          <p>Max Klinger meant to send the marble head with his monumental Beethoven sculpture, but the dispatch was delayed.</p>
+          <h3>Has the marble head arrived?</h3>
+          <p>Max Klinger meant to send the marble head with his monumental Beethoven sculpture, but its dispatch was delayed. The letter does not confirm whether it arrived in time.</p>
           <p>Two telegrams have already been sent.</p>
           <p>And one more question: what sale price is being asked for Klinger’s Beethoven sculpture?</p>
           <div className="letter-checks" aria-label="Open points in the letter">
-            <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><i />Open point 01<span>{letterHeadFound ? 'Marble head marked ✓' : 'Mark the delayed marble head'}</span></button>
-            <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><i />Open point 02<span>{letterPriceFound ? 'Price request marked ✓' : 'Mark Klinger’s unanswered price request'}</span></button>
+            <button className={letterHeadFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterHeadFound(true); }}><i />Open point 01<span>{letterHeadFound ? 'Arrival unconfirmed ✓' : 'Note the unconfirmed arrival'}</span></button>
+            <button className={letterPriceFound ? 'is-found' : ''} type="button" onClick={() => { soundCue('paper'); setLetterPriceFound(true); }}><i />Open point 02<span>{letterPriceFound ? 'Price reply outstanding ✓' : 'Note the unanswered price request'}</span></button>
           </div>
           <details className="context-note">
             <summary><b>Why / Learn</b><span>What this letter changes</span></summary>
@@ -433,7 +433,7 @@ export default function Home() {
             <p>In the correspondence, “Beethoven” is shorthand for Max Klinger’s monumental sculpture of the composer — a polychrome work in bronze and marble, and the physical centre of the exhibition.</p>
             <strong>What you learn</strong><span>An exhibition is made through logistics, money and human decisions as well as art.</span></div>
           </details>
-          {letterHeadFound && letterPriceFound ? <div className="auto-complete auto-complete--letter"><i>✓</i><b>2 / 2 open points found</b><span>Opening the invitation dispatch…</span></div> : <p className="check-progress">Next: locate and mark both open points on the document.</p>}
+          {letterHeadFound && letterPriceFound ? <div className="auto-complete auto-complete--letter"><i>✓</i><b>Passed to the exhibition office</b><span>Marble head — arrival unconfirmed<br />Beethoven — price reply outstanding</span></div> : <p className="check-progress">Find both matters in the letter. Your notes will be passed to the exhibition office.</p>}
         </article>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -472,7 +472,7 @@ export default function Home() {
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
           <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
-          <div className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} role="status" aria-label={`${friezeSeen.includes(friezeIndex) ? 'Recorded' : 'Inspecting'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Recorded ✓' : 'Hold this view'}</b></div>
+          <div className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} role="status" aria-label={`${friezeSeen.includes(friezeIndex) ? 'Complete' : 'Inspecting'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Complete ✓' : 'Hold this view'}</b></div>
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
@@ -500,7 +500,7 @@ export default function Home() {
         <article className="invitation-copy">
           <span className="reconstruction">Reconstructed from archival correspondence</span>
           <p className="chapter-kicker">12 April 1902 · Budapest → Vienna</p>
-          <h3>One invitation is still outstanding.</h3>
+          <h3>A separate request from Budapest.</h3>
           <p>Gabriel von Térey writes from Budapest’s National Gallery. He knew Klinger’s <em>Beethoven</em> from the artist’s studio and planned to attend the opening.</p>
           <p>He asks for a second invitation for Joseph Beer, a restorer at the National Gallery.</p>
           <p>Both cards are to be delivered to Hotel Kaiserhof.</p>
@@ -514,7 +514,7 @@ export default function Home() {
           </div>
           {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>The envelope is sealing automatically…</span></p></div>}
         </article>
-        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport, price and invitations are recorded. Returning to the workroom…</span></p></div>}
+        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport and price are marked; the invitations are on their way. Returning to the workroom…</span></p></div>}
       </section>
 
       <section className={`chapter chapter--walkthrough ${focus === 'walkthrough' ? 'is-open' : ''}`} aria-hidden={focus !== 'walkthrough'}>
