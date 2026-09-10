@@ -552,7 +552,7 @@ export default function Home() {
           </div>
           {tereyPacked && beerPacked && !dispatchSent && <div className="dispatch-confirmation"><p><strong>Dispatch ready.</strong><span>The envelope is sealing automatically…</span></p></div>}
         </article>
-        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE CLEARED. ✓</strong><span>Transport and price are marked; the invitations are on their way. Returning to the workroom…</span></p></div>}
+        {dispatchSent && <div className="dispatch-flight"><div className="flying-envelope" aria-hidden="true"><span>HOTEL KAISERHOF</span></div><p><small>Opening day · Vienna</small><strong>CORRESPONDENCE<br />CLEARED. <i>✓</i></strong><span>Transport and price are marked; the invitations are on their way. Returning to the workroom…</span></p></div>}
       </section>
 
       <section className={`chapter chapter--walkthrough ${focus === 'walkthrough' ? 'is-open' : ''}`} aria-hidden={focus !== 'walkthrough'}>
