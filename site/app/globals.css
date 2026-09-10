@@ -3618,3 +3618,69 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   }
   .dispatch-flight p strong i { color:#e4bd4f; font-style:normal; }
 }
+
+/* The complete mobile finale belongs to one readable composition, not below the fold. */
+@media (max-width:760px) {
+  .chapter--epilogue .finale-portal {
+    right:-8vw;
+    width:90vw;
+    height:24vh;
+  }
+  .chapter--epilogue .afterlife-copy {
+    gap:8px!important;
+    min-height:100svh;
+    height:100svh;
+    padding:24vh 4vw max(18px,env(safe-area-inset-bottom))!important;
+    scrollbar-width:thin;
+    scrollbar-color:#e4bd4f var(--ultramarine);
+  }
+  .chapter--epilogue .completion-stamp {
+    padding:5px 7px 4px;
+    font-size:.43rem;
+  }
+  .chapter--epilogue .afterlife-copy h3 {
+    max-width:10ch;
+    font-size:10vw;
+    line-height:.72;
+  }
+  .chapter--epilogue .afterlife-copy h3 span {
+    margin:0 0 5px;
+    font-size:.47rem;
+    line-height:1.12;
+  }
+  .chapter--epilogue .afterlife-copy > p {
+    margin:0;
+    font-size:.77rem;
+    line-height:1.23;
+  }
+  .chapter--epilogue .inspection-record {
+    margin:2px 0 0;
+    padding:9px 10px 8px;
+    box-shadow:5px 6px 0 var(--oxblood);
+  }
+  .chapter--epilogue .inspection-record b {
+    margin-bottom:7px;
+    font-size:1.22rem;
+  }
+  .chapter--epilogue .inspection-record span {
+    padding:4px 0 3px 7px!important;
+    border-left-width:3px!important;
+    font-size:.46rem;
+    line-height:1.12;
+  }
+  .chapter--epilogue .inspection-record button {
+    min-height:44px;
+    margin-top:7px;
+    padding:9px 10px 8px;
+    font-size:.52rem;
+  }
+  .chapter--epilogue .afterlife-copy nav {
+    gap:7px 12px;
+    margin-top:2px;
+    padding:8px 0 0;
+  }
+  .chapter--epilogue .afterlife-copy nav a,
+  .chapter--epilogue .afterlife-copy nav button,
+  .chapter--epilogue .afterlife-copy nav summary { font-size:.5rem; line-height:1.25; }
+  .chapter--epilogue .afterlife-copy::after { display:none; }
+}
