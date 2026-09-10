@@ -3245,6 +3245,30 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .public-shadows .crowd-figure--back { width:8vw!important; height:23%!important; }
   .public-shadows .crowd-figure--far { width:4.5vw!important; height:12%!important; }
 }
+
+/* Keep the access counterpoint above the blue composition at every width. */
+.membership-afterword::after { z-index:0!important; }
+.membership-afterword > span,
+.membership-afterword h3,
+.membership-afterword p,
+.membership-afterword > i { position:relative; z-index:3!important; }
+.membership-afterword h3 em {
+  position:relative;
+  z-index:4!important;
+  padding:.09em .13em .06em!important;
+  color:var(--graphite)!important;
+  background:var(--plaster)!important;
+  box-shadow:10px 12px 0 #e4bd4f;
+}
+
+@media (max-width:760px) {
+  .membership-afterword h3 em {
+    padding:11px 14px 9px!important;
+    color:var(--plaster)!important;
+    background:var(--ultramarine)!important;
+    box-shadow:7px 8px 0 #e4bd4f;
+  }
+}
 .exterior .opening-role__purpose { max-width:34rem; color:var(--plaster); font-family:"Della Respira",serif; font-size:clamp(1rem,1.35vw,1.4rem); font-weight:400; letter-spacing:0; line-height:1.28; }
 @media (max-width:760px) {
   .opening-slate .opening-identity { gap:5px; max-width:62vw; padding:9px 10px 7px; border-left-width:4px; }
