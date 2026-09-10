@@ -3199,6 +3199,52 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   }
   .membership-afterword > i { margin-top:1px; }
 }
+
+/* A deep, hand-cut public procession: sparse foreground, many small marks in the room. */
+.public-shadows .crowd-figure {
+  bottom:7%!important;
+  width:5.2vw!important;
+  height:25%!important;
+  min-width:0!important;
+  opacity:0;
+  border-radius:44% 56% 9% 13%!important;
+  clip-path:polygon(38% 0,62% 2%,69% 14%,66% 25%,80% 48%,92% 100%,8% 100%,19% 48%,33% 24%,30% 12%)!important;
+  box-shadow:inset 2px 0 rgb(241 235 221 / 13%)!important;
+  transform:translateY(24px) rotate(var(--lean,0deg))!important;
+  animation-name:crowdEnter!important;
+  animation-duration:2.8s!important;
+  animation-timing-function:cubic-bezier(.16,1,.3,1)!important;
+  animation-fill-mode:forwards!important;
+}
+.public-shadows .crowd-figure--front { bottom:-5%!important; width:15vw!important; height:66%!important; }
+.public-shadows .crowd-figure--mid { bottom:1%!important; width:9vw!important; height:43%!important; }
+.public-shadows .crowd-figure--back { bottom:11%!important; width:5.5vw!important; height:27%!important; }
+.public-shadows .crowd-figure--far { bottom:20%!important; width:2.8vw!important; height:14%!important; }
+.public-shadows .crowd-figure--01 { left:-3%!important; --lean:-3deg; animation-delay:.35s!important; }
+.public-shadows .crowd-figure--02 { left:87%!important; --lean:2deg; animation-delay:.55s!important; background:var(--oxblood)!important; }
+.public-shadows .crowd-figure--03 { left:9%!important; --lean:2deg; animation-delay:.65s!important; background:var(--patina)!important; }
+.public-shadows .crowd-figure--04 { left:29%!important; --lean:-2deg; animation-delay:.8s!important; }
+.public-shadows .crowd-figure--05 { left:62%!important; --lean:3deg; animation-delay:.95s!important; background:var(--oxblood)!important; }
+.public-shadows .crowd-figure--06 { left:79%!important; --lean:-1deg; animation-delay:1.08s!important; }
+.public-shadows .crowd-figure--07 { left:22%!important; --lean:-3deg; animation-delay:1.12s!important; }
+.public-shadows .crowd-figure--08 { left:35%!important; --lean:2deg; animation-delay:1.2s!important; background:var(--patina)!important; }
+.public-shadows .crowd-figure--09 { left:47%!important; --lean:-1deg; animation-delay:1.28s!important; }
+.public-shadows .crowd-figure--10 { left:57%!important; --lean:3deg; animation-delay:1.36s!important; background:var(--oxblood)!important; }
+.public-shadows .crowd-figure--11 { left:69%!important; --lean:-2deg; animation-delay:1.44s!important; }
+.public-shadows .crowd-figure--12 { left:37%!important; --lean:2deg; animation-delay:1.48s!important; }
+.public-shadows .crowd-figure--13 { left:43%!important; --lean:-3deg; animation-delay:1.55s!important; background:var(--patina)!important; }
+.public-shadows .crowd-figure--14 { left:49%!important; --lean:1deg; animation-delay:1.62s!important; }
+.public-shadows .crowd-figure--15 { left:54.5%!important; --lean:-1deg; animation-delay:1.69s!important; background:var(--oxblood)!important; }
+.public-shadows .crowd-figure--16 { left:60%!important; --lean:3deg; animation-delay:1.76s!important; }
+@keyframes crowdEnter { to { opacity:.9; transform:translateY(0) rotate(var(--lean,0deg)); } }
+
+@media (max-width:760px) {
+  .public-shadows { inset:0!important; }
+  .public-shadows .crowd-figure--front { width:23vw!important; height:54%!important; }
+  .public-shadows .crowd-figure--mid { width:14vw!important; height:36%!important; }
+  .public-shadows .crowd-figure--back { width:8vw!important; height:23%!important; }
+  .public-shadows .crowd-figure--far { width:4.5vw!important; height:12%!important; }
+}
 .exterior .opening-role__purpose { max-width:34rem; color:var(--plaster); font-family:"Della Respira",serif; font-size:clamp(1rem,1.35vw,1.4rem); font-weight:400; letter-spacing:0; line-height:1.28; }
 @media (max-width:760px) {
   .opening-slate .opening-identity { gap:5px; max-width:62vw; padding:9px 10px 7px; border-left-width:4px; }
