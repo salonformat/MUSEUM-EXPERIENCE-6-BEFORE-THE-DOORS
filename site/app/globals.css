@@ -3684,3 +3684,66 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
   .chapter--epilogue .afterlife-copy nav summary { font-size:.5rem; line-height:1.25; }
   .chapter--epilogue .afterlife-copy::after { display:none; }
 }
+
+/* No introductory paper card flashes over the workroom drawing. */
+.interior-revealed .interior__copy { display:none!important; }
+
+/* Mobile historical counterpoint: one strong statement, one fact, one timeline. */
+@media (max-width:760px) {
+  .membership-afterword {
+    justify-content:center;
+    gap:13px;
+    padding:76px 6vw 32px!important;
+    overflow:hidden;
+  }
+  .membership-afterword > span {
+    align-self:flex-start;
+    padding:6px 8px 5px;
+    color:var(--plaster);
+    background:var(--oxblood);
+    font-size:.62rem;
+    letter-spacing:.24em;
+  }
+  .membership-afterword h3 {
+    display:block;
+    width:100%;
+    margin:8px 0 4px;
+    font-size:14.5vw;
+    line-height:.76;
+    letter-spacing:-.055em;
+  }
+  .membership-afterword h3 b {
+    max-width:8ch;
+  }
+  .membership-afterword h3 em {
+    width:100%;
+    margin:15px 0 0;
+    padding:13px 14px 10px;
+    color:var(--plaster);
+    background:var(--ultramarine);
+    font-family:"Josefin Sans",sans-serif;
+    font-size:.7em;
+    font-weight:600;
+    letter-spacing:-.045em;
+    line-height:.82;
+    text-transform:uppercase;
+    transform:rotate(-1deg);
+  }
+  .membership-afterword p {
+    width:100%;
+    max-width:none;
+    margin:5px 0 0;
+    padding:10px 0 8px 13px;
+    border-left:4px solid var(--oxblood);
+    font-size:.94rem;
+    line-height:1.3;
+  }
+  .membership-afterword > i {
+    align-self:flex-start;
+    margin-top:3px;
+    color:var(--graphite);
+    font-size:.76rem;
+    letter-spacing:.18em;
+  }
+  .membership-afterword > i b { color:var(--oxblood); }
+}
