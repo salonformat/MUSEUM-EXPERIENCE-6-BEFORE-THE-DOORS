@@ -18,6 +18,7 @@ export default function Home() {
   const [letterPriceFound, setLetterPriceFound] = useState(false);
   const [letterComplete, setLetterComplete] = useState(false);
   const [roomView, setRoomView] = useState(18);
+  const sightlineAligned = Math.abs(roomView - 53) <= 6;
   const [roomComplete, setRoomComplete] = useState(false);
   const [tereyPacked, setTereyPacked] = useState(false);
   const [beerPacked, setBeerPacked] = useState(false);
@@ -50,8 +51,8 @@ export default function Home() {
       return { step:`01 · Letter from Dresden · ${found}/2 found`, instruction:found === 0 ? 'Move across the document. Hold over the passages about the marble head and Beethoven’s price.' : found === 1 ? 'One matter is noted. Keep searching the document for the second responsive passage.' : 'Both matters are noted. They are now being passed to the exhibition office.' };
     }
     if (focus === 'invitation') return { step:'01 · Correspondence', instruction:tereyPacked && beerPacked ? 'Both cards are enclosed; the envelope is being dispatched to Hotel Kaiserhof.' : 'Place both cards in the envelope — guest access was part of the exhibition’s practical work.' };
-    if (focus === 'rooms') return { step:'02 · Sightline', instruction:roomView >= 38 ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag the beam onto the statue until the three art forms become one view.' };
-    if (focus === 'frieze') return { step:`03 · Frieze · ${friezeSeen.length}/5 found`, instruction:friezeSeen.includes(friezeIndex) ? 'Confirmed. The frieze is moving to the next stage.' : 'Select the glowing circle. Each confirmed motif advances the frieze automatically.' };
+    if (focus === 'rooms') return { step:'02 · Sightline', instruction:sightlineAligned ? 'Hold this view: architecture, sculpture and painting now connect as Hoffmann intended.' : 'Drag the beam onto the statue until the three art forms become one view.' };
+    if (focus === 'frieze') return { step:`03 · Visitor route · ${friezeSeen.length}/5 found`, instruction:friezeSeen.includes(friezeIndex) ? 'Route point confirmed. The wall is moving to the next stage.' : 'Find the glowing marker on the pictured motif and select it. Confirm all five stages in order—from search to kiss.' };
     if (focus === 'walkthrough') return { step:'Final walk-through', instruction:walkthroughChecks.length === 3 ? 'Logistics, space and narrative now work together; the exhibition can be released.' : 'Watch the completed room register the three systems you have already checked.' };
     if (focus === 'doors') return { step:'Opening', instruction:'Open the doors: your private inspection now becomes a public cultural experience.' };
     return { step:'Final inspection', instruction:'Choose any glowing work point and discover how letters, architecture and art made one exhibition possible.' };
@@ -293,11 +294,11 @@ export default function Home() {
   }, [focus, friezeComplete]);
 
   useEffect(() => {
-    if (focus !== 'rooms' || roomView < 38) return;
+    if (focus !== 'rooms' || !sightlineAligned) return;
     if (!roomComplete) { setRoomComplete(true); soundCue('room'); }
     const done = window.setTimeout(() => setFocus(null), 2200);
     return () => window.clearTimeout(done);
-  }, [focus, roomView, roomComplete]);
+  }, [focus, sightlineAligned, roomComplete]);
 
   useEffect(() => {
     if (focus !== 'letter' || !letterHeadFound || !letterPriceFound) return;
@@ -407,7 +408,7 @@ export default function Home() {
           <div className="passage-brief__grid">
             <div><strong>01</strong><b>Correspondence</b><span>Find two unresolved matters in art dealer Ernst Arnold’s letter. Then send the invitation requested by Gabriel von Térey, director of Budapest’s National Gallery.</span></div>
             <div><strong>02</strong><b>The sightline</b><span>Architect Josef Hoffmann used a wall opening to connect Klimt’s frieze room with Klinger’s Beethoven statue. Find that intended view.</span></div>
-            <div><strong>03</strong><b>The frieze</b><span>Move along the painted wall and hold each of five glowing details in view. Confirming all five proves the complete visitor route can be followed.</span></div>
+            <div><strong>03</strong><b>The frieze route</b><span>Find and confirm five narrative stages in order—from the search for happiness to the final kiss. This checks that visitors can follow Klimt’s complete story through the room.</span></div>
           </div>
           <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Start the final inspection</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
@@ -432,7 +433,6 @@ export default function Home() {
         <div className="workroom-lens" aria-hidden="true" />
         <div className="interior__copy">
           <span className="room-number">15 April 1902 / Before opening</span>
-          <p className="interior__line">Three preparations remain. Begin wherever you like.</p>
         </div>
         <nav className="attention" aria-label="Areas in the room">
           <p className="attention__prompt"><b>{inspectionComplete ? 'The room is ready for its final walk-through.' : `${3 - completedCount} preparation${3 - completedCount === 1 ? '' : 's'} unresolved.`}</b><span>{inspectionComplete ? 'Inspect the completed room once more, then release it to the public.' : 'Move your pointer through the drawing. Choose any glowing work point; every completed check changes this room.'}</span></p>
@@ -443,7 +443,7 @@ export default function Home() {
             <i /><span><b>The sightline {roomComplete && '✓'}</b><small>Test the view through the wall opening</small></span>
           </button>
           <button className={`attention__item attention__item--frieze ${friezeComplete ? 'is-cleared' : ''}`} type="button" onClick={() => { recordStep(); setFocus('frieze'); }}>
-            <i /><span><b>The frieze {friezeComplete && '✓'}</b><small>Drag the wall and confirm five glowing details</small></span>
+            <i /><span><b>The frieze route {friezeComplete && '✓'}</b><small>Find five story stages in order</small></span>
           </button>
           {inspectionComplete && <button className="final-walkthrough-entry" type="button" onClick={() => { recordStep(); setFocus('walkthrough'); }}><small>3 / 3 preparations ready</small><b>Walk through the finished exhibition</b><i>→</i></button>}
         </nav>
@@ -480,8 +480,8 @@ export default function Home() {
       <section className={`chapter chapter--rooms ${focus === 'rooms' ? 'is-open' : ''} ${modelRevealed ? 'model-revealed' : ''} ${roomEntering ? 'is-entering' : ''}`} aria-hidden={focus !== 'rooms'} style={{'--room-view': roomView} as React.CSSProperties}>
         <div className="room-image-action" onPointerDown={(event) => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); moveViewpoint(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId) || event.buttons === 1) moveViewpoint(event); }} onPointerUp={(event) => { moveViewpoint(event); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }} onPointerCancel={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}>
           <img className="chapter__art room-model-art" src={asset('spatial-model-v1.png')} alt="An abstract hand-drawn model showing the left side hall opening toward Klinger’s Beethoven" />
-          {modelRevealed && <div className={`sightline-viewfinder ${roomView >= 38 ? 'is-aligned' : ''}`} style={{'--view-x':`${roomView}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
-          {modelRevealed && <button className={`room-opening-hotspot ${roomView >= 38 ? 'is-aligned' : ''}`} type="button" onClick={() => setRoomView(42)}><i aria-hidden="true" /><b>{roomView >= 38 ? 'Sightline confirmed' : 'Bring the light here'}</b><span>{roomView >= 38 ? 'Architecture, sculpture and painting connect' : 'Drag onto or tap the statue'}</span></button>}
+          {modelRevealed && <div className={`sightline-viewfinder ${sightlineAligned ? 'is-aligned' : ''}`} style={{'--view-x':`${roomView}%`} as React.CSSProperties} aria-hidden="true"><i /><span /></div>}
+          {modelRevealed && <button className={`room-opening-hotspot ${sightlineAligned ? 'is-aligned' : ''}`} type="button" onClick={() => setRoomView(53)}><i aria-hidden="true" /><b>{sightlineAligned ? 'Sightline confirmed' : 'Bring the light here'}</b><span>{sightlineAligned ? 'Architecture, sculpture and painting connect' : 'Drag onto or tap the statue'}</span></button>}
         </div>
         <article className="rooms-copy">
           <p className="chapter-kicker">The rooms</p>
@@ -496,8 +496,8 @@ export default function Home() {
           </details>
         </article>
         <div className="room-control">
-          <div className="view-step"><b>{roomView >= 38 ? 'Sightline confirmed' : 'Move the light to Beethoven'}</b><span>{roomView >= 38 ? 'Painting, sculpture and architecture now connect in one view.' : 'Drag directly across the drawing—or tap the statue—to complete the sightline.'}</span></div>
-          {roomView >= 38 ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag the light onto the statue.</span>}
+          <div className="view-step"><b>{sightlineAligned ? 'Sightline confirmed' : 'Move the light to Beethoven'}</b><span>{sightlineAligned ? 'Painting, sculpture and architecture now connect in one view.' : 'Drag directly across the drawing—or tap the statue—to complete the sightline.'}</span></div>
+          {sightlineAligned ? <div className="auto-complete"><i>✓</i><b>Sightline confirmed</b><span>Returning to the workroom…</span></div> : <span className="room-control__hint">Drag the light onto the statue.</span>}
         </div>
         <button className="chapter-close" type="button" onClick={() => setFocus(null)} aria-label="Return to the preparation room">×</button>
       </section>
@@ -515,7 +515,7 @@ export default function Home() {
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
-          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Station ${friezeIndex + 1} confirmed ✓` : `Select the glowing circle · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Confirmed. Moving automatically to the next motif…' : 'All five stages form one complete route.') : 'Click or tap the circle placed on the motif. The frieze will then move to the next stage automatically.'}</span></p>
+          <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Route point ${friezeIndex + 1} confirmed ✓` : `Find the marked motif · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Confirmed. Moving automatically to the next part of the story…' : 'The complete route—from search to kiss—is ready for visitors.') : `Locate the glowing marker on “${friezeStages[friezeIndex]}” and select it. This confirms the next step in the visitor’s route.`}</span></p>
           <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Context</b><span>About the Beethoven Frieze</span></summary>
