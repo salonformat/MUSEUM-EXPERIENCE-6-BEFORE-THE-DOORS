@@ -980,7 +980,7 @@ input[type="range"] { width:100%; height:24px; accent-color:var(--oxblood); curs
 .memory-echo img:nth-child(3) { object-position:right; }
 .chapter--epilogue.is-open .memory-echo { animation:memoryEcho 1.4s 3.75s cubic-bezier(.16,1,.3,1) both; }
 @keyframes memoryEcho { 0% { opacity:0; transform:scale(1.12); filter:blur(10px); } 38% { opacity:.32; filter:blur(0); } 100% { opacity:0; transform:scale(1); } }
-.afterlife-copy::after { content:""; position:absolute; z-index:-1; right:-4vw; bottom:-8vh; width:44vw; height:55vh; opacity:.055; background:url('../public/images/beethoven-frieze-v2.png') right center/cover no-repeat; filter:grayscale(1) contrast(2); transform:rotate(-2deg); pointer-events:none; }
+.afterlife-copy::after { content:""; position:absolute; z-index:-1; right:-4vw; bottom:-8vh; width:44vw; height:55vh; opacity:.055; background:url('../public/images/beethoven-frieze-v3.png') right center/cover no-repeat; filter:grayscale(1) contrast(2); transform:rotate(-2deg); pointer-events:none; }
 
 @media (max-width:760px) {
   .sound-toggle { left:10px; right:auto; top:9px; bottom:auto; }

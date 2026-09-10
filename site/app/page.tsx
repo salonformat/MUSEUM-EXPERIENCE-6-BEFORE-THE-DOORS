@@ -37,7 +37,7 @@ export default function Home() {
   const invitationDrag = useRef<{ x:number; y:number; card:'terey' | 'beer' } | null>(null);
   const recordStep = () => window.history.pushState({ museumExperience:true }, '', window.location.href);
   const friezeIndex = Math.min(4, Math.max(0, Math.round(friezePosition)));
-  const friezeStages = ['The search', 'Resistance', 'Desire', 'The arts', 'The kiss'];
+  const friezeStages = ['The longing', 'The knight', 'The hostile forces', 'The arts', 'The kiss'];
   // Screen-space positions calibrated to the motif currently revealed by the moving 175vw artwork.
   const friezeMarkers = [{x:25,y:45},{x:48,y:43},{x:69,y:48},{x:77,y:46},{x:86,y:43}];
   const friezeComplete = friezeSeen.length === 5;
@@ -264,12 +264,63 @@ export default function Home() {
     window.setTimeout(() => setFocus('epilogue'), 2600);
   };
 
-  const downloadInspectionRecord = () => {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600"><rect width="1200" height="1600" fill="#F1EBDD"/><path d="M0 0H1200V530L1060 490 1110 760 1000 940 1050 1600H0Z" fill="#2520E8"/><circle cx="965" cy="245" r="164" fill="#A98235"/><g fill="#F1EBDD" stroke="#201D1A" stroke-width="7"><path d="M760 190h410v430H760z"/><path d="M815 112h300v165H815z"/><path d="M862 42h206v147H862z"/><path d="M900 300h130v320H900z"/></g><path d="M900 300h130v320H900z" fill="#201D1A"/><text x="70" y="92" fill="#201D1A" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="7">SALON FORMAT · VIENNA · 15 APRIL 1902</text><text x="70" y="235" fill="#201D1A" font-family="Georgia,serif" font-size="94">BEFORE THE</text><text x="70" y="330" fill="#201D1A" font-family="Georgia,serif" font-size="94">DOORS OPEN</text><text x="70" y="430" fill="#6B2F2B" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5">OPENING-DAY KEEPSAKE</text><g transform="translate(70 650) rotate(-1)"><rect width="940" height="118" fill="#F1EBDD" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#201D1A" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">01 · CORRESPONDENCE CLEARED  ✓</text></g><g transform="translate(120 795) rotate(1)"><rect width="940" height="118" fill="#47716D" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">02 · SIGHTLINE CONFIRMED  ✓</text></g><g transform="translate(72 940) rotate(-.6)"><rect width="940" height="118" fill="#A98235" stroke="#201D1A" stroke-width="4"/><text x="40" y="72" fill="#201D1A" font-family="Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="3">03 · FRIEZE ROUTE COMPLETE  ✓</text></g><text x="70" y="1215" fill="#F1EBDD" font-family="Georgia,serif" font-size="76">You made the</text><text x="70" y="1295" fill="#F1EBDD" font-family="Georgia,serif" font-size="76">opening possible.</text><text x="70" y="1390" fill="#E4BD4F" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="5">58,000 PEOPLE VISITED THE XIV EXHIBITION.</text><text x="70" y="1460" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="21">Letters, architecture and art were experienced as one spatial composition.</text><text x="70" y="1530" fill="#F1EBDD" font-family="Arial,sans-serif" font-size="18" letter-spacing="4">YOUR FINAL INSPECTION · SALONFORMAT.COM</text></svg>`;
-    const url = URL.createObjectURL(new Blob([svg], { type:'image/svg+xml' }));
+  const downloadInspectionRecord = async () => {
+    await document.fonts.ready;
+    const drawing = new Image();
+    drawing.src = asset('secession-exterior-v10.png');
+    await drawing.decode();
+    const canvas = document.createElement('canvas');
+    canvas.width = 1600;
+    canvas.height = 2000;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    context.fillStyle = '#F1EBDD';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#201D1A';
+    context.font = '600 24px "Josefin Sans", sans-serif';
+    context.fillText('SALON FORMAT · VIENNA SECESSION · 1902', 84, 82);
+    context.font = '400 108px "Della Respira", serif';
+    context.fillText('Before the doors open.', 78, 205);
+    context.fillStyle = '#A98235';
+    context.fillRect(82, 245, 1436, 8);
+
+    const imageTop = 290;
+    const imageHeight = 1040;
+    const scale = Math.max(canvas.width / drawing.width, imageHeight / drawing.height);
+    const sourceWidth = canvas.width / scale;
+    const sourceHeight = imageHeight / scale;
+    const sourceX = Math.max(0, (drawing.width - sourceWidth) / 2);
+    const sourceY = Math.max(0, (drawing.height - sourceHeight) / 2);
+    context.drawImage(drawing, sourceX, sourceY, sourceWidth, sourceHeight, 0, imageTop, canvas.width, imageHeight);
+
+    context.fillStyle = '#2520E8';
+    context.fillRect(0, 1330, canvas.width, 670);
+    context.fillStyle = '#E4BD4F';
+    context.font = '600 25px "Josefin Sans", sans-serif';
+    context.fillText('THE XIV EXHIBITION · 15 APRIL–27 JUNE 1902', 84, 1415);
+    context.fillStyle = '#F1EBDD';
+    context.font = '400 69px "Della Respira", serif';
+    context.fillText('A total work of art', 82, 1515);
+    context.fillText('built around Beethoven.', 82, 1590);
+    context.font = '400 34px "Della Respira", serif';
+    context.fillText('Josef Hoffmann’s architecture, Gustav Klimt’s Beethoven Frieze', 84, 1685);
+    context.fillText('and Max Klinger’s monumental sculpture formed one spatial composition.', 84, 1732);
+    context.fillStyle = '#E4BD4F';
+    context.font = '600 76px "Josefin Sans", sans-serif';
+    context.fillText('58,000', 82, 1855);
+    context.fillStyle = '#F1EBDD';
+    context.font = '600 25px "Josefin Sans", sans-serif';
+    context.fillText('VISITORS MADE IT ONE OF THE SECESSION’S GREATEST PUBLIC SUCCESSES.', 375, 1848);
+    context.font = '600 20px "Josefin Sans", sans-serif';
+    context.fillText('BEFORE THE DOORS OPEN · AN IMMERSIVE EXPERIENCE BY SALON FORMAT', 84, 1940);
+
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'before-the-doors-open-opening-day-keepsake.svg';
+    link.download = 'vienna-secession-xiv-exhibition-1902-poster.png';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -408,7 +459,7 @@ export default function Home() {
           <div className="passage-brief__grid">
             <div><strong>01</strong><b>Correspondence</b><span>Find two unresolved matters in art dealer Ernst Arnold’s letter. Then send the invitation requested by Gabriel von Térey, director of Budapest’s National Gallery.</span></div>
             <div><strong>02</strong><b>The sightline</b><span>Architect Josef Hoffmann used a wall opening to connect Klimt’s frieze room with Klinger’s Beethoven statue. Find that intended view.</span></div>
-            <div><strong>03</strong><b>The frieze route</b><span>Find and confirm five narrative stages in order—from the search for happiness to the final kiss. This checks that visitors can follow Klimt’s complete story through the room.</span></div>
+            <div><strong>03</strong><b>The frieze route</b><span>Find and confirm five narrative stages in order—from human longing to the final kiss. This checks that visitors can follow Klimt’s complete story through the room.</span></div>
           </div>
           <footer><span>When all three connect, the doors can open.</span><button className="workroom-entry" type="button" onClick={beginRoom}><small>Start the final inspection</small><b>Enter the workroom</b><i>→</i></button></footer>
         </article>
@@ -510,16 +561,17 @@ export default function Home() {
           onPointerUp={(event) => { if (!friezeDrag.current) return; friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId); }}
           onPointerCancel={(event) => { friezeDrag.current = null; event.currentTarget.classList.remove('is-dragging'); }}
           onWheel={(event) => { event.preventDefault(); const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY; setFriezePosition((position) => Math.min(4, Math.max(0, position + delta / 360))); }}>
-          <img className="chapter__art" src={asset('beethoven-frieze-v2.png')} alt="A visibly hand-drawn abstract interpretation of the Beethoven Frieze, from human longing through hostile forces to the golden conclusion" draggable="false" onDragStart={(event) => event.preventDefault()} />
+          <img className="chapter__art" src={asset('beethoven-frieze-v3.png')} alt="A visibly hand-drawn abstract interpretation across the three walls of the Beethoven Frieze, from human longing through hostile forces to the final kiss" draggable="false" onDragStart={(event) => event.preventDefault()} />
           <button className={`frieze-object-marker ${friezeSeen.includes(friezeIndex) ? 'is-marked' : ''}`} style={{'--marker-x':`${friezeMarkers[friezeIndex].x}%`,'--marker-y':`${friezeMarkers[friezeIndex].y}%`} as React.CSSProperties} type="button" disabled={friezeSeen.includes(friezeIndex)} onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); markFriezeStage(); }} aria-label={`${friezeSeen.includes(friezeIndex) ? 'Confirmed' : 'Confirm'} ${friezeStages[friezeIndex]}`}><i /><span>{friezeStages[friezeIndex]}</span><b>{friezeSeen.includes(friezeIndex) ? 'Complete ✓' : 'Select to confirm'}</b></button>
           {friezeComplete && <div className="kiss-focus" aria-hidden="true"><i /><b>The kiss</b></div>}
         </div>
         <div className="frieze-copy">
           <p className="worker-cue worker-cue--frieze"><b>{friezeSeen.includes(friezeIndex) ? `Route point ${friezeIndex + 1} confirmed ✓` : `Find the marked motif · ${friezeIndex + 1} of 5`}</b><span>{friezeSeen.includes(friezeIndex) ? (friezeIndex < 4 ? 'Confirmed. Moving automatically to the next part of the story…' : 'The complete route—from search to kiss—is ready for visitors.') : `Locate the glowing marker on “${friezeStages[friezeIndex]}” and select it. This confirms the next step in the visitor’s route.`}</span></p>
-          <p>{['A search for happiness.', 'Resistance.', 'Desire.', 'The arts.', 'And finally — a kiss.'][friezeIndex]}</p>
+          <p>{['Human longing for happiness.', 'The knight answers suffering humanity.', 'Typhoeus, the Gorgons and the hostile forces.', 'The arts lead toward the choir of paradise.', 'And finally — an embracing kiss.'][friezeIndex]}</p>
           <details className="context-note context-note--frieze">
             <summary><b>Context</b><span>About the Beethoven Frieze</span></summary>
-            <div><p>The exhibition honoured Ludwig van Beethoven on the seventy-fifth anniversary of his death. Around 1900 he was revered as the gifted artist who suffers yet creates something universal.</p>
+            <div><p>This hand-drawn panorama is an abstract interpretation across the frieze’s three walls—not an exact spatial reproduction.</p>
+            <p>The exhibition honoured Ludwig van Beethoven on the seventy-fifth anniversary of his death. Around 1900 he was revered as the gifted artist who suffers yet creates something universal.</p>
             <p>Klimt turned the human search for happiness — inspired by Beethoven’s Ninth Symphony — into a procession across three walls. The final kiss answers the struggle that comes before it.</p>
             <p>The frieze was conceived for this exhibition, not as an isolated permanent mural. Its rhythm, scale and procession belonged to Hoffmann’s temporary architecture and to the encounter with Klinger’s sculpture.</p>
             <strong>What you learn</strong><span>The frieze changes meaning when it is experienced as a route through a specific room.</span></div>
@@ -602,7 +654,7 @@ export default function Home() {
           <i aria-hidden="true">1902 <b>→</b> 1949</i>
         </div>
         <div className="gold-afterline" aria-hidden="true" />
-        <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v2.png')} alt="" /></div>
+        <div className="memory-echo" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><img src={asset('secession-interior-v4.png')} alt="" /><img src={asset('beethoven-frieze-v3.png')} alt="" /></div>
         <div className="finale-portal" aria-hidden="true"><img src={asset('secession-exterior-v10.png')} alt="" /><i /><i /><i /></div>
         <article className="afterlife-copy">
           <span className="completion-stamp">Vienna · 15 April 1902 · 3 / 3 complete</span>
